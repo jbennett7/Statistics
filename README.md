@@ -29,8 +29,8 @@ between predictor and response.
 A method of aggregating data points is described here. It can be used for other uses.
 
 ## References (Chicago)
-1. <a id=ref1></a>Adler, Joseph. 2012. R in a Nutshell. 2nd ed. Sebastopol: OReilly.
-2. <a id=ref2></a>Boslaugh, Sarah. 2013. Statistics In a Nutshell. 2nd ed. Sebastopol: OReilly.
+1. <a id=ref1></a>Adler, Joseph. 2012. R in a Nutshell, Second edition. Sebastopol: OReilly.
+2. <a id=ref2></a>Boslaugh, Sarah. 2013. Statistics In a Nutshell, Second edition. Sebastopol: OReilly.
 3. <a id=ref3></a>Dalpiaz, David. "Applied Statistics with R." Applied Statistics with R. February 17, 2024. https://book.stat420.org/.
 4. <a id=ref4></a>Freedman, David, Robert Pisani, and Roger Purves. 2007. Statistics, Fourth edition. New York: W. W. Norton & Company, Inc.
 5. <a id=ref5></a>Spiegel, M. R., & Stephens, L. J. 2017. Schaum’s Outline of Statistics, Sixth edition. McGraw-Hill Education.
