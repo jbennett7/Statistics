@@ -1,6 +1,14 @@
 # Statistics
 This repository is my education into statistics.
 
+## Overall Goal
+* Combine ther references into one cohesive unit to work with in the future.
+
+## Sub-goals
+* Complete working out everything in Freedman into this repository so that it is defined in R.
+* Complete working out everything in Spiegel into this repository so that it is defined in R.
+* Complete working out everything in Dalpiaz into this repository so that it is defined in R.
+
 ## Work
 
 - __17 Feb 2024:__ Chapter 6 of Schaum - Elementary Probability Theory
@@ -17,9 +25,9 @@ between predictor and response.
 * Updated [The Graph of Averages](Freedman/03%20Part%20III.%20Correlation%20and%20Regression/10%20Regression/02%20The%20Graph%20of%20Averages.ipynb).
 A method of aggregating data points is described here. Can be used for other uses.
 
-## References
-* Freedman, D., Pisani, R., & Purves, R. (2007). Statistics (4th ed.). W. W. Norton & Company.
-* Spiegel, M. R., & Stephens, L. J. (2017). Schaum’s Outline of Statistics, Sixth edition. McGraw-Hill Education.
-* [Applied Statistics with R]('https://daviddalpiaz.github.io/appliedstats/applied_statistics.pdf')
+## References (Chicago)
+* Freedman, David, Robert Pisani, and Roger Purves. 2007. Statistics, Fourth edition. New York: W. W. Norton & Company, Inc.
+* Spiegel, M. R., & Stephens, L. J. 2017. Schaum’s Outline of Statistics, Sixth edition. McGraw-Hill Education.
+* Dalpiaz, David. "Applied Statistics with R." Applied Statistics with R. February 17, 2024. https://book.stat420.org/.
 * Boslaugh, Sarah. 2013. Statistics In a Nutshell. 2nd ed. Sebastopol: OReilly.
 * Adler, Joseph. 2012. R in a Nutshell. 2nd ed. Sebastopol: OReilly.
