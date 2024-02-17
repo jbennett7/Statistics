@@ -12,12 +12,13 @@ This repository is my education in statistics.
 5. Use Alder as a guide for the previous four sub-goals.
 
 ## Work
-
-- __17 Feb 2024:__ Chapter 6 of Spiegel - Elementary Probability Theory and Chapter 13 of Freedman - What are the Chances?
+### 17 Feb 2024
+- Chapter 6 of Spiegel - Elementary Probability Theory
   * [Definitions of Probability](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/01%20Text/01%20Definitions%20of%20probability.ipynb). Both Classical and Relative-Frequency.
   * [Conditional Probability](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/01%20Text/02%20Conditional%20probability%3B%20independent%20and%20dependent%20events.ipynb). The difference between independent and dependent events.
   * [Mutually Exclusive Events](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/01%20Text/03%20Mutually%20exclusive%20events.ipynb).
   * [Solved Problems - Fundamental Rules of Probability](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/02%20Solved%20problems/01%20Fundamental%20rules%20of%20probability.ipynb)
+- Chapter 13 of Freedman - What are the Chances?
   * [Freedman's definition of chance](Freedman/04%20Part%20IV.%20Probability/13%20What%20Are%20the%20Chances/01%20Introduction.ipynb).
 
 ### Old
