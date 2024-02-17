@@ -28,7 +28,7 @@ between predictor and response.
 A method of aggregating data points is described here. It can be used for other uses.
 
 ## References (Chicago)
-* Freedman, David, Robert Pisani, and Roger Purves. 2007. Statistics, Fourth edition. New York: W. W. Norton & Company, Inc.
+* <a id=ref1></a>Freedman, David, Robert Pisani, and Roger Purves. 2007. Statistics, Fourth edition. New York: W. W. Norton & Company, Inc.
 * Spiegel, M. R., & Stephens, L. J. 2017. Schaum’s Outline of Statistics, Sixth edition. McGraw-Hill Education.
 * Dalpiaz, David. "Applied Statistics with R." Applied Statistics with R. February 17, 2024. https://book.stat420.org/.
 * Boslaugh, Sarah. 2013. Statistics In a Nutshell. 2nd ed. Sebastopol: OReilly.
