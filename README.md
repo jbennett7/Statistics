@@ -1,8 +1,8 @@
 # Statistics
-This repository is my education into statistics.
+This repository is my education in statistics.
 
 ## Overall Goal
-* Combine ther references into one cohesive unit to work with in the future.
+* Combine the references into one cohesive unit to work with in the future.
 
 ## Sub-goals
 * Complete working out everything in Freedman into this repository so that it is defined in R.
@@ -19,11 +19,11 @@ This repository is my education into statistics.
 
 ### Old
 * Updated the [Introduction to Regression](Freedman/03%20Part%20III.%20Correlation%20and%20Regression/10%20Regression/01%20Introduction.ipynb).
-This has a good demonstration on how to use NHANES data sets, how to filter data sets for specifics. Although it uses `lm()` to create
+This demonstrates how to use NHANES data sets and how to filter data sets for specifics. Although it uses `lm()` to create
 the linear regression line, it does explain how to manually create one using the predictor's mean, standard deviation, and the correlation
 between predictor and response.
 * Updated [The Graph of Averages](Freedman/03%20Part%20III.%20Correlation%20and%20Regression/10%20Regression/02%20The%20Graph%20of%20Averages.ipynb).
-A method of aggregating data points is described here. Can be used for other uses.
+A method of aggregating data points is described here. It can be used for other uses.
 
 ## References (Chicago)
 * Freedman, David, Robert Pisani, and Roger Purves. 2007. Statistics, Fourth edition. New York: W. W. Norton & Company, Inc.
