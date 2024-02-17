@@ -13,7 +13,7 @@ This repository is my education in statistics.
 
 ## Work
 
-- __17 Feb 2024:__ Chapter 6 of Schaum - Elementary Probability Theory
+- __17 Feb 2024:__ Chapter 6 of Spiegel - Elementary Probability Theory and Chapter 13 of Freedman - What are the Chances?
   * [Definitions of Probability](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/01%20Text/01%20Definitions%20of%20probability.ipynb). Both Classical and Relative-Frequency.
   * [Conditional Probability](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/01%20Text/02%20Conditional%20probability%3B%20independent%20and%20dependent%20events.ipynb). The difference between independent and dependent events.
   * [Mutually Exclusive Events](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/01%20Text/03%20Mutually%20exclusive%20events.ipynb).
