@@ -20,6 +20,10 @@ This repository is my education in statistics.
   * [Solved Problems - Fundamental Rules of Probability](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/02%20Solved%20problems/01%20Fundamental%20rules%20of%20probability.ipynb)
 - Chapter 13 of Freedman - What are the Chances?
   * [Freedman's definition of chance](Freedman/04%20Part%20IV.%20Probability/13%20What%20Are%20the%20Chances/01%20Introduction.ipynb).
+  * [Conditional Probability](Freedman/04%20Part%20IV.%20Probability/13%20What%20Are%20the%20Chances/02%20Conditioanl%20probabilities.ipynb).
+  * [The Multiplication Rule](Freedman/04%20Part%20IV.%20Probability/13%20What%20Are%20the%20Chances/03%20The%20multiplication%20rule.ipynb).
+  * [Independence](Freedman/04%20Part%20IV.%20Probability/13%20What%20Are%20the%20Chances/04%20Independence.ipynb).
+  * [Review exercises](Freedman/04%20Part%20IV.%20Probability/13%20What%20Are%20the%20Chances/05%20Review%20exercises.ipynb).
 
 ### Old
 * Updated the [Introduction to Regression](Freedman/03%20Part%20III.%20Correlation%20and%20Regression/10%20Regression/01%20Introduction.ipynb).
