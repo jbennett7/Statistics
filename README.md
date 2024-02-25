@@ -9,6 +9,10 @@ This repository is my education in statistics.
 - Work through probability theory.
 
 ## Work
+### 25 Feb 2024
+- Chapter 1 of Peebles
+  * [Introduction - lays out the reason for using the axiomatic approach](Peebles/01%20Probability/01%20Introduction.ipynb)
+  * [Set definition](Peebles/01%20Probability/02%20Set%20definitions.ipynb)
 ### 24 Feb 2024
 - Adding in Set Theory in order to give a second perspective to probability theory. The first approach is documented here and is based on _relative frequency_. This approach is discussed with great detail in [Spiegel](#ref_spiegel) and [Freedman](#ref_freedman). The second approach is used in [Peebles](#ref_peebles), which the author describes as "the axiomatic definition" (page 2). He states, "It is the most mathematically sound of all approaches."
 - Chapter 6 of Spiegel - Elementary Probability Theory
