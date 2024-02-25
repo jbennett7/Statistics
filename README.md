@@ -4,15 +4,13 @@ This repository is my education in statistics.
 ## Overall Goal
 1. Combine the references into one cohesive unit to work with in the future.
 
-## Sub-goals of goal 1
-1. Complete working out everything in Freedman into this repository so that it is defined in R.
-2. Complete working out everything in Spiegel into this repository so that it is defined in R.
-3. Complete working out everything in Dalpiaz into this repository so that it is defined in R.
-4. Complete working out everything in Boslaugh into this repository so that it is defined in R.
-5. Use Alder as a guide for the previous four sub-goals.
+## Goals
+### Current goal
+- Work through probability theory.
 
 ## Work
-### 17 Feb 2024
+### 24 Feb 2024
+- Adding in Set Theory in order to give a second perspective to probability theory. The first approach is documented here and is based on _relative frequency_. This approach is discussed with great detail in [Spiegel](#ref_spiegel) and [Freedman](#ref_freedman). The second approach is used in [Peebles](#ref_peebles), which the author describes as "the axiomatic definition" (page 2). He states, "It is the most mathematically sound of all approaches."
 - Chapter 6 of Spiegel - Elementary Probability Theory
   * [Definitions of Probability](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/01%20Text/01%20Definitions%20of%20probability.ipynb). Both Classical and Relative-Frequency.
   * [Conditional Probability](Spiegel/06%20Chapter%206%20Elementary%20Probability%20Theory/01%20Text/02%20Conditional%20probability%3B%20independent%20and%20dependent%20events.ipynb). The difference between independent and dependent events.
@@ -35,9 +33,10 @@ between predictor and response.
 A method of aggregating data points is described here. It can be used for other uses.
 
 ## References (Chicago)
-1. <a id=ref1></a>Adler, Joseph. 2012. _R in a Nutshell_, Second edition. Sebastopol: OReilly.
-2. <a id=ref2></a>Boslaugh, Sarah. 2013. _Statistics In a Nutshell_, Second edition. Sebastopol: OReilly.
-3. <a id=ref3></a>Dalpiaz, David. _Applied Statistics with R_. February 17, 2024. https://book.stat420.org/.
-4. <a id=ref4></a>Freedman, David, Robert Pisani, and Roger Purves. 2007. _Statistics_, Fourth edition. New York: W. W. Norton & Company, Inc.
-5. <a id=ref5></a>Spiegel, M. R., & Stephens, L. J. 2017. _Schaum’s Outline of Statistics_, Sixth edition. McGraw-Hill Education.
+1. <a id=ref_alder></a>Adler, Joseph. 2012. _R in a Nutshell_, 2nd ed. Sebastopol: OReilly.
+2. <a id=ref_boslaugh></a>Boslaugh, Sarah. 2013. _Statistics In a Nutshell_, 2nd ed. Sebastopol: OReilly.
+3. <a id=ref_dalpiaz></a>Dalpiaz, David. _Applied Statistics with R_. February 17, 2024. https://book.stat420.org/.
+4. <a id=ref_freedman></a>Freedman, David, Robert Pisani, and Roger Purves. 2007. _Statistics_, 4th ed. New York: W. W. Norton & Company, Inc.
+5. <a id=ref_peebles></a>Peebles, Peyton Z. Jr. 2001. Probability, Random Variables, and Random Signal Principles. 4th ed. New York: McGraw-Hill Inc.
+6. <a id=ref_spiegel></a>Spiegel, M. R., & Stephens, L. J. 2017. _Schaum’s Outline of Statistics_, 6th ed. McGraw-Hill Education.
 
