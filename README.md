@@ -37,6 +37,6 @@ A method of aggregating data points is described here. It can be used for other 
 2. <a id=ref_boslaugh></a>Boslaugh, Sarah. 2013. _Statistics In a Nutshell_, 2nd ed. Sebastopol: OReilly.
 3. <a id=ref_dalpiaz></a>Dalpiaz, David. _Applied Statistics with R_. February 17, 2024. https://book.stat420.org/.
 4. <a id=ref_freedman></a>Freedman, David, Robert Pisani, and Roger Purves. 2007. _Statistics_, 4th ed. New York: W. W. Norton & Company, Inc.
-5. <a id=ref_peebles></a>Peebles, Peyton Z. Jr. 2001. Probability, Random Variables, and Random Signal Principles. 4th ed. New York: McGraw-Hill Inc.
+5. <a id=ref_peebles></a>Peebles, Peyton Z. Jr. 2001. _Probability, Random Variables, and Random Signal Principles_. 4th ed. New York: McGraw-Hill Inc.
 6. <a id=ref_spiegel></a>Spiegel, M. R., & Stephens, L. J. 2017. _Schaum’s Outline of Statistics_, 6th ed. McGraw-Hill Education.
 
