@@ -8,7 +8,13 @@ This repository is my education in statistics.
 ### Current goal
 - Work through probability theory.
 
-## Work
+## Log
+### 27 Feb 2024
+- Chapter 1 of Peebles
+  * [Set operations](Peebles/01%20Probability/03%20Set%20operations.ipynb)
+  * [Probability introduced through sets and relative frequency](Peebles/01%20Probability/04%20Probability%20introduced%20through%20sets%20and%20relative%20frequency.ipynb)
+  * [Joint and conditional probability](Peebles/01%20Probability/05%20Joint%20and%20conditional%20probability.ipynb)
+  * [Independent events](Peebles/01%20Probability/06%20Independent%20events.ipynb)
 ### 25 Feb 2024
 - Chapter 1 of Peebles
   * [Introduction - lays out the reason for using the axiomatic approach](Peebles/01%20Probability/01%20Introduction.ipynb)
@@ -27,7 +33,6 @@ This repository is my education in statistics.
   * [The Multiplication Rule](Freedman/04%20Part%20IV.%20Probability/13%20What%20Are%20the%20Chances/03%20The%20multiplication%20rule.ipynb).
   * [Independence](Freedman/04%20Part%20IV.%20Probability/13%20What%20Are%20the%20Chances/04%20Independence.ipynb).
   * [Review exercises](Freedman/04%20Part%20IV.%20Probability/13%20What%20Are%20the%20Chances/05%20Review%20exercises.ipynb).
-
 ### Old
 * Updated the [Introduction to Regression](Freedman/03%20Part%20III.%20Correlation%20and%20Regression/10%20Regression/01%20Introduction.ipynb).
 This demonstrates how to use NHANES data sets and filter data sets for specifics. Although it uses `lm()` to create
