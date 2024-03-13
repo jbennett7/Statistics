@@ -9,6 +9,11 @@ This repository is my education in statistics.
 - Work through probability theory.
 
 ## Log
+### 12 March 2024
+- Chapter 1 of Peebles
+  * [Independent events](Peebles/01%20Probability/06%20Independent%20events.ipynb)
+- Chapter 14 of Freedman
+  * [Listing the waysb(Freedman/04%20Part%20IV.%20Probability/14%20More%20about%20chance/01%20Listing%20the%20ways.ipynb)
 ### 27 Feb 2024
 - Chapter 1 of Peebles
   * [Set operations](Peebles/01%20Probability/03%20Set%20operations.ipynb)
