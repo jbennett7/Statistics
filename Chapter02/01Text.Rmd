@@ -13,13 +13,13 @@ require(tidyverse)
 library(ggplot2)
 ```
 
-# Raw data {#raw-data}
+# Raw data
 
 _Raw data_ are collected data that have not been organized numerically. An
 example is the set of heights of $100$ male students obtained from an
 alphabetical listing of university records.
 
-# Arrays {#arrays}
+# Arrays
 
 An _array_ is an arrangement of raw numerical data in ascending or descending
 order of magnitude. The difference between the largest and smallest numbers is
