@@ -1,8 +1,6 @@
 ---
 title: 'Chapter 2: Frequency Distributions'
 subtitle: 'Text'
-author: 'Murray R. Spiegel, PhD and Larry J. Stephens, Phd'
-date: '2024-06-15'
 header-includes: \usepackage{amsmath}
 output:
   pdf_document:
@@ -10,85 +8,161 @@ output:
     toc_depth: '3'
 ---
 
+```{r setup, message=F, echo=F}
+require(tidyverse)
+library(ggplot2)
+```
+
 # Raw data {#raw-data}
 
-_Raw data_ are collected data that have not been organized numerically. An example is the set of heights of $100$ male students obtained from an alphabetical listing of university records.
+_Raw data_ are collected data that have not been organized numerically. An
+example is the set of heights of $100$ male students obtained from an
+alphabetical listing of university records.
 
 # Arrays {#arrays}
 
-An _array_ is an arrangement of raw numerical data in ascending or descending order of magnitude. The difference between the largest and smallest numbers is called the _range_ of the data. For example, if the largest height of $100$ male students is $74$ inches (in) and the smallest height is $60$ in, the range is $74 - 60 = `r 74 - 60`$ in.
+An _array_ is an arrangement of raw numerical data in ascending or descending
+order of magnitude. The difference between the largest and smallest numbers is
+called the _range_ of the data. For example, if the largest height of $100$ male
+students is $74$ inches (in) and the smallest height is $60$ in, the range is
+$74 - 60 = `r 74 - 60`$ in.
 
 # Frequency distributiuons
 
-When summarizing large masses of raw data, it is often useful to distribute the data into _classes_, or _categories_, and to determine the number of individuals belonging to each class, called the _class frequency_. A tabular arrangement of data by classes together with the corresponding class frequencies is called a _frequency distribution_, or _frequency table_. Table 2.1 is a frequency distribution of heights (recorded to the nearest inch) of 100 male students at XYZ University.
+When summarizing large masses of raw data, it is often useful to distribute the
+data into _classes_, or _categories_, and to determine the number of individuals
+belonging to each class, called the _class frequency_. A tabular arrangement of
+data by classes together with the corresponding class frequencies is called a
+_frequency distribution_, or _frequency table_. Table 2.1 is a frequency
+distribution of heights (recorded to the nearest inch) of 100 male students at
+XYZ University.
 
-The first class (or category), for example, consists of heights from 60 to 62 in and is indicated by the range symbol 60--62. Since five students have heights belonging to this class, the corresponding class frequency is 5.
+The first class (or category), for example, consists of heights from 60 to 62 in
+and is indicated by the range symbol 60--62. Since five students have heights
+belonging to this class, the corresponding class frequency is 5.
 
-Data organized and summarized as in the above frequency distribution are often called _grouped data_. Although the grouping process generally destroys much of the original detail of the data, an important advantage is gained in the clear "overall" picture that is obtained and in the vital relationships that are thereby made evident.
+Data organized and summarized as in the above frequency distribution are often
+called _grouped data_. Although the grouping process generally destroys much of
+the original detail of the data, an important advantage is gained in the clear
+"overall" picture that is obtained and in the vital relationships that are
+thereby made evident.
 
-__Table 2.1 Heights of 100 male students at XYZ University__
+\begin{center}
+Table 2.1 Heights of 100 male students at XYZ University
+\end{center}
 
-|Height (in)|Number of Students|
-|:---:|:---:|
-60--62|5|
-|63--65|18|
-|66--68|42|
-|69--71|27|
-|72--74|8|
-| |Total 100|
-
+```{r table 2.1; heights of 100 male students at xyz university, echo=F}
+height <- c('60-62', '63-65', '66-68', '69-71', '72-74')
+no.students <- c(5, 18, 42, 27, 8)
+knitr::kable(tibble(height, no.students))
+```
 
 # Class intervals and class limits
 
-A symbol defining a class, such as 60--62 in Table 2.1 is called a _class interval_. The end numbers, 60 and 62, are called _class limits_; the smaller number (60) is the _lower class limit_, and the larger number (62) is the _upper class limit_. The terms _class_ and _class interval_ are often used interchangeably, although the class interval is actually a symbol for the class.
+A symbol defining a class, such as 60--62 in Table 2.1 is called a _class
+interval_. The end numbers, 60 and 62, are called _class limits_; the smaller
+number (60) is the _lower class limit_, and the larger number (62) is the _upper
+class limit_. The terms _class_ and _class interval_ are often used
+interchangeably, although the class interval is actually a symbol for the class.
 
-A class interval that, at least theoretically, has either no upper class limit or no lower class limit indicated is called an _open class interval_. For example, referring to age groups of individuals, the class interval "65 years and over" is an open class interval.
+A class interval that, at least theoretically, has either no upper class limit
+or no lower class limit indicated is called an _open class interval_. For
+example, referring to age groups of individuals, the class interval "65 years
+and over" is an open class interval.
 
 # Class boundaries
 
-If heights are recorded to the nearest inch, the class interval 60--62 theoretically includes all measurements from $59.5000$ to $62.5000$ in. These numbers, indicated briefly by the exact numbers $59.5$ and $62.5$, are called _class boundaries_, or _true class limits_; the smaller number ($59.5$) is the _lower class boundary_, and the larger number ($62.5$) is the _upper class boundary_.
+If heights are recorded to the nearest inch, the class interval 60--62
+theoretically includes all measurements from $59.5000$ to $62.5000$ in. These
+numbers, indicated briefly by the exact numbers $59.5$ and $62.5$, are called
+_class boundaries_, or _true class limits_; the smaller number ($59.5$) is the
+_lower class boundary_, and the larger number ($62.5$) is the _upper class
+boundary_.
 
-In practice, the class boundaries are obtained by adding the upper limit of one class interval to the lower limit of the next-higher class interval and dividing by $2$.
+In practice, the class boundaries are obtained by adding the upper limit of one
+class interval to the lower limit of the next-higher class interval and dividing
+by $2$.
 
-Sometimes, class boundaries are used to symbolize classes. For example, the various classes in the first column of Table 2.1 could be indicated by 59.5--62.5, 62.5--65.5, etc. To avoid ambiguity in using such notation, class boundaries should not coincide with actual observations. Thus if an observation were $62.5$, it would not be possible to decide whether it belonged to the class interval 59.5--62.5, 62.5--65.5.
+Sometimes, class boundaries are used to symbolize classes. For example, the
+various classes in the first column of Table 2.1 could be indicated by
+59.5--62.5, 62.5--65.5, etc. To avoid ambiguity in using such notation, class
+boundaries should not coincide with actual observations. Thus if an observation
+were $62.5$, it would not be possible to decide whether it belonged to the class
+interval 59.5--62.5, 62.5--65.5.
 
 # The size, or width, of A class interval
 
-The size, or width, of a class interval is the difference between the lower and upper class boundaries and is also referred to as the _class width_, _class size_, or _class length_. If all class intervals of a frequency distribution have equal widths, this common width is denoted by $c$. In such case $c$ is equal to the difference between two successive lower class limits or two successive upper class limits. For the data of Table 2.1, for example, the class interval is $c=62.5$--$59.5=65.5$--$62.5=3$.
+The size, or width, of a class interval is the difference between the lower and
+upper class boundaries and is also referred to as the _class width_, _class
+size_, or _class length_. If all class intervals of a frequency distribution
+have equal widths, this common width is denoted by $c$. In such case $c$ is
+equal to the difference between two successive lower class limits or two
+successive upper class limits. For the data of Table 2.1, for example, the class
+interval is $c=62.5$--$59.5=65.5$--$62.5=3$.
 
 # The class mark
 
-The _class mark_ is the midpoint of the class interval and is obtained by adding the lower and upper class limits and dividng by 2. Thus the class mark of the interval $60$--$62$ is $(60+62)/2=61$. The class mark is also called the _class midpoint_.
+The _class mark_ is the midpoint of the class interval and is obtained by adding
+the lower and upper class limits and dividng by 2. Thus the class mark of the
+interval $60$--$62$ is $(60+62)/2=61$. The class mark is also called the _class
+midpoint_.
 
-For purposes of further mathematical analysis, all observations belonging to a given class interval are assumed to coincide with the class mark. Thus all heights in the class interval $60$--$62$ in are considered to be $61$ in.
+For purposes of further mathematical analysis, all observations belonging to a
+given class interval are assumed to coincide with the class mark. Thus all
+heights in the class interval $60$--$62$ in are considered to be $61$ in.
 
 # General rules for forming frequency distributions
 
-1. Determine the largest and smallest numbers in the raw data and thus find the range (the difference between the largest and smallest numbers).  
-2. Divide the range into a convenient number of class intervals having the same size. If this is not feasible, use class intervals of different sizes or open class intervals (see Problem 2.12). The number of class intervals is usually between 5 and 20, depending on the data. Class intervals are also chosen so that the class marks (or midpoints) coincide with the actually observed data. This tends to lessen the so-called _grouping error_ involved in further mathematical analysis. However, the class boundaries should not coincide with the actually observed data.  
-3. Determine the number of observations falling into each class interval; that is, find the class frequencies. This is best done by using a _tally_, or _score sheet_ (see Problem 2.8).  
+1. Determine the largest and smallest numbers in the raw data and thus find the
+   range (the difference between the largest and smallest numbers).  
+
+2. Divide the range into a convenient number of class intervals having the same
+   size. If this is not feasible, use class intervals of different sizes or open
+   class intervals (see Problem 2.12). The number of class intervals is usually
+   between 5 and 20, depending on the data. Class intervals are also chosen so
+   that the class marks (or midpoints) coincide with the actually observed data.
+   This tends to lessen the so-called _grouping error_ involved in further
+   mathematical analysis. However, the class boundaries should not coincide with
+   the actually observed data.  
+
+3. Determine the number of observations falling into each class interval; that
+   is, find the class frequencies. This is best done by using a _tally_, or
+   _score sheet_ (see Problem 2.8).  
 
 # Histograms and frequency polygons
 
-Histograms and frequency polygons are two graphic representations of frequency distributions.
+Histograms and frequency polygons are two graphic representations of frequency
+distributions.
 
-1. A _histogram_ or _frequency histogram_, consists of a set of rectangles having (a) bases on a horizontal axis (the $X$ axis), with centers at the class marks and lengths equal to the class interval sizes, and (b) areas proprortional to the class frequencies. It is one of the oldest constructs in use which shows distributions.  
-2. A _frequency polygon_ is a line graph of the class frequencies plotted against class marks. It can be obtained by connecting the midpoints of the tops of the rectangles in the histogram. This information is represented graphically in Fig. 2-9.  
+1. A _histogram_ or _frequency histogram_, consists of a set of rectangles
+   having (a) bases on a horizontal axis (the $X$ axis), with centers at the
+   class marks and lengths equal to the class interval sizes, and (b) areas
+   proprortional to the class frequencies. It is one of the oldest constructs in
+   use which shows distributions.  
 
-The histogram and frequency polygon corresponding to the frequency distribution of heights in Table 2.1 are shown in Figs. 2-1 and 2-9.
+2. A _frequency polygon_ is a line graph of the class frequencies plotted
+   against class marks. It can be obtained by connecting the midpoints of the
+   tops of the rectangles in the histogram. This information is represented
+   graphically in Fig. 2-9.  
 
-Notice in Fig 2-9 how the frequency polygon is tied down at the ends, that is, at 58 and 76.
+The histogram and frequency polygon corresponding to the frequency distribution
+of heights in Table 2.1 are shown in Figs. 2-1 and 2-9.
 
-```{r}
+Notice in Fig 2-9 how the frequency polygon is tied down at the ends, that is,
+at 58 and 76.
+
+```{r, echo=F}
 h <- list(breaks=seq(59.5, 74.5, by=3), counts=c(5, 18, 42, 27, 8), xname="Height (in)")
 class(h) <- "histogram"
 plot(h, xaxt="n", main="Fig. 2-1 Histogram showing the class midpoints and frequencies.")
 axis(1, at = seq(61, 73, by=3), las=2)
 ```
 
-__Table 2.2 Hours per week spent on the iPhone__
+\begin{center}
+Table 2.2 Hours per week spent on the iPhone
+\end{center}
 
-```{r}
+```{r, echo=F}
 (table_2_2 <- c( 19.7, 20.8, 22.9, 17.8, 14.4, 14.0, 16.1, 19.6, 17.8, 19.2,
                 17.9, 18.8, 20.7, 16.3, 18.1, 14.4, 16.3, 20.8, 15.5, 12.9,
                 15.7, 17.4, 20.1, 16.2, 19.1, 18.2, 19.9, 15.5, 17.7, 19.5,
@@ -101,15 +175,23 @@ __Table 2.2 Hours per week spent on the iPhone__
                 18.4, 16.6, 12.6, 14.7, 19.0, 16.3, 20.1, 15.3, 17.0, 21.5))
 ```
 
-The histogram shows the researcher how the data is distributed. In this case, iPhone hours has a distribution we call the _normal distribution_. Most of the data is near the middle. There are a few values that are down in the 10 and 11 range and a few that are up near the 22 and 23 range. Most of the data is concentrated in the middle between 13 and 21 hours per week.
+The histogram shows the researcher how the data is distributed. In this case,
+iPhone hours has a distribution we call the _normal distribution_. Most of the
+data is near the middle. There are a few values that are down in the 10 and 11
+range and a few that are up near the 22 and 23 range. Most of the data is
+concentrated in the middle between 13 and 21 hours per week.
 
 # Dot plots and box plots
 
-Another graphical picture called a _dot plot_ is constructed using the R function `dotplot`. Dot plots place dots atop numerical values that are placed along a horizontal axis. They are particularly useful with small data sets. The "iPhone hours" values are plotted along the horizontal axis and dots are plotted above the numbers on the horizontal axis. The dot plot shows that most of the "iPhone hours" values are between 12 and 20 with the minimum value being 10.4 and the maximum value being 22.9.
+Another graphical picture called a _dot plot_ is constructed using the R
+function `dotplot`. Dot plots place dots atop numerical values that are placed
+along a horizontal axis. They are particularly useful with small data sets. The
+"iPhone hours" values are plotted along the horizontal axis and dots are plotted
+above the numbers on the horizontal axis. The dot plot shows that most of the
+"iPhone hours" values are between 12 and 20 with the minimum value being 10.4
+and the maximum value being 22.9.
 
-```{r fig.height=2, fig.width=8}
-library(ggplot2)
-
+```{r fig.height=2, fig.width=8, echo=F}
 ggplot(data=as.data.frame(table_2_2)) +
   geom_dotplot(mapping=aes(x=table_2_2), binwidth=.2) +
   ggtitle(label="Fig. 2-4 dot plot for the data in Table 2.2.") +
@@ -117,37 +199,82 @@ ggplot(data=as.data.frame(table_2_2)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-```{r fig.width=10, fig.height=4}
+```{r fig.width=10, fig.height=4, echo=F}
 plot(table_2_2, rep(0, length(table_2_2)),
      ylab="", xlab="iPhone", yaxt='n',
      main="Fig. 2-5 Alternate dot plot of the data in Table 2.2.")
 ```
 
-```{r fig.height=6, fig.width=4, fig.align='center'}
+```{r fig.height=6, fig.width=4, fig.align='center', echo=F}
 boxplot(table_2_2, main="Fig. 2-6 Box plot for the data in Table 2.2.", ylab="iPhone hours")
 ```
 
-Figure 2-6 gives a box plot for the data in Table 2.2. In its simplest form, a _box plot_ shows a box which contains the middle $50\%$ of the data values. The median of the data is shown by the line in the middle of the box and will divide the box in half. Half of the data will be below the middle line and half will be above the middle line. It also shows two _whiskers_ that extend from the box to the maximum value and from the box to the minimum value. In Fig. 2-6, the box extends from a number between 15 and 16 to a number between 18 and 19. The whiskers extend from a number a little larger than 10 to the box and from the box to a number a little less than 23. We shall have more to say about box plots as the text develops.
+Figure 2-6 gives a box plot for the data in Table 2.2. In its simplest form, a
+_box plot_ shows a box which contains the middle $50\%$ of the data values. The
+median of the data is shown by the line in the middle of the box and will divide
+the box in half. Half of the data will be below the middle line and half will be
+above the middle line. It also shows two _whiskers_ that extend from the box to
+the maximum value and from the box to the minimum value. In Fig. 2-6, the box
+extends from a number between 15 and 16 to a number between 18 and 19. The
+whiskers extend from a number a little larger than 10 to the box and from the
+box to a number a little less than 23. We shall have more to say about box plots
+as the text develops.
 
-The data given in this section is distributed symmetrically. A few values are low and a few are high but most are in the center of the distribution. Such a distribution is said to have a _normal_ or _bell-shaped_ distribution. Statistical graphics help the researcher form some idea of the characteristic with which they are dealing. How variable is it? What type of distribution does it have? Are there some extreme values that occur?
+The data given in this section is distributed symmetrically. A few values are
+low and a few are high but most are in the center of the distribution. Such a
+distribution is said to have a _normal_ or _bell-shaped_ distribution.
+Statistical graphics help the researcher form some idea of the characteristic
+with which they are dealing. How variable is it? What type of distribution does
+it have? Are there some extreme values that occur?
 
-The histogram, dot plot, box plot, and stem-and-leaf plot are used with quantitative data. _Quantitative research data_ is obtained from measuring. _Qualitative research data_ gives classes or categories for your data values. If your data is qualitative, other techniques are used to graphically display your data.
+The histogram, dot plot, box plot, and stem-and-leaf plot are used with
+quantitative data. _Quantitative research data_ is obtained from measuring.
+_Qualitative research data_ gives classes or categories for your data values. If
+your data is qualitative, other techniques are used to graphically display your
+data.
 
 # Relative-frequency distribution
 
-The _relative frequency_ of a class is the frequency of the class divided by the total frequency of all classes and is generally expressed as a percentage. For example, the relative frequency of the class 66--68 in Table 2.1 is $42/100=42\%$. The sum of the relative frequencies of all classes is clearly 1, or $100\%$.
+The _relative frequency_ of a class is the frequency of the class divided by the
+total frequency of all classes and is generally expressed as a percentage. For
+example, the relative frequency of the class 66--68 in Table 2.1 is
+$42/100=42\%$. The sum of the relative frequencies of all classes is clearly 1,
+or $100\%$.
 
-If the frequencies in Table 2.1 are replaced with the corresponding relative frequencies,the resulting table is called a _relative-frequency distribution_, _percentage distribution_, or _relative-frequency table_.
+If the frequencies in Table 2.1 are replaced with the corresponding relative
+frequencies,the resulting table is called a _relative-frequency distribution_,
+_percentage distribution_, or _relative-frequency table_.
 
-Graphic representation of relative-frequency distributions can be obtained from the histogram or frequency polygon simply by changing the vertical scale from frequency to relative frequency, keeping exactly the same diagram. The resulting graphs are called _relative-frequency histograms_ (or _percentage histograms_) and _relative-frequency polygons_ (or _percentage polygons_), respectively.
+Graphic representation of relative-frequency distributions can be obtained from
+the histogram or frequency polygon simply by changing the vertical scale from
+frequency to relative frequency, keeping exactly the same diagram. The resulting
+graphs are called _relative-frequency histograms_ (or _percentage histograms_)
+and _relative-frequency polygons_ (or _percentage polygons_), respectively.
 
 # Cumulative-frequency distributions and ogives
 
-The total frequency of all values less than the upper class boundary of a given class interval is called the _cumulative frequency_ up to and including that class interval. For example, the cumulative frequency up to and including the class interval 66--68 in Table 2.1 is $5 + 18 + 42 = 65$, signifying that 65 students have heights less than 68.5 in.
+The total frequency of all values less than the upper class boundary of a given
+class interval is called the _cumulative frequency_ up to and including that
+class interval. For example, the cumulative frequency up to and including the
+class interval 66--68 in Table 2.1 is $5 + 18 + 42 = 65$, signifying that 65
+students have heights less than 68.5 in.
 
-A table presenting such cumulative frequencies is called a _cumulative-frequency distribution_, _cumulative-frequency table_, or briefly a _cumulative distribution_ and is shown in Table 2.3 for the student height distribution of Table 2.1. This information is also represented graphically in Fig. 2-9.
+A table presenting such cumulative frequencies is called a _cumulative-frequency
+distribution_, _cumulative-frequency table_, or briefly a _cumulative
+distribution_ and is shown in Table 2.3 for the student height distribution of
+Table 2.1. This information is also represented graphically in Fig. 2-9.
 
-A graph showing the cumulative frequency less than any upper class boundary plotted against the upper class boundary is called a _cumulative-frequency polygon_ or _ogive_. For some purposes, it is desirable to consider a cumulative-frequency distribution of all values greater than or equal to the lower class boundary of each class interval. Because in this case we consider heights of 59.5 in or more, 62.5 in or more, etc., this is sometimes called an _"or more" cumulative distribution_, while the one considered above is a _"less than" cumulative distribution_. One is easily obtained from the other. The corresponding ogives are then called "or more" and "less than" ogives. Whenever we refer to cumulative distributions or ogives without qualification, the "less than" type is implied.
+A graph showing the cumulative frequency less than any upper class boundary
+plotted against the upper class boundary is called a _cumulative-frequency
+polygon_ or _ogive_. For some purposes, it is desirable to consider a
+cumulative-frequency distribution of all values greater than or equal to the
+lower class boundary of each class interval. Because in this case we consider
+heights of 59.5 in or more, 62.5 in or more, etc., this is sometimes called an
+_"or more" cumulative distribution_, while the one considered above is a _"less
+than" cumulative distribution_. One is easily obtained from the other. The
+corresponding ogives are then called "or more" and "less than" ogives. Whenever
+we refer to cumulative distributions or ogives without qualification, the "less
+than" type is implied.
 
 __Table 2.3__
 
@@ -160,7 +287,7 @@ __Table 2.3__
 |Less than 71.5|92|
 |Less than 74.5|100|
 
-```{r}
+```{r, echo=F}
 height <- c(58, 61, 64, 67, 70, 73, 76)
 frequency <- c(0, 5, 18, 42, 27, 8, 0)
 plot(height, frequency, type="l", xaxt="n",
@@ -172,25 +299,65 @@ points(height, frequency, pch=20)
 
 # Relative cumulative-frequency distributions and percentage ogives
 
-The _relative cumulative frequency_, or _percentage cumulative frequency_, is the cumulative frequency divided by the total frequency. For example, the relative cumulative frequency of heights less than 68.5 in is $65/100 = 65\%$, signifying that $65\%$ of the students have heights less than 68.5 in. If the relative cumulative frequencies are used in Table 2.3, in place of cumulative frequencies, the results are called _relative cumulative-frequency distributions_ (or _percentage cumulative distributions_) and _relative cumulative-frequency polygons_ (or _percentage ogives_), respectively.
+The _relative cumulative frequency_, or _percentage cumulative frequency_, is
+the cumulative frequency divided by the total frequency. For example, the
+relative cumulative frequency of heights less than 68.5 in is $65/100 = 65\%$,
+signifying that $65\%$ of the students have heights less than 68.5 in. If the
+relative cumulative frequencies are used in Table 2.3, in place of cumulative
+frequencies, the results are called _relative cumulative-frequency
+distributions_ (or _percentage cumulative distributions_) and _relative
+cumulative-frequency polygons_ (or _percentage ogives_), respectively.
 
 # Frequency curves and smoothed ogives
 
-Collected data can usually be considered as belonging to a sample drawn from a large population. Since so many observations are available in the population, it is theoretically possible (for continuous data) to choose class intervals very small and still have sizable numbers of observations falling within each class. Thus one would expect the frequency polygon or relative-frequency polygon for a large population to have so many small, broken line segments that they closely approximate curves, which we call _frequency curves_ or _relative-frequency curves_, respectively.
+Collected data can usually be considered as belonging to a sample drawn from a
+large population. Since so many observations are available in the population, it
+is theoretically possible (for continuous data) to choose class intervals very
+small and still have sizable numbers of observations falling within each class.
+Thus one would expect the frequency polygon or relative-frequency polygon for a
+large population to have so many small, broken line segments that they closely
+approximate curves, which we call _frequency curves_ or _relative-frequency
+curves_, respectively.
 
-It is reasonable to expect that such theoretical curves can be approximated by smoothing the frequency polygons or relative-frequency polygons of the sample, the approximation improving as the sample size is increased. For this reason, a frequency curve is sometimes called a _smoothed frequency polygon_.
+It is reasonable to expect that such theoretical curves can be approximated by
+smoothing the frequency polygons or relative-frequency polygons of the sample,
+the approximation improving as the sample size is increased. For this reason, a
+frequency curve is sometimes called a _smoothed frequency polygon_.
 
-In a similar manner, _smoothed ogives_ are obtained by smoothing the cumulative-frequency polygons, or ogives. It is usually easier to smooth an ogive than a frequency polygon.
+In a similar manner, _smoothed ogives_ are obtained by smoothing the
+cumulative-frequency polygons, or ogives. It is usually easier to smooth an
+ogive than a frequency polygon.
 
 # Types of frequency curves
 
-Frequency curves arising in practice take on certain characteristic shapes, as shown in Fig. 2-10.
+Frequency curves arising in practice take on certain characteristic shapes, as
+shown in Fig. 2-10.
 
-1. _Symmetrical_ or _bell-shaped_ curves are characterized by the fact that observations equidistant from the central maximum have the same frequency. Adult male and adult female heights have bell-shaped distributions.
-2. Curves that have tails to the left are said to be _skewed to the left_. The lifetimes of males and females are skewed to the left. A few die early in life but most live between 60 and 80 years. Generally, females live about ten years, on the average, longer than males.
-3. Curves that have tails to the right are said to be _skewed to the right_. The ages at the time of marriage of brides and grooms are skewed to the right. Most marry in their twenties and thirties but a few marry in their forties, fifties, sixties, and seventies.
-4. Curves that have approximately equal frequencies across their values are said to be _uniformly distributed_. Certain machines that dispense liquid colas do so uniformly between 15.9 and 16.1 ounces, for example.
-5. In a _J-shaped or reverse J-shaped_ frequency curve the maximum occurs at one end or the other.
-6. A _U-shaped_ frequency distribution curve has maxima at both ends and a minimum in between.
+1. _Symmetrical_ or _bell-shaped_ curves are characterized by the fact that
+   observations equidistant from the central maximum have the same frequency.
+   Adult male and adult female heights have bell-shaped distributions.
+
+2. Curves that have tails to the left are said to be _skewed to the left_. The
+   lifetimes of males and females are skewed to the left. A few die early in
+   life but most live between 60 and 80 years. Generally, females live about ten
+   years, on the average, longer than males.
+
+3. Curves that have tails to the right are said to be _skewed to the right_. The
+   ages at the time of marriage of brides and grooms are skewed to the right.
+   Most marry in their twenties and thirties but a few marry in their forties,
+   fifties, sixties, and seventies.
+
+4. Curves that have approximately equal frequencies across their values are said
+   to be _uniformly distributed_. Certain machines that dispense liquid colas do
+   so uniformly between 15.9 and 16.1 ounces, for example.
+
+5. In a _J-shaped or reverse J-shaped_ frequency curve the maximum occurs at one
+   end or the other.
+
+6. A _U-shaped_ frequency distribution curve has maxima at both ends and a
+   minimum in between.
+
 7. A _bimodal_ frequency curve has two maxima.
+
 8. A _multimodal_ frequency curve has more than two maxima.
+
