@@ -1,0 +1,794 @@
+---
+title: "Elementary Probability Theory"
+subtitle: "Solved Problems"
+author: "Joseph Bennett"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Fundamental rules of probability
+
+__6.1.__ Determine the probability $p$, or an estimate of it, for each of the
+following events:
+
+(a) An odd number appears in a single toss of a fair die.
+(b) At least one head appears in two tosses of a fair coin.
+(c) An ace, 10 of diamonds, or 2 of spades appears in drawing a single card from
+a well-shuffled ordinary deck of 52 cards.
+(d) The sum 7 appears in a single toss of a pair of fair dice.
+(e) A tail appears in the next toss of a coin if out of 100 tosses 56 were
+heads.
+
+__Solution__
+
+(a) Out of six possible equally likely cases, three cases (where the die comes
+up 1, 3, or 5) are favorable to the event. Thus $p = \frac{3}{6} = \frac{1}{2}$.
+(b) If $H$ denotes "head" and $T$ denotes "tail," the two tosses can lead to
+four cases: $HH$, $HT$, $TH$, and $TT$, all equally likely. Only the first three
+cases are favorable to the event. Thus $p = \frac{3}{4}$.
+(c) The event can occur in six ways (ace of spades, ace of hearts, ace of clubs,
+ace of diamonds, 10 of diamonds, and 2 of spades) out of 52 equally likely
+cases. Thus $p = \frac{6}{52} = \frac{3}{26}$.
+(d) Each of the six faces of one die can be associated with each of the six
+faces of the other die, so that the total number of cases that can arise, all
+equally likely, is $6 \cdot 6 = 36$. These can be denoted by (1,1), (2,1),
+(3,1), \ldots, (6,6).
+(e) Since 100 - 56 = 44 tails were obtained in 100 tosses, the _estimated_ 
+(or _empirical_) _probability_ of a tail is the relative frequency
+44/100 = 0.44.
+
+---
+
+__6.2.__ An experiment consists of tossing a coin and a die. If $E_1$ is the
+event that "head" comes up in tossing the coin and $E_2$ is the event that
+"3 or 6" comes up in tossing the die, state in words the meaning of each of
+the following:
+
+(a) $\bar{E_1}$
+(b) $\bar{E_2}$
+(c) $E_1 E_2$
+(d) $\text{Pr}\{E_1 E_2\}$
+(e) $\text{Pr}\{E_1|E_2\}$
+(f) $\text{Pr}\{E_1 + E_2\}$
+
+__Solution__
+
+(a) Tails on the coin and anything on the die
+(b) 1, 2, 4, or 5 on the die and anything on the coin
+(c) Heads on the coin and 3 or 6 on the die
+(d) Probability of heads on the coin and 1, 2, 4, or 5 on the die
+(e) Probability of heads on the coin, given that a 3 or 6 has come up on the die
+(f) Probability of tails on the coin or 1, 2, 4, or 5 on the die, or both
+
+---
+
+__6.3.__ A ball is drawn at random from a box containing 6 red balls, 4 white
+balls, and 5 blue balls. Determine the probability that the ball drawn is (a)
+red, (b) white, (c) blue, (d) not red, and (e) red or white.
+
+__Solution__
+
+Let $R$, $W$, and $B$ denote the events of drawing a red ball, a white ball, and
+blue ball, respectively. Then:
+
+(a)
+$$
+\text{Pr}\{R\} = \frac{\text{ways of choosing a red ball}}
+                      {\text{total ways of choosing a ball}}
+  = \frac{6}{6 + 4 + 5} = \frac{6}{15} = \frac{2}{5}
+$$
+
+(b)
+$$
+\text{Pr}\{W\} = \frac{4}{6 + 4 + 5} = \frac{4}{15}
+$$
+
+(c)
+$$
+\text{Pr}\{B\} = \frac{5}{6 + 4 + 5} = \frac{5}{15} = \frac{1}{3}
+$$
+
+(d)
+$$
+\text{Pr}\{\bar{B}\} = 1 - \text{Pr}\{R\} = 1 - \frac{2}{5} = \frac{3}{5}
+\ \ \ \text{by part (a)}
+$$
+
+(e)
+$$
+\text{Pr}\{R + W\} = \frac{\text{ways of choosing a red or white ball}}
+                          {\text{total ways of choosing a ball}}
+  = \frac{6 + 4}{6 + 4 + 5} = \frac{10}{15} = \frac{2}{3}
+$$
+
+__Another method__
+
+$$
+\text{Pr}\{R + W\} = \text{Pr}\{\bar{B}\} = 1 - \text{Pr}\{B\}
+  = 1 - \frac{1}{3} = \frac{2}{3}\ \ \ \text{by part (c)}
+$$
+
+Note that $\text{Pr}\{R + W\} = \text{Pr}\{R\} + \text{Pr}\{W\}$ (i.e.,
+$\frac{2}{3} = \frac{2}{5} + \frac{4}{15}$). This is an illustration of the
+general rule $\text{Pr}\{E_1 + E_2\} = \text{Pr}\{E_1\} + \text{Pr}\{E_2\}$
+that is true for _mutually exclusive_ events $E_1$ and $E_2$.
+
+---
+
+__6.4.__ A fair die is tossed twice. Find the probability of getting a 4, 5, or
+6 on the first toss and a 1, 2, 3 or 4 on the second toss.
+
+__Solution__
+
+Let $E_1 =$ event "4, 5, or 6" on the first toss and let $E_2 =$ event "1, 2, 3,
+or 4" on the second toss. Each of the six ways 
+in which the die can fall on the first toss can be associated with each of the
+six ways in which it can fall on the second toss, a total of $6 \cdot 6 = 36$
+ways, all equally likely. Each of the three ways in which $E_1$ can occur can
+be associated with each of the four ways in which $E_2$ can occur, to give
+$3 \cdot 4 = 12$ ways in which both $E_1$ and $E_2$, or $E_1 E_2$ occur. Thus
+$\text{Pr}\{E_1 E_2\} = 12/36 = 1/3$.
+
+Note that $\text{Pr}\{E_1 E_2\} = \text{Pr}\{E_1\}\ \text{Pr}\{E_2\}$ (i.e.,
+$\frac{1}{3} = \frac{3}{6} \cdot \frac{4}{6}$) is valid for the
+_independent events_ $E_1$ and $E_2$.
+
+---
+
+__6.5.__ Two cards are drawn from a well-shuffled ordinary deck of 52 cards.
+Find the probability that they are both aces if the first card is (a) replaced
+and (b) not replaced.
+
+__Solution__
+
+Let $E_1 =$ event "ace" on the first draw, and $E_2 =$ event "ace" on the second
+draw.
+
+(a) If the first card is replaced, then $E_1$ and $E_2$ are independent events.
+Thus Pr{both cards are aces} = Pr{$E_1 E_2$} = Pr{$E_1$} Pr{$E_2$} =
+$\left(\frac{4}{52}\right) \left(\frac{4}{52}\right) = \frac{1}{169}$.
+(b) The first card can be drawn in any one of 52 ways, and the second card can
+be drawn in any one of 51 ways since the first card is not replaced. Thus both
+cards can be drawn in $52 \cdot 51$ ways, all equally likely.
+
+> There are four ways in which $E_1$ can occur and three ways in which $E_2$ can
+occur, so that both $E_1$ and $E_2$, or $E_1 E_2$, can occur in $4 \cdot 3$
+ways. Thus Pr{$E_1 E_2$} =
+$\left(4 \cdot 3 \right)/ \left(52 \cdot 51 \right) = \frac{1}{221}$.
+
+> Note that Pr{$E_2|E_1$} = Pr{second card is an ace given that first card is an
+ace} = $\frac{3}{51}$. Thus our result is an illustration of the general rule
+that Pr{$E_1 E_2$} = Pr{$E_1$} Pr{$E_2|E_1$} when $E_1$ and $E_2$ are dependent
+events.
+
+---
+
+__6.6.__ Three balls are drawn successively from the box of Problem 6.3. Find
+the probability that they are drwan in the order red, white, and blue if each
+ball is (a) replaced and (b) not replaced.
+
+__Solution__
+
+Let $R =$ event "red" on the first draw, $W =$ event "white" on the second draw,
+and $B =$ event "blue" on the third draw. We require Pr{$RWB$}.
+
+(a) If each ball is replaced, then $R$, $W$, and $B$ are independent events and
+
+$$
+\text{Pr \{RWB\} = Pr\{R\} Pr\{W\} Pr\{B\}}
+  = \left( \frac{6}{6 + 4 + 5} \right) \left( \frac{4}{6 + 4 + 5} \right)
+    \left( \frac{5}{6 + 4 + 5} \right)
+  = \left(\frac{6}{15}\right) \left(\frac{4}{15}\right)
+    \left(\frac{5}{15}\right) = \frac{8}{225}
+$$
+
+(b) If each ball is not replaced, then R, W, and B are dependent events and
+
+$$
+\text{Pr\{RWB\} = Pr\{R\} Pr\{W|R\} Pr\{B|WR\}}
+  = \left(\frac{6}{6 + 4 + 5}\right) \left(\frac{4}{5 + 4 + 5}\right)
+    \left(\frac{5}{5 + 3 + 5}\right)
+  = \left(\frac{6}{15}\right) \left(\frac{4}{14}\right)
+    \left(\frac{5}{13}\right) = \frac{4}{91}
+$$
+
+> where Pr{B|WR} is the conditional probability of getting a blue ball if a
+white and red ball have already been chosen.
+
+---
+
+__6.7.__ Find the probabilty of a 4 turning up at least once in two tosses of a
+fair die.
+
+__Solution__
+
+Let $E_1$ = event "4" on the first toss, $E_2$ = event "4" on the second toss,
+and $E_1 + E_2$ = event "4" on the first toss or "4" on the second toss or both
+= event that at least one 4 turns up. We require Pr{$E_1 + E_2$}.
+
+__First method__
+
+The total number or equally likely ways in which both dice can fall is
+$6 \cdot 6 = 36$. Also,
+
+$$
+\text{Number of ways in which } E_1 \text{ occurs but not } E_2 = 5 \\
+\text{Number of ways in which } E_2 \text{ occurs but not } E_1 = 5 \\
+\text{Number of ways in which both } E_1 \text{ and } E_2 \text{ occur } = 1
+$$
+
+Thus the number of ways in which at least one of the events $E_1$ or $E_2$
+occurs is $5 + 5 + 1 = 11$, and thus Pr{$E_1 + E_2$} = $\frac{11}{36}$.
+
+__Second method__
+
+Since $E_1$ and $E_2$ are not mutually exclusive, Pr{$E_1 + E_2$} = Pr{$E_1$}
++ Pr{$E_2$} - Pr{$E_1 E_2$}. Also, since $E_1$ and $E_2$ are independent,
+Pr{$E_1 E_2$} = Pr{$E_1$} Pr{$E_2$}. Thus Pr{$E_1 + E_2$} = Pr{$E_1$}
++ Pr{$E_2$} - Pr{$E_1$} Pr{$E_2$} =
+$\frac{1}{6} + \frac{1}{6} = \left(\frac{1}{6}\right) \left(\frac{1}{6}\right)$
+$= \frac{11}{36}$.
+
+__Third method__
+
+$$
+\text{Pr\{at least one 4 comes up\}} + \text{Pr\{no 4 comes up\}} = 1
+$$
+
+Thus
+$$
+\begin{aligned}
+\text{Pr\{at least one 4 comes up\}} & = 1 - \text{Pr\{no 4 comes up\}} \\
+  & = 1 - \text{Pr\{no 4 on first toss and no 4 on second toss\}} \\
+  & = 1 - \text{Pr}\{\bar{E_1} \bar{E_2}\}
+       = 1 - \text{Pr}\{\bar{E_1}\}\ \text{Pr}\{\bar{E_2}\} \\
+  & = 1 - \left(\frac{5}{6}\right) \left(\frac{5}{6}\right) = \frac{11}{36}
+\end{aligned}
+$$
+
+---
+
+__6.8.__ One bag contains 4 white balls and 2 black balls; another contains 3
+white balls and 5 black balls. If one ball is drawn from each bag, find the
+probability that (a) both are white, (b) both are black, and (c) one is white
+and one is black.
+
+__Solution__
+
+Let $W_1 =$ event "white" ball from the first bag, and let $W_2 =$ event "white"
+ball from the second bag.
+
+(a)
+$$
+\text{Pr}\{W_1 W_2\} = \text{Pr}\{W_1\}\ \text{Pr}\{W_2\}
+ = \left( \frac{4}{4 + 2} \right) \left(\frac{3}{3 + 5}\right) = \frac{1}{4}
+$$
+ 
+(b)
+$$
+\text{Pr}\{\bar{W_1} \bar{W_2}\} = \text{Pr}\{\bar{W_1}\}\ \text{Pr}\{\bar{W_2}\}
+  = \left( \frac{2}{4 + 2} \right) \left( \frac{5}{3 + 5} \right) = \frac{5}{24}
+$$
+
+(c) The event "one is white and one is black" is the same as the event "either
+the first is white and the second is black _or_ the first is black and the
+second is white"; that is, $W_1 \bar{W_2} + \bar{W_1} W_2$. Since events
+$W_1 \bar{W_2}$ and $\bar{W_1} W_2$ are mutually exclusive, we have
+
+$$
+\begin{aligned}
+\text{Pr} \{ W_1 \bar{W_2} + \bar{W_1} W_2 \} & = \text{Pr} \{W_1 \bar{W_2} \} 
+   + \text{Pr} \{ \bar{W_1} W_2 \} \\
+ & = \text{Pr} \{ W_1 \}\ \text{Pr} \{ \bar{W_2} \}
+   + \text{Pr} \{ \bar{W_1} \}\ \text{Pr} \{ \bar{W_1} \}\ \text{Pr} \{ W_2 \} \\
+ & = \left( \frac{4}{4 + 2} \right) \left( \frac{5}{3 + 5} \right)
+   + \left( \frac{2}{4 + 2} \right) \left( \frac{3}{3 + 5} \right)
+ = \frac{13}{24}
+\end{aligned}
+$$
+
+__Another method__
+
+The required probability is
+$1 - \text{Pr} \{ W_1 W_2 \} - \text{Pr} \{ \bar{W_1} \bar{W_2} \} =$
+$1 - \frac{1}{4} - \frac{5}{24} = \frac{13}{24}$.
+
+---
+
+__6.9.__ $A$ and $B$ play 12 games of chess, of which 6 are won by $A$, 4 are
+won by $B$, and 2 end in a draw. They agree to play a match consisting of 3
+games. Find the probability that (a) $A$ wins all 3 games, (b) 2 games end in a
+draw, (c) $A$ and $B$ win alternately, and (d) $B$ wins at least 1 game.
+
+__Solution__
+
+Let $A_1$, $A_2$, and $A_3$ denote the events "A wins" in the first, second, and
+third games, respectively; let $B_1$, $B_2$, and $B_3$ denote the events "B
+wins" in the first, second, and third games, respectively; and let, $D_1$,
+$D_2$, and $D_3$ denote the events "there is a draw" in the first, second, and
+third games, respectively.
+
+On the basis of their past experience (empirical probability), we shall assume
+that Pr{$A$ wins any one game} = $\frac{6}{12}$ = $\frac{1}{2}$, that
+Pr{$B$ wins any one game} = $\frac{4}{12} = \frac{1}{3}$, and that Pr{any one
+game ends in a draw} = $\frac{2}{12} = \frac{1}{6}$.
+
+(a) Pr{$A$ wins all 3 games} = Pr{$A_1 A_2 A_3$} = Pr{$A_1$} Pr{$A_2$} Pr{$A_3$}
+= $\left( \frac{1}{2} \right) \left( \frac{1}{2} \right)$
+$\left( \frac{1}{2} \right) = \frac{1}{8}$ assuming that the results of each
+game are independent of the results of any others, which appears to be
+justifiable (unless, of course, the players happen to be
+_psychologically influenced_ by the other one's winning or losing).
+
+(b)
+$$
+\begin{aligned}
+\text{Pr\{2 games end in a draw\}}
+  & = \text{Pr\{1st and 2nd or 1st and 3rd or 2nd and 3rd games end in a draw\}} \\
+  & = \text{Pr}\{D_1 D_2 \bar{D_3}\} + \text{Pr}\{D_1 \bar{D_2} D_3\}
+    + \text{Pr}\{\bar{D_1} D_2 D_3\} \\
+  & = \text{Pr}\{D_1\}\ \text{Pr}\{D_2\}\ \text{Pr}\{\bar{D_3}\}
+    + \text{Pr}\{D_1\}\ \text{Pr}\{\bar{D_2}\}\ \text{Pr}\{D_3\} \\
+  & + \text{Pr}\{\bar{D_1}\}\ \text{Pr}\{D_2\}\ \text{Pr}\{D_3\} \\
+  & = \left(\frac{1}{6}\right) \left(\frac{1}{6}\right) \left(\frac{5}{6}\right)
+    + \left(\frac{1}{6}\right) \left(\frac{5}{6}\right) \left(\frac{1}{6}\right)
+    = \frac{15}{216} = \frac{5}{72}
+\end{aligned}
+$$
+
+(c)
+$$
+\begin{aligned}
+\text{Pr\{A and B win alternately\}}
+  & = \text{Pr}\{\text{A wins then B wins then A wins or B wins then A wins then B wins}\} \\
+  & = \text{Pr}\{A_1 B_2 A_3 + B_1 A_2 B_3\} = \text{Pr}\{A_1 B_2 A_3\} + \text{Pr}\{B_1 A_2 B_3\} \\
+  & = \text{Pr}\{A_1\}\ \text{Pr}\{B_2\}\ \text{Pr}\{A_3\}
+    + \text{Pr}\{B_1\}\ \text{Pr}\{A_2\}\ \text{Pr}\{B_3\} \\
+  & = \left(\frac{1}{2}\right) \left(\frac{1}{3}\right) \left(\frac{1}{2}\right)
+    + \left(\frac{1}{3}\right) \left(\frac{1}{2}\right) \left(\frac{1}{3}\right)
+    = \frac{5}{36} \\
+\end{aligned}
+$$
+
+(d)
+$$
+\begin{aligned}
+\text{Pr\{B wins \t least 1 game\}}
+  & = 1 - \text{Pr}\{\text{B wins no game}\} \\
+  & = 1 - \text{Pr}\{\bar{B_1} \bar{B_2} \bar{B_3}\} = 1
+    - \text{Pr}\{\bar{B_1}\}\ \text{Pr}\{\bar{B_2}\}\ \text{Pr}\{\bar{B_3}\} \\
+  & = 1 - \left(\frac{2}{3}\right) \left(\frac{2}{3}\right)
+          \left(\frac{2}{3}\right) = \frac{19}{27}
+\end{aligned}
+$$
+
+---
+
+# Probability distributions
+
+__6.10__ Find the probability of boys and girls in families with three children,
+assuming equal probabilities of boys and girls.
+
+__Solution__
+
+Let $B =$ event "boy in the famil," and let $G =$ event "girl in the family."
+Thus according to the assumption of equal probabilities, Pr{$B$} = Pr{$G$} = 
+$\frac{1}{2}$. In families of three children the following mutually exclusive
+events can occur with the corresponding indicated probabilities:
+
+(a) Three boys (BBB):
+
+$$
+\text{Pr\{BBB\}} = \text{Pr\{B\} Pr\{B\} Pr\{B\}} = \frac{1}{8}
+$$
+
+Here we assume that the birth of a boy is not influenced in any manner by the
+fact that a previous child was also a boy, that is, we assume that the events
+are independent.
+
+(b) Three girls (GGG): As in part (a) or by symmetry,
+
+$$
+\text{Pr\{GGG\}} = \frac{1}{8}
+$$
+
+(c) Two boys and one girl (BBG + BGB + GBB):
+
+$$
+\begin{aligned}
+\text{Pr\{BBG + BGB + GBB\}} & = \text{Pr\{BBG\}} + \text{Pr\{BGB\}}
+  + \text{Pr\{GBB\}} \\
+  & = \text{Pr\{B\} Pr\{B\} Pr\{G\}} + \text{Pr\{B\} Pr\{G\} Pr\{B\}}
+    + \text{Pr\{G\} Pr\{B\} Pr\{B\}} \\
+  & = \frac{1}{8} + \frac{1}{8} + \frac{1}{8} = \frac{3}{8}
+\end{aligned}
+$$
+
+(d) Two girls and one boy (GGB + GBG + BGG): As in part (c) or by symmetry, the
+probability is $\frac{3}{8}$.
+
+If we call $X$ the _random variable_ showing the number of boys in families with
+three children, the probability distribution is as shown in Table 6.2.
+
+```{r echo=F}
+X <- c(0, 1, 2, 3)
+p.X <- c("1/8", "3/8", "3/8", "1/8")
+table_6.2 <- matrix(c(X,p.X), nrow=2, byrow=T)
+rownames(table_6.2) <- c("Number of boys X", "Probability p(X)")
+knitr::kable(table_6.2,
+             caption = "probability distribution for the number of boys")
+```
+
+---
+
+__6.11__ Graph the distribution of Problem 6.10
+
+__Solution__
+
+The graph can be represented either as in Fig. 6-7 or Fig. 6-8. Note that the
+sum of the areas of the rectangles in Fig. 6-8 is 1; in this figure, called a
+_probability histogram_, we are considering $X$ as a continuous variable even
+though it is actually discrete, a procedure that is often found useful.
+Figure 6-7, on the other hand, is used when one does not wish to consider the
+variable as continuous.
+
+```{r echo=F, fig.cap="Probability distribution"}
+plot(c(1/8, 3/8, 3/8, 1/8), xlab="Boys", ylab="Probability", pch=19)
+```
+
+```{r echo=F, message=F, fig.cap="probability histogram."}
+require(ggplot2)
+Percent <- c(1/8, 3/8, 3/8, 1/8)
+Boys <- c(0, 1, 2, 3)
+df <- data.frame(Boys,Percent)
+ggplot(df, aes(x=Boys, y=Percent)) + geom_col()
+```
+
+---
+
+__6.12__ A continuous random variable $X$, having values only between 0 and 5,
+has a density function given by
+
+$$
+p(X) = \begin{cases}
+  0.2, 0 < X < 5 \\
+    0, \text{otherwise}
+\end{cases} \text{.}
+$$
+
+The graph is shown in Fig. 6-9.
+
+(a) Verify that it is a density function.
+
+```{r echo=F}
+require(ggplot2)
+x <- c(0, 5, 5)
+y <- c(0.2, 0.2, 0)
+df <- data.frame(x,y)
+ggplot(df, aes(x=x, y=y, group=1)) + geom_line()
+```
+
+(b) Find and graph Pr{2.5 < X < 4.0}.
+
+__Solution__
+
+(a) The function $p(X)$ is always $\ge 0$ and the total area under graph of
+$p(X)$ is $5 \times 0.2 = 1$ since it is rectangular in shape and has width 0.2
+and length 5 (see Fig. 6-9).
+
+(b) The probability Pr{2.5 < X < 5.0} is shown in Fig. 6-10.
+
+
+```{r echo=F, fig.cap="The probability Pr{2.5 <  X 4.0} is shown a the blue area."}
+require(ggplot2)
+x <- c(0, 0,   5,   5)
+y <- c(0, 0.2, 0.2, 0)
+df <- data.frame(x,y)
+ggplot(df, aes(x=x, y=y, group=1)) +
+  geom_line() +
+  annotate('rect', colour='black', fill='lightblue',
+           xmin=2.5, xmax=4, ymin=0, ymax=0.2) +
+  ylim(0, 0.250)
+```
+
+# Mathematical expectation
+
+__6.13__ If a man purchases a raffle ticket, he can win a first prize of
+\$5000 or a second prize of \$2000 with probabilities 0.001 and 0.003. What
+should be a fair price to pay for the ticket?
+
+__Solution__
+
+His expectation is $(\$5000)(0.001) + (\$2000)(0.003) = \$5 + \$6 = \$11$,
+which is a fair price to pay.
+
+---
+
+__6.14__ In a given business venture a lady can make a profit of \$300 with 
+probability 0.6 or take a loss of \$100 with probability 0.4. Determine her
+expectation.
+
+__Solution__
+
+Her expectation is $(\$300)(0.6) + (\$100)(0.4) = \$180 - \$40 = \$140$.
+
+---
+
+__6.15__ Find (a) $E(X)$, (b) $E(X^2)$, and (c) $E[(X - \bar{X})^2]$ for the
+probability distribution shown in Table 6.3. (d) Give the `R` solution.
+
+```{r}
+X <- c(8, 12, 16, 20, 24)
+p.X <- c(1/8, 1/6, 3/8, 1/4, 1/12)
+table_6.3 <- matrix(c(X, p.X), nrow=2, byrow=T)
+rownames(table_6.3) <- c("X", "p(X)")
+knitr::kable(table_6.3)
+```
+
+__Solution__
+
+We will combine all three:
+
+```{r}
+output <- t(rbind(table_6.3, X*p.X, X^2*p.X, (X - sum(X*p.X))^2*p.X))
+colnames(output) <- c("X", "p(X)", "E(X)", "E(X^2)", "E[(X-X.bar)^2]")
+knitr::kable(output)
+```
+
+```{r echo=F}
+cat("E(X):", sum(output[,3]), "\n")
+cat("E(X^2):", sum(output[,4]), "\n")
+cat("E[(X - X.bar)^2]:", sum(output[,5]), "\n")
+```
+
+---
+
+__6.16__ A bag contains 2 white balls and 3 black balls. Each of four persons,
+A, B, C, and D, in the order named, draws one ball and does not replace it. The
+first to draw a white ball receives \$10. Determine the expectations of A, B, C,
+and D.
+
+__Solution__
+
+Since only 3 black balls are present, one person must win on his or her first
+attempt. Denote by A, B, C, and D the events "A wins," "B wins," "C wins," and
+"D wins," respectively.
+
+$$
+\text{Pr\{A wins\}} = \text{Pr\{A\}} = \frac{2}{3 + 2} = \frac{2}{5}
+$$
+
+Thus A's expectation $= \frac{2}{5}(\$10) = \$4$.
+
+$$
+\text{Pr\{A loses and B wins\}} = \text{Pr}\{\bar{A} B\}
+  = \text{Pr}\{\bar{A}\}\ \text{Pr}\{B|\bar{A}\}
+  = \left(\frac{3}{5}\right) \left(\frac{2}{4}\right) = \frac{3}{10}
+$$
+
+Thus B's expectation = \$3.
+
+$$
+\text{Pr\{A and B lose and C wins\}} = \text{Pr}\{\bar{A} \bar{B} C\}
+  = \text{Pr}\{\bar{A}\}\ \text{Pr}\{\bar{B}|\bar{A}\}\
+    \text{Pr}\{C \bar{A} \bar{B}\}
+  = \left(\frac{3}{5}\right) \left(\frac{2}{4}\right) \left(\frac{2}{3}\right)
+  = \frac{1}{5}
+$$
+
+Thus C's expectation = \$2.
+
+$$
+\begin{aligned}
+\text{Pr\{A, B, and C lose and D wins\}}
+  & = \text{Pr}\{\bar{A}\bar{B}\bar{C}D\} \\
+  & = \text{Pr}\{\bar{A}\}\ \text{Pr}\{\bar{B}|\bar{A}\}\ 
+      \text{Pr}\{\bar{C}|\bar{A} \bar{B}\}\
+      \text{Pr}\{D|\bar{A} \bar{B} \bar{C}\} \\ \\
+  & = \left(\frac{3}{5}\right) \left(\frac{2}{4}\right)
+      \left(\frac{1}{3}\right) \left(\frac{1}{1}\right) = \frac{1}{10}
+\end{aligned}
+$$
+
+Thus D's expectation = \$1.
+
+_Check_: \$4 + \$3 + \$2 + \$1 = \$10, and
+$\frac{2}{5} + \frac{3}{10} + \frac{1}{5} + \frac{1}{10} = 1$.
+
+---
+
+__6.17__ In how many ways can 5 differently colored marbles be arranged in a
+row?
+
+__Solution__
+
+We must arrange the 5 marbles in 5 positions: -- -- -- -- --. The first position
+can be occupied by any one of 5 marbles (i.e., there are 5 ways of filling the
+first position). When this has been done, there are 4 ways of filling the second
+position. Then there are 3 way of filling the third position, 2 ways of filling
+the fourth position, and finally only 1 way of filling the last position.
+Therefore:
+
+$$
+\text{Number of arrangements of 5 marbles in a row }
+  = 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 = 5! = 120
+$$
+
+In general,
+
+$$
+\text{Number of arrangements of n different objects in a row }
+  = n(n-1)(n-2) \cdots 1 = n!
+$$
+
+This is also called th enumber of _permutations of n$ different objects taken
+$n$ at a time and is denoted by $_{n}P_{n}$.
+
+---
+
+__6.18__ In how many ways can 10 people be seated on a bench if only 4 seats are
+available?
+
+__Solution__
+
+The first seat can be filled in any one of 10 ways, and when this has been
+done there are 9 ways of filling the second seat, 8 ways of filling the third
+seat, and 7 ways of filling the fourth seat. Therefore:
+
+$$
+\text{Number of arrangements of 10 peiple taken 4 at a time }
+  = 10 \cdot 9 \cdot 8 \cdot 7 = 5040
+$$
+
+In general
+
+$$
+\text{Number of arrangements of n different objects taken r at a time }
+  = n(n-1) \cdots (n - r + 1) = n!
+$$
+
+This is also called the number of _permutations of n_ different objects taken
+$r$ at a time and is denoted by $_{n}P_{r}$, $P(n, r)$ or $P_{n,r}$. Note
+that when $r = n$, $_{n}P_{n} = n!$, as in Problem 6.17.
+
+---
+
+__6.19__ Evaluate (a) $_{8}P_{3}$, (b) $_{6}P_{4}$, (c) $_{15}P_{1}$, and
+$_{3}P_{3}$, and (e) Parts (a) through (d).
+
+__Solution__
+
+(a) $_{8}P_{3} = 8 \cdot 7 \cdot 6 = 336$
+
+(b) $_{6}P_{4} = 6 \cdot 5 \cdot 4 \cdot 3 = 360$
+
+(c) $_{15}P_{1} = 15$
+
+(d) $_{3}P_{3} = 3 \cdot 2 \cdot 1 = 6$
+
+---
+
+__6.20__ It is required to seat 5 men and 4 women in a row so that the women
+occupy the even places. How many such arrangements are possible?
+
+__Solution__
+
+The men may be seated in $_{5}P_{5}$ ways and the women in $_{4}P_{4}$ ways;
+each arrangement of the men may be associated with each arrangement of the
+women. Hence the required number of arrangements is
+$_{5}P_{5} \cdot _{4}P_{4} = 5!4! = (120)(24) = 2880$.
+
+---
+
+__6.21__ How many four-digit numbers can be formed with the 10 digits 0, 1, 2,
+3, $\ldots$, 9, if (a) repetitions are allowed, (b) repetitions are not allowed,
+and (c) the last digit must be zero and repetitions are not allowed?
+
+__Solution__
+
+(a) The first digit can be any ony one of 9 (since 0 is not allowed). The
+second, third and fourth digits can be any one of 10. Then
+$9 \cdot 10 \cdot 10 \cdot 10 = 9000$ numbers can be formed.
+
+(b) The first digit can be any one of 9 (any one but 0). The second digit can be
+any one of 9 (any but that used for the first digit). The third digit can be any
+one of 8 (any but those used for the first two digits). The fourth digit can be
+any one of 7 (any but those used for the first three digits). Thus
+$9 \cdot 9 \cdot 8 \cdot 7 = 4536$ numbers can be formed.
+
+(c) The first digit can be any one of 9 (any one but 0), the second in 8, and
+third in 7. Thus $9 \cdot 8 \cdot 7 = 504$.
+
+---
+
+__6.22__ Four different mathematics books, 6 different physics books, and 2
+different chemistry books are to be arranged on a shelf. How many different
+arrangements are possible if (a) the books in each particular subject must all
+stand together and (b) only the mathematics books must stand together?
+
+__Solution__
+
+(a) The mathematics books can be arranged among themselves in $_{4}P_{4}=4!$
+ways, the physics books in $_{6}P_{6}=6!$ ways, the chemistry books in
+$_{2}P_{2}=2!$ ways, and the three groups in $_{3}P_{3}=3!$ ways. Thus the
+required number of arrangements = $4!6!2!3!=207,360$.
+
+(b) Consider the 4 mathematics books as one big book. Then we have 9 books that
+can be arranged in $_{9}P_{9}=9!$ ways. In all of these ways the mathematics
+books can be arranged among themselves in $_{4}P_{4}=4!$ ways. Thus the required
+number of arrangements $= 9!4! = 8,709,120$.
+
+---
+
+__6.23__ Five red marbles, 2 white marbles, and 3 blue marbles are arranged in
+a row. If all the marbles of the same color are not distinguishable from each
+other, how many different arrangements are possible?
+
+__Solution__
+
+Assume that there are P different arrangements. Multiplying P by the numbers
+of ways of arranging (a) the 5 red marbles among themselves, (b) the 2 white
+marbles among themselves, and (c) the 3 blue marbles among themselves (i.e.,
+multiplying P by $5!2!3!$), we obtain the number of ways of arranging the 10
+marbles if they are distinguisable (i.e., 10!). Thus
+
+$$
+(5!2!3!)P = 10!\ \ \ \text{ and }\ \ \ P = \frac{10!}{5!2!3!}
+$$
+
+In general, the number of different arrangements of n objects of which $n_1$ are
+alike, $n_2$ are alike, $\ldots$, $n_k$ are alike is
+
+$$
+\frac{n!}{n_1! n_2! \cdots n_k!}
+$$
+
+where $n_1 + n_2 + \cdots + n_k = n$.
+
+```{r}
+factorial(10)/(factorial(5)*factorial(2)*factorial(3))
+```
+
+---
+
+__6.24__ In how many ways can 7 people be seated at a round table if (a) they 
+can sit anywhere and (b) 2 particular people must not sit next to each other?
+
+__Solution__
+
+(a) Let 1 of them be seated anywhere. Then the remaining 6 people can be seated
+in $6! = 720$ ways, which is the total number of ways of arranging the 7 people
+in a circle.
+
+(b) Consider the 2 particular people as 1 person. Then there are 6 people
+altogether and they can be arranged in $5!$ ways. But the 2 people considered as
+1 can be arranged among themselves in $2!$ ways. Thus the number of ways of
+arranging 6 people at a round table with 2 particular people sitting together
+$= 5! 2! = 240$.
+
+Then using part (a), the total number of ways in which 6 people can be seated at
+a round table so that 2 particular people do not sit together $- 720 - 240 = 480$
+ways.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,359 @@
+---
+title: 'Chapter 1: Variables and Graphs'
+subtitle: 'Text'
+author: "Murray R. Spiegel, PhD and Larry J. Stephens, Phd"
+date: "2024-06-15"
+header-includes:
+  - \usepackage{amsmath}
+  - \setcounter{page}{12}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Variables
+
+## Identifying discrete and continuous data variable types
+
+#### 1.1
+
+State which of the following represent discrete data and which represent continuous data:
+
+(a) Numbers of shares sold each day in the stock market
+(b) Temperatures recorded every half hour at a weather bureau
+(c) Lifetimes of television tubes produced by a company
+(d) Yearly incomes of college professors
+(e) Lengths of 1000 bolts produced in a factory
+
+__Solution__
+
+(a) Discrete; (b) continuous; (c) continuous; (d) discrete; (e) continuous
+
+## Identifying the domain of a variable and if it is discrete or continuous
+
+#### 1.2
+
+Give the domain of each of the following variables, and state whether the variables are continuous or discrete:
+
+(a) Number $G$ of gallons (gal) of water in a washing machine
+(b) Number $B$ of books on a library shelf
+(c) Sum $S$ of points obtained in tossing a pair of dice
+(d) Diameter $D$ of a sphere
+(e) Country $C$ in Europe
+
+__Solution__
+
+(a) _Domain_: Any value from 0 gal to the capacity of the machine. _Variable_: Continuous.
+(b) _Domain_: $`r seq(0,3,by=1)` \ldots$ up to the largest number of books that can fit on a shelf, _Variable_: Discrete.
+(c) _Domain_: Points obtained on a single die can be $`r seq(1,5,by=1)`$, or $6$. Hence the sum of points on a pair of dice can be $`r seq(2,11,by=1)`, or $12$, which is the domain of $S$. _Variable_: Discrete.
+(d) _Domain_: If we consider a point as a sphere of zero diameter, the domain of $D$ is all values from zero upward. _Variable_: Continuous.
+(e) _Domain_: England, France, Germany, etc., which can be represented numerically by $1, 2, 3$, etc. _Variable_: Discrete.
+
+# Rounding of data
+
+## Rounding to the nearest
+
+#### 1.3
+
+Round each of the following numbers to the indicated accuracy:
+
+(a) $48.6$ nearest unit
+(b) $136.5$ nearest unit
+(c) $2.484$ nearest hundredth
+(d) $0.0435$ nearest thousandth
+(e) $4.50001$ nearest unit
+(f) $143.95$ nearest tenth
+(g) $368$ nearest hundred
+(h) $24,448$ nearest thousand
+(i) $5.56500$ nearest hundredth
+(j) $5.56501$ nearest hundredth
+
+__Solution__
+
+(a) 49; (b) 36; (c) 2.48; (d) 0.044; (e) 5; (f) 144.0 (g) 400; (h) 24,000; (i) 5.56; (j) 5.57
+
+## Arithemtic operations and Rounding numbers
+
+#### 1.4
+
+Add the numbers $`r (e1_4 <- c(4.35, 8.65, 2.95, 12.45, 6.65, 7.55, 9.75))`$ (a) directly, (b) by rounding to the nearest tenth according to the "even integer" convention, and (c) by rounding so as to increase the digit before the $5$.
+
+__Solution in R__
+
+```{r}
+cat("(a) directly:", sum(e1_4),
+    "\n(b) even integer convention:", sum(c(4.4, 8.6, 3.0, 12.4, 6.6, 7.6, 9.8)),
+    "\n(c) by rounding so as to increase the digit before the 5:", sum(c(4.4, 8.7, 3.0, 12.5, 6.7, 7.6, 9.8)))
+```
+
+Note that procedure (b) is superior to procedure (c) because _cumulative rounding errors_ are minimized in procedure (b).
+
+# Scientific notation and significant figures
+
+## Expressing large numbers
+
+#### 1.5
+
+Express each of the following numbers without using powers of 10:
+
+(a) $4.823 \times 10^7$
+(b) $8.4 \times 10^{-6}$
+(c) $3.80 \times 10^{-4}$
+(d) $1.86 \times 10^5$
+(e) $300 \times 10^8$
+(f) $70,000 \times 10^{-10}$
+
+__Solution__
+
+(a) $4.823 \times 10^7 = 48,230,000$
+(b) $8.4 \times 10^{-6} = 0.0000084$
+(c) $3.80 \times 10^{-4} = 0.000380$
+(d) $1.86 \times 10^5 = 186,000$
+(e) $300 \times 10^8 = 30,000,000,000$
+(f) $70,000 \times 10^{-10} = 0.0000070000$
+
+## Significant figures
+
+#### 1.6
+
+How many significant figures are in each of the following, assuming that the numbers are recorded accurately?
+
+(a) $149.8$ in
+(b) $149.80$ in
+(c) $0.0028$ meter (m)
+(d) $0.00280$ m
+(e) $1.00280$ m
+(f) $9$ grams (g)
+(g) $9$ houses
+(h) $4.0 \times 10^3$ pounds (lb)
+(i) $7.58400 \times 10^{-5}$ dyne
+
+__Solution__
+
+(a) Four; (b) five; (c) two; (d) three; (e) six; (f) one; (g) unlimited; (h) two; (i) six.
+
+## Measurement error
+
+#### 1.7
+
+What is the maximum error in each of the following measurements, assuming that they are recorded accurately?
+
+(a) $73.854$ in
+(b) $0.09800$ cubic feet (ft$^3$)
+(c) $3.867 \times 10^8$ kilometers (km)
+
+__Solution__
+
+(a) The measurement can range anywhere from $73.8535$ to $73.8545$ in; hence the maximum error is $0.0005$ in. FIve significant figures are present.
+(b) The number of cubic feet can range anywhere from $0.097995$ to $0.098005$ ft$^3$; hence the maximum error is $0.000005$ ft$^3$. Four significant figures are present.
+(c) The actual number of kilometers is greater than $3.8665 \times 10^8$ but less than $3.8675 \times 10^8$; hence the maximum error is $0.0005 \times 10^8$, or $50,000$ km. Four significant figures are present.
+
+## Scientific notation
+
+#### 1.8
+
+Write each number using the scientific notation. Unless otherwise indicated, assume that all figures are significant.
+
+(a) $24,380,000$ (four significant figures)
+(b) $0.000009851$
+(c) $7,300,000,000$ (five significant figures)
+(d) $0.00018400$
+
+__Solution__
+
+(a) $2.438 \times 10^7$; (b) $9.851 \times 10^{-6}$; (c) $7.3000 \times 10^9$; (d) $1.8400 \times 10^{-4}$.
+
+# Computations
+
+## Arithmetic operations and significant figures
+
+#### 1.9
+
+Show that the product of the numbers $5.74$ and $3.8$, assumed to have three and two significant figures, respectively, cannot be accurate to more than two significant figures.
+
+__Solution__
+
+__First method__
+
+$5.74 \times 3.8 = 21.812$, but not all figures in this product are significant. To determine how many figures are significant, observe that $5.74$ stands for any number between $5.735$ and $5.745$, while $3.8$ stands for any number between $3.75$ and $3.85$. Thus the smallest possible value of the product is $5.735 \times 3.75 = 21.50625$, and the largest possible value is $5.745 \times 3.85 = 22.11825$.
+
+Since the possible range of values is $21.50625$ to $22.11825$, it is clear that no more than the first two figures in the product can be significant, the result being written as $22$. Note that the number $22$ stands for any number between $21.5$ and $22.5$.
+
+__Second method__
+
+With doubtful figures in italic, the product can be computed as shown here:
+
+5.74  
+\ \  38  
+- - - - -  
+\ _4592_  
+1722  
+- - - - -  
+_21.812_
+
+We should keep no more than one doubtful figure in the answer, which is therefore $22$ to two significant figures. Note that it is unnecessary to carry more significant figures than are present in the least accurate factor; thus if $5.74$ is rounded to $5.7$, the product is $5.7 \times 3.8 = 21.66 = 22$ to two significant figures, agreeing with the above results.
+
+In calculating without the use of computers, labor can be saved by not keeping more than one or two figures beyond that of the least accurate factor and rounding to the proper number of significant figures in the final answer. With computers, which can supply many digits, we  must be careful not to believe that all the digits are significant.
+
+#### 1.10
+
+Add the numbers $4.19355$, $15.28$, $5.9561$, $12.3$, and $8.472$, assuming al figures to be significant.
+
+__Solution__
+
+(a)
+
+\ 4.19355  
+15.28  
+\ 5.9561  
+12.3  
+\ 8.472  
+- - - - -  
+46.20165  
+
+(b)
+
+\ 4.19  
+15.28  
+\ 5.96  
+12.3  
+\ 8.47  
+- - - - -  
+46.20
+
+Some labor can be saved by proceeeding as in calculation (b), where we have kept one more significant decimal place than that in the least accurate number. The final answer, rounded to $46.2$, agrees with calculation (a).
+
+#### 1.11
+
+Calculate $475,000,000 + 12,684,000 - 1,372,410$ if these numbers have three, five, and seven significant figures, respectively.
+
+__Solution__
+
+In calculation (a) below, all figures are kept and the final answer is rounded. In calculation (b), a method similar to that of Problem 1.10(b) is used. In both cases, doubtful figures are in italic type.
+
+(a)
+
+\ 475,000,000  
++\ 12,684,000  
+- - - - - - - -  
+\ 487,684,000
+
+\
+\ 487,684,000  
+-\ \ 1,372,410  
+- - - - - - - -  
+\ 486,311,590
+
+\
+(b)
+
+\ 475,000,000  
++\ 12,700,000  
+- - - - - - - -  
+\ 487,700,000
+
+\
+\ 487,700,000  
+-\ \ 1,400,00  
+- - - - - - - -  
+486,300,00
+
+The final result is rounded to $486,000,000$; or better yet, to show that there are three significant figures, it is written as $486$ million or $4.86 \times 10^8$.
+
+#### 1.12
+
+Perform each of hte indicated operations.
+
+(a) $48.0 \times 943$
+(b) $8.35/98$
+(c) $(28)(4193)(182) = (2.8 \times 10^1)(4.193 \times 10^3)(1.82 \times 10^2) = (2.8)(4.193)(1.82) \times 10^{1+3+2} = 21 \times 10^6 = 2.1 \times 10^7$
+(e) $$ \frac{(1.47562 - 1.47322)(4895.36)}{0.000159180} $$
+(f) If denominators 5 and 6 are exact, $$ \frac{(4.38)^2}{5} + \frac{(5.482)^2}{6} $$
+(g) $$ 3.1416 \sqrt{71.35} $$
+(h) $$ \sqrt{128.5 - 89.24} $$
+
+__Solution__
+(a) $$ 48.0 \times 943 = (48.0)(943) = 45,300 $$
+
+(b) $$ 8.35/98 = 0.085 $$
+
+(c) $$ (28)(4193)(182) = 2.1 \times 10^7 $$
+
+(d)
+$$
+\begin{aligned}
+\frac{(526.7)(0.001280)}{0.000034921)} & = \frac{(5.267 \times 10^2)(1.280 \times 10^{-3})}
+{3.4921 \times 10^{-5}} = \frac{(5.267)(1.280)}{3.4921} \times \frac{(10^2)(10^{-3})}{10^{-5}} \\ \\
+ & = 1.931 \times \frac{10^{2-3}}{10^{-5}} = 1.931 \times \frac{10^{-1}}{10^{-5}} \\ \\
+ & = 1.931 \times 10^{-1+5} = 1.931 \times 10^4
+ \end{aligned}
+$$
+
+This can also be written as 19.31 thousand to show the four significant figures.
+
+(e)
+$$
+\begin{aligned}
+\frac{(1.47562 - 1.47322)(4895.36)}{0.000159180} & = \frac{(0.00240)(4895.36)}{0.000159180}
+= \frac{(2.40 \times 10^{-3})(4.89536 \times 10^3)}{1.59180 \times 10^{-4}} \\ \\
+ & = \frac{2.40)(4.89536)}{1.59180} \times \frac{(10^{-3})(10^3)}{10^{-4}}
+= 7.38 \times \frac{10^0}{10^{-4}} = 7.38 \times 10^4
+\end{aligned}
+$$
+
+This can also be written as 73.8 thousand to show the three significant figures. Note that although six significant figures were originally present in all numbers, some of these were lost in subtracting 1.47322 from 1.47562.
+
+(f) If denominators 5 and 6 are exact, $$ \frac{(4.38)^2}{5} + \frac{(5.482)^2}{6} = 3.84 + 5.009 = 8.85 $$.
+
+(g) $$ 3.1416 \sqrt{71.35} = (3.1416)(8.447) = 26.54 $$
+
+(h) $$ \sqrt{128.5 - 89.24} = \sqrt{39.3} = 6.27 $$
+
+#### 1.13
+
+Evaluate each of the following, given that $X = 3, Y = -5, A = 4,$ and $B = -7$, where all numbers are assumed to be exact:
+
+(a) $2X - 3Y$
+
+(b) $4Y - 8X + 28$
+
+(c) $$ \frac{AX + BY}{BX - AY} $$
+
+(d) $$ X^2 - 3XY - 2Y^2 $$
+
+(e) $$ 2(X + 3Y) - 4(3X - 2Y) $$
+
+(f) $$ \frac{X^2 - Y^2}{A^2 - B^2 + 1} $$
+
+(g) $$ \sqrt{2X^2 - Y^2 - 3A^2 + 4B^2 + 3} $$
+
+(h) $$ \sqrt{\frac{6A^2}{X} + \frac{2B^2}{Y}} $$
+
+__Solution__
+
+(a) $2X - 3Y = 2(3) - 3(-5) = 6 + 15 = 21$
+
+(b) $$ 4Y - 8X + 28 = 4(-5) - 8(3) + 28 = -20 - 24 + 28 = -16 $$
+
+(c) $$ \frac{AX + BY}{BX - AY} = \frac{(4)(3) + (-7)(-5)}{(-7)(3)-(4)(-5)} = \frac{12 + 35}{-21 + 20} = \frac{47}{-1} = -47 $$
+
+(d) $$ X^2 - 3XY - 2Y^2 = (3)^2 - 3(3)(-5) - 2(-5)^2 = 9 + 45 - 50 = 4 $$
+
+(e) $$ 2(X + 3Y) - 4(3X - 2Y)$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

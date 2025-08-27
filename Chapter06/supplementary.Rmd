@@ -1,0 +1,1266 @@
+---
+title: "Elementary Probability Theory"
+author: "Joseph Bennett"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    extra_dependencies:
+      epsdice: null
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Fundamental rules of probability
+
+## Definitions of probability: Classic versus Relative-frequency
+
+__6.40.__ Determine the probability $p$, or an estimate of it, for each of the
+following events:
+
+(a) A king, ace, jack of clubs, or queen of diamonds appears in drawing a single
+card from a well-shuffled ordinary deck of cards.
+(b) The sum 8 appears in a single toss of a pair of fair dice.
+(c) A non-defective bolt will be found if out of 600 bolts already examined, 12
+were defective.
+(d) A 7 or 11 comes up in a single toss of a pair of fair dice.
+(e) At least one head appears in three tosses of a fair coin.
+
+__Solution__
+
+(a) The chance that a king (4 kings), ace (4 aces), a jack of clubs or a queen
+of diamonds (10 cards in total) will be drawn is
+$$
+p = \frac{10}{52} = `r 10/52`\text{.}
+$$
+
+(b) The sum 8 can come up 5 out of 36 times:
+\epsdice{6} \epsdice[black]{2}, 
+\epsdice{5} \epsdice[black]{3},
+\epsdice{4} \epsdice[black]{4},
+\epsdice{3} \epsdice[black]{5},
+\epsdice{2} \epsdice[black]{6},
+$$
+p = \frac{5}{36} = `r 5/36`\text{.}
+$$
+
+(c) From already examined bolts 12 were determined defective out of 600. The
+probability that that a non defective bolt will be found is:
+$$
+p = 1 - 12/600 = `r 1 - 12/600`\text{.}
+$$
+
+(d) A 7 or 11 comes up with the toss of a pair of fair dice:
+
+Seven
+
+$$
+\epsdice{6} \epsdice[black]{1}\ 
+\epsdice{5} \epsdice[black]{2}\ 
+\epsdice{4} \epsdice[black]{3}\ 
+\epsdice{3} \epsdice[black]{4}\ 
+\epsdice{2} \epsdice[black]{5}\ 
+\epsdice{1} \epsdice[black]{6} = 6
+$$
+Eleven
+
+$$
+\epsdice{6} \epsdice[black]{5}\
+\epsdice{5} \epsdice[black]{6} = 2
+$$
+
+$$
+p = \frac{6 + 2}{36} = \frac{8}{36} = `r 8/36`\text{.}
+$$
+
+(e) The probability of at least one head appears in three tosses of a fair coin
+is equal to 1 - the probability of no heads in three tosses.
+
+$$
+1 - \left(\frac{1}{2}\right) \left(\frac{1}{2}\right) \left(\frac{1}{2}\right)
+ = `r 1 - (1/2)^3`
+$$
+
+---
+
+## Probability nomenclature
+
+__6.41.__ An experiment consists of drawing three cards in succession from a
+well-shuffled ordinary deck of cards. Let $E_1$ be the event "king" on the first
+draw, $E_2$ the event "king" on the second draw, and $E_3$ the event "king" on
+the third draw. State in words the meaning of each of the following:
+
+(a) Pr{$E_1 \bar{E_2}$}
+
+(b) Pr{$E_1 + E_2$}
+
+(c) $\bar{E_1} + \bar{E_2}$
+
+(d) Pr{$E_3|E_1 \bar{E_2}$}
+
+(e) $\bar{E_1} \bar{E_2} \bar{E_3}$
+
+(f) Pr{$E_1 E_2 + \bar{E_2} E_3$}
+
+__Solution__
+
+(a) Pr{$E_1 \bar{E_2}$} - The probability of king on first draw and not king on
+second draw.
+
+(b) Pr{$E_1 + E_2$} - The probability of king on first draw or king on second
+draw or both.
+
+(c) $\bar{E_1} + \bar{E_2}$ - The event not king on first draw or not king on
+second draw or both are not kings. Another way of stating this is at least one
+of the first two draws is not a king.
+
+(d) Pr{$E_3|E_1 \bar{E_2}$} - The probability of king on third draw given that
+king on first draw and not king on second draw.
+
+(e) $\bar{E_1} \bar{E_2} \bar{E_3}$ - The event not king on first draw and not
+king on second draw and not king on third draw. Or no king is drawn in three
+draws.
+
+(f) Pr{$E_1 E_2 + \bar{E_2} E_3$} - The probability of king on first draw and
+king on second draw or not king on second draw and king on third draw. Or the
+probability that the first two draws are a king or the second draw is not a king
+but the third draw is a king.
+
+---
+
+## Conditional probability, independent and dependent events, and mutually exclusive events
+
+__6.42.__ A ball is drawn at random from a box containing 10 red, 30 white, 20
+blue and 15 orange marbles. Find the probability that the ball drawn is (a)
+orange or red, (b) not red or blue, (c) not blue, (d) white, and (e) red.
+
+__Solution__
+
+Summarizing the contents of the box:
+
+- 10 Red marbles
+- 30 White marbles
+- 20 Blue marbles
+- 15 Orange marbles
+- 75 Total marbles
+
+(a) $O + R = \frac{15 + 10}{75} = \frac{25}{75}$
+
+(b) $\bar{R} + B = W + B + O  = \frac{30 + 20 + 15}{75} = \frac{65}{75}$
+
+(c) $\bar{B} = \frac{10 + 30 + 15}{75} = \frac{55}{75}$
+
+(d) $W = \frac{30}{75}$
+
+(e) $R = \frac{10}{75}$
+
+---
+
+### Probability experiments with replacement
+
+__6.43.__ Two marbles are drawn in succession from the box of Problem 6.42,
+replacement being made after each drawing. Find the probability (a) both are
+white, (b) the first is red and the second is white, (c) neither is orange, (d)
+they are either red or white or both (red and white), (e) the second is not
+blue, (f) the first is orange, (g) at least one is blue, (h) at most one is red,
+(i) the first is white but the second is not, and (j) only one is red.
+
+__Solution__
+
+Summarizing the contents of the box:
+
+- 10 Red marbles
+- 30 White marbles
+- 20 Blue marbles
+- 15 Orange marbles
+- 75 Total marbles
+
+Since the selection of the marbles occur _with replacement_ we use the following
+equation:
+
+\begin{equation}
+\text{Pr}\{E_1 E_2\} = \text{Pr}\{E_1\}\ \text{Pr}\{E_2\}
+\end{equation}
+
+(a) Both are white: 
+
+$$
+\text{Pr}\{W_1\}\ \text{Pr}\{W_2\} =
+\left(\frac{30}{75}\right)^2 = `r (30/75)^2`
+$$
+
+(b) The first is red and the second is white:
+
+$$
+\text{Pr}\{R_1\}\ \text{Pr}\{W_2\} =
+\left(\frac{10}{75}\right) \left(\frac{30}{75}\right) =
+\left(\frac{300}{5625}\right) = `r (300/5625)`
+$$
+
+(c) Neither is orange:
+
+$$
+\text{Pr}\{\bar{O_1}\}\ \text{Pr}\{\bar{O_2}\}
+= \left(\frac{60}{75}\right)^2 = `r (60/75)^2`
+$$
+
+(d) Either red or white or both:
+
+$$
+\text{Pr}\{R_1 + W_1\}\ \text{Pr}\{W_2 + R_2\}
+= \left(\frac{10 + 30}{75}\right)^2 = `r (40/75)^2`
+$$
+
+(e) The second is not blue:
+
+$$
+\text{Pr}\{\bar{B_2}\} = \text{Pr}\{R_2 + W_2 + O_2\} = \frac{10 + 30 + 15}{75} = `r 55/75`
+$$
+
+(f) The first is orange:
+
+$$
+\text{Pr}\{O_1\} = \frac{15}{75} = `r 15/75`
+$$
+
+(g) At least one is blue is the same as 1 - Pr{no blue}:
+
+$$
+1 - \left(\text{Pr}\{\bar{B_1}\}\ \text{Pr}\{\bar{B_2}\}\right)
+= 1 - \left(\frac{55}{75}\right)^2 = `r 1 - (55/75)^2`
+$$
+
+(h) At most one red is the same as 1 - Pr{all red}:
+
+$$
+1 - \left(\text{Pr}\{R_1\}\ \text{Pr}\{R_2\}\right)
+= 1 - \left(\frac{10}{75}\right)^2 = `r 1 - (10/75)^2`
+$$
+
+(i) The first is white but the second is not white:
+
+$$
+\text{Pr}\{W_1\}\ \text{Pr}\{\bar{W_2}\} = 
+\left(\frac{30}{75}\right) \left(\frac{45}{75}\right) = `r (30/75)*(45/75)`
+$$
+
+(j) Only one is red:
+
+$$
+\text{Pr}\{R_1\} + \text{Pr}\{R_2\}
+    - \left(\text{Pr}\{R_1\}\ \text{Pr}\{R_2\}\right)
+= 2 * \left(\frac{10}{75}\right) - \left(\frac{10}{75}\right)^2
+= `r 2*(10/75) - (10/75)^2`
+$$
+
+---
+
+### Probability experiments without replacement
+
+__6.44.__ Work Problem 6.43 if there is no replacement after each drawing.
+
+__Solution__
+
+Summarizing the contents of the box:
+
+- 10 Red marbles
+- 30 White marbles
+- 20 Blue marbles
+- 15 Orange marbles
+- 75 Total marbles
+
+Since the marbles are selected from the box _without replacement_, the events
+are not independent. The second event depends on the first. We take this into
+account by using the following equation:
+
+\begin{equation}
+\text{Pr}\{E_1 E_2\} = \text{Pr}\{E_1\}\ \text{Pr}\{E_2|E_1\}
+\end{equation}
+
+The component $\text{Pr}\{E_2|E_1\}$ is executed by removing the marble from
+the equation.
+
+---
+
+(a) Both are white:
+
+$$
+\text{Pr}\{W_1\}\ \text{Pr}\{W_1|W_2\}
+= \left(\frac{30}{75}\right) \left(\frac{29}{74}\right)
+= `r (30/75)*(29/74)`
+$$
+
+(b) The first is red and the second is white
+
+$$
+\text{Pr}\{R_1\}\ \text{Pr}\{W_2|R_1\}
+= \left(\frac{10}{75}\right) \left(\frac{30}{74}\right)
+= `r (10/75)*(30/74)`
+$$
+
+(c) Neither is orange
+
+$$
+\text{Pr}\{\bar{O_1}\}\ \text{Pr}\{\bar{O_2}|\bar{O_1}\}
+= \left(\frac{60}{75}\right) \left(\frac{59}{74}\right)
+= `r (60/75)*(59/74)`
+$$
+
+(d) Both are red or white or both
+
+$$
+\text{Pr}\{R_1 + W_1\}\ \text{Pr}\{(R_2 + W_2)|(R_1 + W_1)\}
+= \left(\frac{10 + 30}{75}\right) \left(\frac{10 + 30 - 1}{74}\right)
+= `r (40/75)*(39/74)`
+$$
+
+(e) The second is not blue
+
+It doesn't matter what the first draw is therefore we are only concerned with
+the second draw.
+
+$$
+\text{Pr}\{\bar{B_2}\} = \left(\frac{75 - 20}{75}\right) = `r (75-20)/75`
+$$
+
+(f) The first is orange
+
+It doesn't matter what the second draw marble is, we are only concerned with
+the first draw.
+
+$$
+\text{Pr}\{O_1\} = \frac{15}{75} = `r 15/75`
+$$
+
+(g) At least one is blue is the same as 1 - Pr{no blue}.
+
+$$
+1 - \left(\text{Pr}\{\bar{B_1}\}\ \text{Pr}\{\bar{B_2}|\bar{B_1}\}\right)
+= 1 - \left(\frac{55}{75}\right) \left(\frac{54}{74}\right)
+= `r 1 - (55/75)*(54/74)`
+$$
+
+(h) At most one is red is the same as 1 - Pr{all red}.
+
+$$
+1 - \left(\text{Pr}\{R_1\}\ \text{Pr}\{R_2|R_1\}\right)
+= \left(\frac{10}{75}\right) \left(\frac{9}{74}\right)
+= `r 1- (10/75)*(9/74)`
+$$
+
+(i) The first is white but the second is not.
+
+$$
+\text{Pr}\{W_1\}\ \text{Pr}\{\bar{W_2}|W_1\}
+= \left(\frac{30}{75}\right) \left(\frac{45}{74}\right)
+= `r (30/75)*(45/74)`
+$$
+
+(j) Only one is red.
+
+$$
+\text{Pr}\{R_1\}\ \text{Pr}\{\bar{R_2}|R_1\} + \text{Pr}\{\bar{R_1}\}\ \text{Pr}\{\bar{R_1}|R_2\}
+= \left(\frac{10}{75}\right) \left(\frac{64}{74}\right)
++ \left(\frac{65}{75}\right) \left(\frac{10}{74}\right)
+= `r (10/75)*(64/74)+(65/75)*(10/74)`
+$$
+
+---
+
+## Probability experiments: probability space
+
+__6.45.__ Find the probability of scoring a total of 7 points (a) once, (b) at
+least once, and (c) twice in two tosses of a pair of fair dice.
+
+__Solution__
+
+To solve these probabilities, we need to understand the ways a total of
+_7 points_ can appear on a single toss of a pair of fair dice. 
+
+The sum of 7 can be achieved with the following pairs:
+- (1, 6), (6, 1)
+- (2, 5), (5, 2)
+- (3, 4), (4, 3)
+
+$$
+\text{Pr}\{\text{7 in one toss}\} = \frac{6}{36} = \frac{1}{6}.
+$$
+
+(a) The probability of scoring exactly 7 once:
+
+$$
+\text{Pr}\{E_1 \bar{E_2}\} + \text{Pr}\{\bar{E_1} E_2\}
+= 2 \times \left(\frac{1}{6}\right) \left(\frac{5}{6}\right)
+= `r 2 *(5/36)`
+$$
+
+(b) The probability of scoring 7 at least once in two tosses is the same
+as 1 - Pr{no 7}.
+
+$$
+1 - \text{Pr}\{\text{no 7}\} = 1 - \left(\frac{5}{6}\right)^2
+= `r 1-(5/6)^2`
+$$
+
+(c) Probability of scoring 7 twice
+
+$$
+\text{Pr}\{E_1\}\ \text{pr}\{E_2\} = \left(\frac{1}{6}\right)^2
+= `r (1/6)^2`
+$$
+
+---
+
+__6.46.__ Two cards are drawn successively from an ordinary deck of 52
+well-shuffled cards. Find the probability that (a) the first card is not a 10 of
+clubs or an ace, (b) the first card is an ace but the second is not, (c) at
+least one card is a diamond, (d) the cards are not of the same suit, (e) not
+more than one card is a picture card (jack, queen, king), (f) the second card is
+not a picture card, (g) the second card is not a picture card given that the
+first was a picture card, and (h) the cards are picture cards or spades or both.
+
+__Solution__
+
+Let's solve each part step-by-step. We're working with a standard deck of **52 cards**. When cards are drawn **successively without replacement**, the total number of available cards decreases after the first draw, affecting the probability of the second draw.
+
+(a) The first card is not a 10 of clubs or an ace:
+
+There are five card total (1 10 of clubs and 4 aces).
+
+$$
+\text{Pr}\{\bar{E_1} + \bar{F_1}\} = `r 1 - 5/52`
+$$
+
+(b) The first card is an ace but the second is not
+
+$$
+\text{Pr}\{E_1 \bar{E_2}\} = \text{Pr}\{E_1\}\ \text{Pr}\{\bar{E_2}|E_1\}
+\left(\frac{4}{52}\right) \left(1 - \frac{3}{51}\right) = `r 4/52 * (1 - 3/51)`
+$$
+
+(c) At least one card is a diamond is the same as 1 - Pr{both are not diamond}
+
+$$
+1 - \text{Pr}\{\bar{E_1}\}\ \text{Pr}\{\bar{E_2}|\bar{E_1}\} = 1 
+- \left(\frac{52-13}{52}\right) \left(\frac{51-13}{51}\right)
+= `r 1 - (52-13)/52*(51-13)/51`
+$$
+
+(d) The cards are not the same suit is the same as 1 -
+Pr{both are the same suit}
+
+The probability of drawing a card from a suit is 1 therefore
+$\text{Pr}\{E_1\} = 1$
+
+$$
+1 - \text{Pr}\{E_1\}\ \text{Pr}\{E_2|E_1\}
+= 1 - \left(\frac{12}{51}\right)
+= `r 1- (12/51)`
+$$
+
+
+(e) The probability that not more than one card is a picture card (jack, queen,
+king).
+
+Two cases: (1) exactly one face card in two draws, or no face cards in two
+draws.
+
+Exactly one face card in two draws:
+
+$$
+\begin{aligned}
+\text{Pr}\{E_1 \bar{E_2}\} + \text{Pr}\{\bar{E_1} E_2\}
+& = \text{Pr}\{E_1\}\ \text{Pr}\{\bar{E_2}\} +
+  \text{Pr}\{\bar{E_1}\}\ \text{Pr}\{E_2\} \\ \\
+& = \left(\frac{12}{52}\right) \left(\frac{52-12}{51}\right) +
+  \left(\frac{52-12}{52}\right) \left(\frac{12}{51}\right) \\ \\
+& = `r (12/52)*(40/51) + (40/52)*(12/51)`
+\end{aligned}
+$$
+
+Neither card is a face card in two draws:
+
+$$
+\text{Pr}\{\bar{E_1} \bar{E_2}\} =
+\text{Pr}\{\bar{E_1}\}\ \text{Pr}\{\bar{E_2}\} = 
+\left(\frac{40}{52}\right) \left(\frac{39}{51}\right) =
+`r (40/52) * (39/51)`
+$$
+
+Therefore the probability is
+$$
+`r (p6.46e1 <- (12/52)*(40/51)+(40/52)*(12/51))` +
+`r (p6.46e2 <- (40/52)*(39/51))`
+= `r p6.46e1 + p6.46e2`
+$$
+
+(f) The second card is not a picture card. It doesn't matter what the first
+card is
+
+$$
+\text{Pr}\{\bar{E_2}\} = \frac{40}{52} = `r 40/52`
+$$
+
+(g) The second card is not a picture card, given that the first was a picture
+card:
+
+$$
+\text{Pr}\{\bar{E_2}|E_1\}
+= \left(\frac{40}{51}\right)
+= `r (40/51)`
+$$
+(h) The cards are picture cards or spades or both
+
+
+$$
+\text{Pr}\{E_1\}\ \text{Pr}\{E_2|E_1\}
+= \left(\frac{13 + 12 - 2 = 22}{52}\right) \left(\frac{21}{51}\right)
+= `r 22/52 * 21/51`
+$$
+
+---
+
+__6.47.__ A box contains 9 tickets numbered from 1 to 9 inclusive. If 3 tickets are drawn from the box one at a time, find the probability that they are alternately either (1) odd, even, odd or (2) even, odd, even.
+
+__Solution__
+
+From 1 to 9 there are 5 odd numbers and 4 even numbers.
+
+(1) For odd-even-odd
+
+$$
+\text{Pr}\{O_1 E_2 O_3\} = \text{Pr}\{O_1\}\ \text{Pr}\{E_2|O_1\}\ 
+\text{Pr}\{O_3|O_1 E_2\} =
+\left(\frac{5}{9}\right) \left(\frac{4}{8}\right) \left(\frac{4}{7}\right)
+= `r (5/9)*(4/8)*(4/7)`
+$$
+
+(2) For even-odd-even
+
+$$
+\text{Pr}\{E_1 O_2 E_3\} = \text{Pr}\{E_1\}\ \text{Pr}\{O_2|E_1\}\ 
+\text{Pr}\{E_3|E_1 O_2\} = 
+\left(\frac{4}{9}\right) \left(\frac{5}{8}\right) \left(\frac{3}{7}\right) =
+`r (4/9) * (5/8) * (3/7)`
+$$
+
+---
+
+__6.48.__ The odds in favor of A winning a game of chess against B are 3:2. If
+three games are to be played, what are the odds (a) in favor of A's winning at
+least two games out of the three and (b) against A losing the first two games to
+B?
+
+__Solution__
+
+The probability of A winning against B is Pr{A wins} = $\frac{3}{3 + 2} = 0.6$.
+
+The probability of B winning against A is Pr{B wins} = Pr{not A Wins} 
+= $\frac{2}{3 + 2} = 1 - 0.6 = 0.4$
+
+(a) The odds of A winning at least two games out of three is the same as the
+chance of winning 2 games and the chance of winning all three games:
+
+$$
+\begin{aligned}
+\text{Pr}\{\text{win 2 out of 3 games}\} & =
+3 \times \text{Pr}\{A_1\}\ \text{Pr}\{A_2\}\ \text{Pr}\{\bar{A_3}\}
+= 3 \times \left(\frac{3}{5}\right) \left(\frac{3}{5}\right)
+   \left(\frac{2}{5}\right) = \frac{54}{125} \\ \\
+\text{Pr}\{\text{win all 3 games}\} & = \text{Pr}\{A_1\}\ \text{Pr}\{A_2\}\ 
+   \text{Pr}\{A_3\} = \left(\frac{3}{5}\right)^2 = \frac{27}{125} \\ \\
+\text{Pr}\{\text{not winning at least 2 games}\} & =
+    1 - \frac{81}{125} = \frac{125 - 81}{125} = \frac{44}{125}
+\end{aligned}
+$$
+
+Odds in favor of winning at least two out of three games is $81:44$.
+
+(b) Odds against A losing the first two games to B.
+
+$$
+\begin{aligned}
+\text{Pr}\{\text{losing the first two games}\} & =
+    \left(\frac{2}{5}\right) \left(\frac{2}{5}\right) = \frac{4}{25} \\ \\
+\text{Pr}\{\text{not losing the first two games}\} & =
+1 - \text{Pr}\{\text{losing the first two games}\} = \frac{25 - 4}{25} =
+\frac{21}{25}
+\end{aligned}
+$$
+
+The odds against A losing the first two games is $21:4$.
+
+---
+
+__6.49.__ A purse contains 2 silver coins and 4 copper coins, and a second purse contains 4 silver coins and 3 copper coins. If a coin is selected at random from one of the two purses, what is the probability that it is a silver coin?
+
+__Solution__
+
+Purse 1: 2 silver; total 6 coins
+
+Purse 2: 4 silver; total 7 coins
+
+$$
+\begin{aligned}
+\text{Pr}\{\text{selecting a silver coin from purse 1}\} = \frac{2}{6}\\ \\
+\text{Pr}\{\text{selecting a silver coin from purse 2}\} = \frac{4}{7} \\ \\
+\text{Pr}\{\text{silver}\} = \frac{1}{2} \times
+    \left(\frac{2}{6} + \frac{4}{7}\right) = \frac{19}{42}
+\end{aligned}
+$$
+
+---
+
+__6.50.__ The probability that a man will be alive in 25 years is $\frac{3}{5}$,
+and the probability that his wife will be alive in 25 years is $\frac{2}{3}$.
+Find the probability that (a) both will be alive, (b) only the man will be alive,
+(c) only the wife will be alive, and (d) at least one will be alive.
+
+__Solution__
+
+(a)
+
+$$
+\text{Pr}\{\text{both alive}\} = \text{Pr}\{\text{man alive}\}\ 
+    \text{Pr}\{\text{woman alive}\}  = \frac{3}{5} \times \frac{2}{3} =
+    \frac{6}{15}
+$$
+
+(b)
+
+$$
+\text{Pr}\{\text{only the man}\} = \frac{3}{5} \times (1 - \frac{2}{3})
+  = \frac{3}{15}
+$$
+
+(c)
+
+$$
+\text{Pr}\{\text{only the wife}\} = (1 - \frac{3}{5}) \times \frac{2}{3} =
+  \frac{4}{15}
+$$
+
+(d)
+
+$$
+\text{Pr}\{\text{at least one alive}\} = 1 - \left(\frac{2}{5} \times \frac{1}{3}\right)
+  = 1 - \frac{2}{15} = \frac{13}{15}
+$$
+
+---
+
+__6.51.__ Out of 800 families with 4 children each, what percentage would be expected to have (a) 2 boys and 2 girls, (b) at least 1 boy, (c) no girls, and (d) at most 2 girls? Assume equal probabilities for boys and girls.
+
+__Solution__
+
+To solve the problem, we'll use the binomial probability formula. The situation involves 4 children per family, and we will denote:
+
+- The probability of having a boy (\(B\)) or a girl (\(G\)) is equal:  
+  \[
+  P(B) = P(G) = \frac{1}{2}
+  \]
+
+Let \( n = 4 \) (number of children) and \( p = \frac{1}{2} \) (probability of having a boy).
+
+The binomial probability formula is given by:
+\[
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}
+\]
+where:
+- \( n \) = total number of trials (children)
+- \( k \) = number of successes (boys or girls)
+- \( p \) = probability of success (having a boy or girl)
+
+---
+
+### (a) Probability of 2 boys and 2 girls
+
+For this part, we want to find the probability of having exactly 2 boys (\(k = 2\)):
+\[
+P(X = 2) = \binom{4}{2} \left(\frac{1}{2}\right)^2 \left(\frac{1}{2}\right)^{4-2}
+\]
+Calculating it:
+\[
+P(X = 2) = \binom{4}{2} \left(\frac{1}{2}\right)^4 = 6 \cdot \frac{1}{16} = \frac{6}{16} = \frac{3}{8}
+\]
+
+**Expected percentage in 800 families**:
+\[
+\text{Expected} = P(X = 2) \times 800 = \frac{3}{8} \times 800 = 300
+\]
+
+**Percentage**:
+\[
+\text{Percentage} = \frac{300}{800} \times 100 = 37.5\%
+\]
+
+---
+
+### (b) Probability of at least 1 boy
+
+The probability of at least 1 boy can be found by calculating the complement (the probability of having no boys):
+\[
+P(\text{at least 1 boy}) = 1 - P(\text{no boys}) = 1 - P(X = 0)
+\]
+For \( k = 0 \):
+\[
+P(X = 0) = \binom{4}{0} \left(\frac{1}{2}\right)^0 \left(\frac{1}{2}\right)^{4} = 1 \cdot 1 \cdot \frac{1}{16} = \frac{1}{16}
+\]
+Thus:
+\[
+P(\text{at least 1 boy}) = 1 - \frac{1}{16} = \frac{15}{16}
+\]
+
+**Expected percentage in 800 families**:
+\[
+\text{Expected} = P(\text{at least 1 boy}) \times 800 = \frac{15}{16} \times 800 = 750
+\]
+
+**Percentage**:
+\[
+\text{Percentage} = \frac{750}{800} \times 100 = 93.75\%
+\]
+
+---
+
+### (c) Probability of no girls
+
+The probability of having no girls is the same as having all boys:
+\[
+P(\text{no girls}) = P(X = 4) = \binom{4}{4} \left(\frac{1}{2}\right)^4 = 1 \cdot \frac{1}{16} = \frac{1}{16}
+\]
+
+**Expected percentage in 800 families**:
+\[
+\text{Expected} = P(\text{no girls}) \times 800 = \frac{1}{16} \times 800 = 50
+\]
+
+**Percentage**:
+\[
+\text{Percentage} = \frac{50}{800} \times 100 = 6.25\%
+\]
+
+---
+
+### (d) Probability of at most 2 girls
+
+The probability of having at most 2 girls is the sum of probabilities of having 0, 1, or 2 girls:
+\[
+P(X \leq 2) = P(X = 0) + P(X = 1) + P(X = 2)
+\]
+
+- \( P(X = 0) = \frac{1}{16} \) (calculated before)
+- \( P(X = 1) \):
+\[
+P(X = 1) = \binom{4}{1} \left(\frac{1}{2}\right)^1 \left(\frac{1}{2}\right)^{4-1} = 4 \cdot \frac{1}{2} \cdot \frac{1}{8} = \frac{4}{16} = \frac{1}{4}
+\]
+- \( P(X = 2) = \frac{3}{8} \) (calculated before)
+
+Now, combining these:
+\[
+P(X \leq 2) = \frac{1}{16} + \frac{1}{4} + \frac{3}{8}
+\]
+
+Convert \( \frac{1}{4} \) and \( \frac{3}{8} \) to sixteenths:
+- \( \frac{1}{4} = \frac{4}{16} \)
+- \( \frac{3}{8} = \frac{6}{16} \)
+
+So:
+\[
+P(X \leq 2) = \frac{1}{16} + \frac{4}{16} + \frac{6}{16} = \frac{11}{16}
+\]
+
+**Expected percentage in 800 families**:
+\[
+\text{Expected} = P(X \leq 2) \times 800 = \frac{11}{16} \times 800 = 550
+\]
+
+**Percentage**:
+\[
+\text{Percentage} = \frac{550}{800} \times 100 = 68.75\%
+\]
+
+---
+
+### Summary of Results
+
+1. **(a)** Expected percentage of families with 2 boys and 2 girls: **37.5%**
+2. **(b)** Expected percentage of families with at least 1 boy: **93.75%**
+3. **(c)** Expected percentage of families with no girls: **6.25%**
+4. **(d)** Expected percentage of families with at most 2 girls: **68.75%**
+
+---
+
+# Probability distributions
+
+__6.52__ If $X$ is the random variable showing the number of boys in families
+with  4 children (see Problem 6.51), (a) construct a table showing the
+probability distribution of X and (b) represent the distribution in part (a)
+graphically.
+
+__Solution__
+
+Using `R` `dbinom` function we can construct the table as such:
+
+```{r p6_52a, echo=F, message=F, fig.cap="Table"}
+require(ggplot2)
+Boys <- c(0,1,2,3,4)
+p.X <- dbinom(Boys,4,.5)
+df <- data.frame(Boys,p.X)
+colnames(df) <- c("X", "p(X)")
+knitr::kable(df, caption="Table")
+```
+
+
+```{r p6_52b, echo=F, message=F, fig.cap="Plot"}
+ggplot(df, aes(x=Boys, y=p.X)) + geom_col()
+```
+
+---
+
+__6.53__ A continuous random variable $X$ that can assume values only between
+$X=2$ and 8 inclusive has a density function given by $a(X+3)$, where $a$ is a
+constant, (a) Calculate $a$. Find (b) Pr{3 < X < 5}, (c) Pr{X $\ge$ 4}, and
+(d) Pr{$|X-5| < 0.5$}.
+
+__Solution__
+
+(a) Note that the area under this curve must equal 1.
+
+$$
+\begin{aligned}
+\int^8_2{a(X + 3)}dx = a \left[\frac{1}{2}X^2 + 3X \right]^8_2 = 1 \\ \\
+  a\left(\left(\frac{1}{2}8^2 + 3(8)\right)
+  - \left(\frac{1}{2}2^2 + 3(2)\right)\right) = 1 \\ \\
+48a = 1 \\ \\
+a = \frac{1}{48}
+\end{aligned}
+$$
+
+```{r p6.53}
+require(ggplot2)
+X <- 2:8
+y <- (1/48)*(X + 3)
+df <- data.frame(X,y)
+ggplot(df, aes(x=X, y=y)) +
+  geom_line() +
+  geom_area( colour = "black", fill = "lightblue")
+```
+
+(b) To find the probability between 3 and 5: Pr{3 < X < 5}
+
+$$
+\begin{aligned}
+\frac{1}{48}\int^5_3{(X + 3)}dx
+  & = \frac{1}{48} \left[\frac{1}{2}X^2 + 3X \right]^5_3 \\ \\
+  & = \frac{1}{48} \left(\left(\frac{1}{2}5^2 + 3(5)\right)
+    - \left(\frac{1}{2}3^2 + 3(3)\right)\right) \\ \\
+  & = `r (1/48)*((.5*5^2 + 3*5) - (.5*3^2 + 3*3))`
+\end{aligned}
+$$
+
+(c) Pr{X $\ge$ 4}
+
+$$
+\frac{1}{48}\int^{\infty}_4{(X+3)}dx = \frac{1}{48}\int^8_4{(X + 3)}dx = 
+`r (1/48)*((.5*8^2 + 3*8) - (.5*4^2 + 3*4))`
+$$
+
+(d) Pr{$|X-5| < 0.5$}
+
+
+$$
+\begin{aligned}
+|X - 5| < 0.5 \\ \\
+-0.5 < X - 5 < 0.5 
+\end{aligned}
+$$
+
+Solving for $X$
+
+$$
+4.5 < X < 5.5
+$$
+
+$$
+\frac{1}{48} \int^{5.5}_{4.5}{X-3}dx
+  = \frac{1}{48}\left[{\frac{1}{2}X^2 + 3X} \right]^{5.5}_{4.5}
+  = `r 1/48*((.5*5.5^2 + 3 * 5.5) - (.5*4.5^2 + 3 * 4.5))`
+$$
+
+---
+
+__6.54__ Three marbles are drawn without replacement from an urn containing 4
+red and 6 white marbles. If $X$ is a random variable that denotes the total
+number of red marbles drawn, (a) construct a table showing the probability
+distribution of X and (b) graph the distribution.
+
+__Solution__
+
+The urn contains 4 red and 6 white marbles for a total of 10. The probability
+of drawing a red marble is $0.4$
+
+```{r p6.54}
+require(ggplot2)
+X <- 0:3
+p.X <- dhyper(X,4,6,3)
+(p6.54.df <- data.frame(X, p.X))
+ggplot(p6.54.df, aes(x=X, y=p.X)) + geom_col()
+```
+
+---
+
+__6.55__
+
+(a) Three dice are rolled and $X=$ the sum on the three upturn faces. Give the
+probability distribution for X. (b) Find Pr{7 $\le$ X $\le$ 11}.
+
+__Solution__
+
+(a) To derive the probability distribution we need to define the outcomes. The
+set of outcomes range from 3 to 18. Below is a table of the number of
+combinations for each result.
+
+```{r p6.55a, fig.cap="Probability distribution", message=F}
+require(data.table)
+require(ggplot2)
+
+# Number of simulations
+outcomes <- 6^3
+
+# All possible sum of rolling 3 dice
+sums <- rowSums(expand.grid(1:6, 1:6, 1:6))
+
+# Distribution table
+p6.55.dt <- as.data.table(table(sums) / outcomes)
+colnames(p6.55.dt) <- c("Sum", "Probability")
+p6.55.dt$Sum <- as.numeric(p6.55.dt$Sum)
+
+knitr::kable(p6.55.dt, caption="Probability distribution")
+ggplot(p6.55.dt, aes(x=Sum, y=Probability)) + geom_col()
+```
+
+(b) Pr{7 $\le$ X $\le$ 11}
+
+```{r p6.55b}
+sum(p6.55.dt[Sum >= 7 & Sum <= 11]$Probability)
+```
+
+---
+
+# Mathematical expectation
+
+__6.56__ What is a fair price to pay to enter a game in which one can win \$25
+with probability 0.2 and \$10 with probability 0.4?
+
+$$
+\text{Expected value is } (0.2)(\$25) + (0.4)(\$10) = \$`r .2*25 + .4*10`
+$$
+
+---
+
+__6.57__ If it rains, an umbrella salesman can earn \$30 per day. If it is fair,
+he can lose \$6 per day. What is his expectation if the probability of rain is
+0.3?
+
+$$
+\text{Expected value is } (0.3)(\$30) - (0.7)(\$6) = \$`r .3*30 - .7*6`
+$$
+
+---
+
+__6.58__ $A$ and $B$ play a game in which they toss a fair coin 3 times. The
+one obtaining heads first wins the game. If $A$ tosses the coin first and if
+the total value of the stakes is \$20, how much should be contributed by each in
+order that the game be considered fair?
+
+The probability that A wins on the first round:
+
+$$
+\text{Pr\{A wins on first\}} = \text{Pr}\{A_1\} = \frac{1}{2}
+$$
+
+The probability that B wins on the second round:
+
+$$
+\text{Pr\{B wins second\}} = \text{Pr}\{\bar{A_1}\}\ \text{Pr}\{B_2|\bar{A_1}\}
+  = \left(\frac{1}{2}\right) \left(\frac{1}{2}\right) = \frac{1}{4}
+$$
+
+The probability that A wins on the third round:
+
+$$
+\text{Pr\{A wins on third\}} = \text{Pr}\{A_3|\bar{B_2} \bar{A_1}\}
+  = \text{Pr}\{A_3\}\ \text{Pr}\{\bar{B_2}|\bar{A_1}\}
+  = \left(\frac{1}{2}\right) \left(\frac{1}{4}\right) = \frac{1}{8}
+$$
+
+To make the game fair, the contributions should be proportioned as such: A
+contributes \$`r (1/2+1/8)*20` and B contributes \$`r (1/4)*20`.
+
+---
+
+__6.59__ Find (a) $E(X)$, (b) $E(X^2)$, (c) $E[(X - \bar{X})^2]$, and 
+(d) $E(X^3)$ for the probability distribution of Table 6.4.
+
+```{r p6.59.table, echo=F, warning=F, message=F}
+require(dplyr)
+require(knitrExtra)
+X <- c(-10, -20, 30)
+p.X <- c(1/5, 3/10, 1/2)
+df <- data.frame(X,p.X)
+df
+```
+
+__Solution__
+
+```{r p6.59sol, echo=F, warning=F, message=F}
+sum(E.X <- df$X*df$p.X)
+sum(E.X.sq <- df$X^2*df$p.X)
+sum(V.X <- df$p.X*(df$X - mean(df$X))^2)
+sum(E.X.cu <- df$X^3*df$p.X)
+```
+
+---
+
+# Relation between population, sample mean, and variance
+
+__6.60__ Referring to Problem 6.54, find the (a) mean, (b) variance, and (c)
+standard deviation of the distribution of X, and interpret your results.
+
+__Solution__
+
+(a) Assuming that the
+_expected value of the sample mean m is the population mean $\mu$_
+
+```{r p6.60a}
+(X <- p6.54.df$X)
+(p.X <- p6.54.df$p.X)
+(E.X <- sum(p.X*X))
+(X.var <- sum(p.X*(X - E.X)^2))
+(X.sd <- sqrt(X.var))
+```
+
+---
+
+__6.61__ A random variable assumes the value 1 with probability $p$, and 0 with
+probability $q=1-p$. Prove that
+
+(a) $E(X) = p$ and (b) $E[(X-\bar{X})^2]=pq$
+
+__Solution__
+
+```{r p6.61}
+X <- c(0, 1)
+p.X <- c('q', 'p')
+```
+
+$$
+E(X) = \sum{pX} = (1-p)(0) + p(1) = p \\ \\
+E[(X - \bar{X})^2] = E(X^2) - [E(X)]^2 = p - p^2 = p(1-p) = pq
+$$
+
+---
+
+__6.62__ Prove that (a) $E(2X + 3) = 2E(X) + 3$ and (b)
+$E[(X - \bar{X})^2] = E(X^2) - [E(X)]^2$
+
+(a)
+
+$$
+E(2X + 3) = E(2X) + E(3) = 2E(X) + 3
+$$
+
+(b)
+
+$$
+\begin{aligned}
+E[(X - \bar{X})^2] & = E[(X - E(X))^2] \\
+  & = E[X^2 - 2XE(X) + E(X)^2] \\
+  & = E(X^2) - 2[E(X)]^2 + [E(X)]^2 \\
+  & = E(X^2) - [E(X)]^2
+\end{aligned}
+$$
+
+---
+
+__6.63__ In Problem 6.55, find the expected value of X.
+
+__Solution__
+
+```{r p6.63}
+dt <- p6.55.dt
+(E.X <- sum(dt$Probability*dt$Sum))
+```
+
+---
+
+# Permutations
+
+```{r combinat, message=F, echo=F, warning=F}
+perm <- function(n, k) { choose(n, k) * factorial(k) }
+```
+
+__6.64__ Evaluate (a) $_{4}P_{2}$, (b) $_{7}P_{5}$, and (c) $_{10}P_{3}$.
+
+```{r}
+perm(4, 2)
+perm(7, 5)
+perm(10, 3)
+```
+
+---
+
+__6.65__ For what value of $n$ is $_{n+1}P_{3} = _{n}P_{4}$?
+
+__Solution__
+
+$$
+\begin{aligned}
+\frac{(n+1)!}{((n+1) - 3)!} & = \frac{n!}{(n - 4)!} \\ \\
+\frac{(n+1) \cdot n!}{(n-2)!} & = \frac{n!}{(n-4)!} \\ \\
+\frac{(n+1)(n-4)!}{(n-2)!} & = 1 \\ \\
+\frac{(n+1)(n-4)!}{(n-2)(n-3)(n-4)!} & = 1 \\ \\
+\frac{(n+1)}{(n-2)(n-3)} & = 1 \\ \\
+n + 1 & = n^2 - 5n + 6 \\
+0 & = n^2 - 6n + 5 \\ \\
+n = 5\ \ \ & \text{ or }\ \ \ n = 1 \\
+n = 5
+\end{aligned}
+$$
+
+---
+
+__6.66__ In how many ways can 5 people be seated on a sofa if there are only 3
+seats available?
+
+__Solution__
+
+The answer is to find $_{5}P_{3}$:
+
+```{r p6.66}
+perm(5, 3)
+```
+
+---
+
+__6.67__ In how many ways can 7 books be arranged on a shelf if (a) any
+arrangement is possible, (b) 3 particular books must always stand together,
+and (c) 2 particular books must occupy the ends?
+
+__Solution__
+
+(a) For any arrangement:
+
+```{r p6.66a}
+factorial(7)
+```
+
+(b) If 3 books must be together:
+
+```{r p6.66b}
+factorial(3) * factorial(5)
+```
+
+(c) If 2 particular books must occupy the ends:
+
+```{r p6.66c}
+2 * factorial(5)
+```
+
+---
+
+__6.68__ How many numbers consisting of five different digits each can be made
+from the digits 1, 2, 3, $\ldots$, 9 if (a) the numbers must be odd and (b)
+the first two digits of each number are even?
+
+__Solution__
+
+There are 5 odd numbers and 4 even numbers between 1--9 inclusive.
+
+(a) If the numbers must be odd then the last digit of the number must be odd.
+After the last number has been selected, there are 8 numbers and four slots
+remaining.
+
+```{r p6.68a}
+5 * perm(8,4)
+```
+
+(b) If the first two digits of each number are even, then there are 12
+permutations of those two numbers using even numbers, then there are 7 numbers
+and 3 slots remaining.
+
+```{r p6.68b}
+perm(4, 2) * perm(7, 3)
+```
+
+---
+
+__6.69__ Solve Problem 6.68 if repetitions of the digits are allowed.
+
+(a) The total number of ways to arrange the first four digits, with the last
+digit being odd (5 numbers)
+
+```{r p6.69a}
+5 * 9^4
+```
+
+
+(b) If the first two numbers are even:
+
+```{r p6.69b}
+4^2 * 9^3
+```
+
+---
+
+__6.70__ How many different three-digit numbers can be made with three 4's,
+four 2's, and two 3's?
+
+__Solution__
+
+We have three cases for this:
+
+1. All three numbers are the same.
+2. Two of the number are the same and the last is different.
+3. All three numbers are different.
+
+Case 1: There are only 2 three digit numbers that can be made where all three
+numerals are the same: 444 and 222.
+
+Case 2: If 2 numbers are the same then we have:
+
+- six numbers with two 4's: 442, 424, 244, 443, 434, 344.
+- six numbers with two 2's: 223, 232, 322, 224, 242, 422.
+- six numbers with two 3's: 334, 343, 433, 332, 323, 233.
+
+Therefore there are 18 numbers in case 2.
+
+Case 3: All three numbers there are `r 3*2*1` permutations of 432.
+
+There are $2 + 18 + 6 = 26$ different three digit numbers.
+
+---
+
+__6.71__ In how many ways can 3 men and 3 women be seated at a round table if 
+(a) no restrictions are imposed (b) 2 particular women must not sit together,
+and (c) each woman is to be between 2 men?
+
+__Solution__
+
+(a) The first one will be seated then `r 5*4*3*2*1` permutations.
+
+(b) The two will be seated then `r 4*3*2*1` permutations.
+
+(c) A woman is seated and 
+
+Therefore there are `r 2+3*2*1` different three-digit numbers
+
+
+
+
+
+
+

@@ -1,0 +1,348 @@
+---
+title: 'Chapter 9: Statistical Estimation Theory'
+subtitle: 'Solved Problems'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Unbiased and efficient estimates
+
+#### 9.1
+
+Given an example of estimators (or estimates) that are (a) unbiased and efficient, (b) unbiased and inefficient, and (c) biased and inefficient.
+
+> __Solution__
+
+(a) The sample mean $\bar{X}$ and the modified sample variance
+
+$$
+\hat{s}^2 = \frac{N}{N - 1} s^2
+$$
+
+> are two such examples.
+
+(b) The sample median and the sample statistic $\frac{1}{2}(Q_1 + Q_3)$, where $Q_1$ and $Q_3$ are the lower and upper sample quartiles, are two such examples. Both statistics are unbiased estimates of the population mean, since the mean of their sampling distributions is the population mean.
+
+(c) The sample standard deviation $s$, the modified standard deviation $\hat{s}$, the mean deviation, and the semi-interquaritle range are four such examples.
+
+#### 9.2
+
+In a sample of five measurements, the diameter of a sphere was recorded by a scientist as 6.33, 6.37, 6.36, 6.32, and 6.37 centimeters (cm). Determine unbiased and efficient estimates of (a) the true mean and (b) the true variance.
+
+> __Solution__
+
+(a) The unbiased and efficient estimate of the true mean (i.e., the populations mean) is
+
+$$
+\bar{X} = \frac{ \sum{X}}{N} = \frac{ `r (diam <- c(6.33, 6.37, 6.36, 6.32, 6.37))`}{5} = `r mean(diam)`\text{ cm}
+$$
+
+(b) The unbiased and efficient estimate of the true variance (i.e., the population variance) is
+
+$$
+\begin{aligned}
+\hat{s}^2 & = \frac{N}{N - 1} s^2 = \frac{\sum{(X - \hat{X})}}{N - 1} \\
+ & = \frac{(6.33 - 6.35)^2 + (6.37 - 6.35)^2 + (6.36 - 6.35)^2 +
+           (6.32 - 6.35)^2 + (6.37 - 6.35)^2}{5 - 1} \\
+ & = 0.00055\text{ cm}^2
+\end{aligned}
+$$
+
+> Note that although $\hat{s} = \sqrt{0.00055} = 0.023$ cm is an estimate of the true standard deviation, this estimate isneither unbiased nor efficient.
+
+#### 9.3
+
+Suppose that the heights of 100 male students at XYZ University represent a random sample of the heights of all 1546 students at the university. Determine unbiased and efficient estimates of (a) the true mean and (b) the true variance.
+
+> __Solution__
+
+(a) From Problem 3.22, the unbiased and efficient estimate of the true mean height is $\bar{X} = 67.45$ inches (in).
+
+(b) From Problem 4.17, the unbiased and efficient estimate of the true variance is
+
+$$
+\hat{s}^2 = \frac{N}{N - 1} s^2 = \frac{100}{99} (8.5275) = 8.6136
+$$
+
+> Thus $\hat{s} = \sqrt{8.6136} = 2.93$ in. Note that since $N$ is large, there is essentially no difference between $s^2$ and $\hat{s}^2$ or between $s$ and $\hat{s}$.
+> Note that we h ave not used Sheppard's correction for groupoing. To take this into account we would use $s = 2.79$ in (see Problem 4.21).
+
+#### 9.4
+
+Give an unbiased and inefficient estimate of the true mean diameter of the sphere of Problem 9.2.
+
+> __Solution__
+
+> The median is one example of an unbiased and inefficient estimate of the population mean. For the five measurements arranged in order of magnitude, the median is 6.36 cm.
+
+# Confidence intervals for means
+
+#### 9.5
+
+Find the (a) 95% and (b) 99% confidence intervals for estimating the mean height of the XYZ University students in Problem 9.3.
+
+> __Solution__
+
+(a) The 95% confidence limits are $\bar{X} \pm 1.96 \sigma / \sqrt{N}$. Using $\bar{X} = 67.45$ in, and $\hat{s} = 2.93$ in as an estimate of $\sigma$ (see Problem 9.3), the confidence limits are $67.45 \pm 1.96 (2.93/\sqrt{N})$, or $67.45 \pm 0.57$ in. THus the 95% confidence interval for the population mean $\mu$ is 66.88 to 68.02 in, which can be denoted by $66.88 < \mu < 68.02$.
+
+> We can therefore say that the probability that the population mean height lies between 66.88 and 68.02 in about 95% or 0.95. In symbols we write $\mathrm{Pr}\{66.88 < \mu < 68.02\} = 0.95$. This is equivalent to saying that we are 95% _confident_ that the population mean (or true mean) lies between 66.88 and 68.02 in.
+
+(b) The 99% confidence limits are $\bar{X} \pm 2.58 \sigma / \sqrt{N} = \bar{X} \pm 2.58 \hat{s} / \sqrt{N} = 67.45 \pm 2.58(2.93 / \sqrt{100}) = 67.45 \pm 0.76$ in. Thus the 99% confidence interval for the population mean $\mu$ is 66.69 to 68.21 in, which can be denoted by $66.69 < \mu < 68.21$.
+
+> In obtaining the above confidence intervals, we assumed that the population was inifinite or so large that we could consider conditions to be the same as sampling with replacement. For finite populations where sampling is without replacement, we should use
+
+$$
+\begin{aligned}
+\frac{\sigma}{\sqrt{N}} \sqrt{\frac{N_p - N}{N_p - 1}} & \text{ in place of } & \frac{\sigma}{\sqrt{N}}
+\end{aligned}
+$$
+
+> However, we can consider the factor
+
+$$
+\begin{aligned}
+\sqrt{ \frac{N_p - N}{N_p - 1}} = \sqrt{\frac{1546 - 100}{1546 - 1}} = 0.967
+\end{aligned}
+$$
+
+> to be essentially 1.0, and thus it need not be used. If it is used, the above confidence limits become $67.45 \pm 0.56$ in and $67.45 \pm 0.73$ in, respectively.
+
+#### 9.6
+
+Blaises' Christmas Tree Farm has 5000 trees that are mature and ready to be cut and sold. One-hundred of the trees are randomly selected and their heights measured. THe heights in inches are given in Table 9.2. Use R to set a 95% confidence interval on the mean height of all 5000 trees. If the trees sell for \$2.40 per foot, give a lower and an upper bound on the value of the 5000 trees.
+
+> __Solution__
+
+> The R confidence interval given below indicates that the mean height for the 5000 trees could be as small as 57.24 or as large as 61.20 inches. The total number of inches for all 5000 trees ranges between $(57.24)(5000) = 286,2000$ and $(61.20)(5000) = 306,000$. If the trees sell for \$2.40 per foot, then cost per inch is \$0.2. The value of the trees ranges between $(286,000)(0.2) = \$57,200$ and $(306,000)(0.2) = \$61,200$ with 95% confidence.
+
+> __NOTE__<b>
+> We need to use the corrected standard devation. See Chapter 4 on the standard deviation for more information.
+
+```{r Exercise 9.6}
+table_9_2 <- c( 56, 61, 52, 62, 63, 34, 47, 35, 44, 59,
+                70, 61, 65, 51, 65, 72, 55, 71, 57, 75,
+                53, 48, 55, 67, 60, 60, 73, 74, 43, 74,
+                71, 53, 78, 59, 56, 62, 48, 65, 68, 51,
+                73, 62, 80, 53, 64, 44, 67, 45, 58, 48,
+                50, 57, 72, 55, 56, 62, 72, 57, 49, 62,
+                46, 61, 52, 46, 72, 56, 46, 48, 57, 52,
+                54, 73, 71, 70, 66, 67, 58, 71, 75, 50,
+                44, 59, 56, 54, 63, 43, 68, 69, 55, 63,
+                48, 49, 70, 60, 67, 47, 49, 69, 66, 73)
+
+#corrected.sd <- sd(table_9_2)*sqrt((length(table_9_2)-1)/length(table_9_2))
+corrected.sd <- sqrt(mean((table_9_2 - mean(table_9_2))^2))
+mean(table_9_2)
+(pm <- signif(1.96 * corrected.sd / sqrt(length(table_9_2)), 3))
+mean(table_9_2) + c(-pm, pm)
+
+model <- lm(table_9_2 ~ 1)
+signif(confint(model, level=0.95),4)
+```
+
+#### 9.7
+
+In a survey of Catholic priests each priest reported the total number of baptisms, marriages, and funerals conducted during the past calendar year. The responses are given in Table 9.3. Use this data to construct a 95% confidence interval on $\mu$, the mean number of baptisms, marriages, and funerals conducted during the past calendar year per priest for all priests. Construct the interval by use of the confidence interval formula, and also use R to find the interval.
+
+```{r Exercise 9.7}
+table_9_3 <- c( 32, 44, 48, 35, 34, 29, 31, 61, 37, 41,
+                31, 40, 44, 43, 41, 40, 41, 31, 42, 45,
+                29, 40, 42, 51, 16, 24, 40, 52, 62, 41,
+                32, 41, 45, 24, 41, 30, 42, 47, 30, 46,
+                38, 42, 26, 34, 45, 58, 57, 35, 62, 46)
+
+corrected.sd <- sd(table_9_3)*sqrt((length(table_9_3) - 1)/length(table_9_3))
+mean(table_9_3)
+(pm <- signif(1.96 * sd(table_9_3) / sqrt(length(table_9_3)),3))
+mean(table_9_3) + c(-pm, pm)
+
+df <- data.frame(Responses=table_9_3)
+model <- lm(table_9_3 ~ 1)
+confint(model, level=0.95)
+```
+
+#### 9.8
+
+In measuring reaction time, a psychologist estimates that the standard deviation is 0.05 seconds (s). How large a sample of measurements must he take in order to be (a) 95% and (b) 99% confident that the error of his estimate will not exceed 0.01 s?
+
+> __Solution__
+
+(a) The 95% confidence limits are $\bar{X} \pm 1.96 \sigma / \sqrt{N}$, the error of the estimate being $1.96 \sigma / \sqrt{N}$. Taking $\sigma = s = 0.05$ s, we see that this error will be equal to $0.01$s if $(1.96)(0.05)/\sqrt{N} = 0.01$; that is $\sqrt{N} = (1.96)(0.05) / 0.01 = 9.8$, or $N = 96.04$. Thus we can be 95% confident that the error of the estimate will be less than 0.01s if $N$ is 97 or larger.
+
+> __Another method__
+
+$$
+\begin{aligned}
+\frac{(1.96)(0.05)}{\sqrt{N}} \le 0.01\ \ \ \ \ & \text{ if } &
+\frac{\sqrt{N}}{(1.96)(0.05)} \ge \frac{1}{0.01}\ \ \ \ &
+\text{ or } & \sqrt{N} \ge \frac{(1.96)(0.05)}{0.01} = 9.8
+\end{aligned}
+$$
+
+> Then $N \ge 96.04$, or $N \ge 97$.
+
+(b) The 99% confidence limits are $\bar{X} \pm 2.58 \sigma / \sqrt{N}$. Then $(2.58)(0.05) / \sqrt{N} = 0.01$, or $N = 166.4$. Thus we can be 99% confident that the error of the estimate will be less tan 0.01 s only if $N$ is 167 or larger.
+
+#### 9.9
+
+A random sample of 50 mathematics grades out of a total of 200 showed a mean of 75 and a standard deviation of 10.
+
+(a) What are the 95% confidence limits for estimates of the mean of the 200 grades?
+(b) With what degree of confidence could we say that the mean of all 200 grades is $75 \pm 1$?
+
+> __Solution__
+
+(a) Since the population size is not very large compared with the sample size, we must adjust for it. Then the 95% confidence limits are
+
+$$
+\bar{X} \pm 1.96 \sigma_{\bar{X}} = \bar{X} \pm 1.96 \frac{\sigma}{\sqrt{N}}\sqrt{\frac{N_p - N}{N_p - 1}}
+ = 75 \pm 1.96 \frac{10}{\sqrt{50}}\sqrt{\frac{200 - 50}{200 - 1}} = 75 \pm 2.4
+$$
+ 
+(b) The confidence limits can be represented by
+
+$$
+\bar{X} \pm z_c \sigma_{\bar{X}} = \bar{X} \pm z_c \frac{\sigma}{\sqrt{N}} \sqrt{\frac{N_p - N}{N_p - 1}}
+ = 75 \pm z_c \frac{10}{\sqrt{50}} \sqrt{\frac{200 - 50}{200 - 1}} = 75 \pm 1.23 z_c
+$$
+
+> Since this must equal $75 \pm 1$, we have $1.23 z_c = 1$, or $z_c = 0.81$. THe area under the normal curve from $z = 0$ to $z = 0.81$ is 0.2910; hence the required degree of confidence is $2(0.2910) = 0.582$, or $58.2%$.
+
+# Confidence intervals for proportions
+
+#### 9.10
+
+A sample poll of 100 voters chosen at random from all voters in a given district indciated that 55% of them were in favor of a particular candidate. Find the (a) 95%, (b) 99%, and (c) 99.73% confidence limits for the proportion of all the voters in favor of this candidate.
+
+> __Solution__
+
+(a) The 95% confidence limits for the population $p$ are $P \pm 1.96 \sigma_P = P \pm 1.96 \sqrt{p(1 - p)/N} = 0.55 \pm 1.96 \sqrt{(0.55)(0.45)/100} = 0.55 \pm 0.10$, where we have used the sample proportion $P$ to estimate $p$.
+
+(b) The 99% confidence limits for $p$ are $0.55 \pm 2.58 \sqrt{(0.55)(0.45)/100} = 0.55 \pm 0.13$.
+
+(c) The 99.73% confidence limits for $p$ are $0.55 \pm 3 \sqrt{(0.55)(0.45)/100} = 0.55 \pm 0.15$.
+
+#### 9.11
+
+How large a sample of voters should we take in Problem 9.10 in order to be (a) 95% and (b) 99.73% confident that the candidate will be elected?
+
+> __Solution__
+
+> The confidence limits for $p$ are $P \pm \sqrt{p(1 - p)/N} = 0.55 \pm z_c \sqrt{(0.55)(0.45)/N} = 0.55 \pm 0.50 z_c / \sqrt{N}$, where we have used the estimate $P = p = 0.55$ on the basis of Problem 9.10. Since the candidate will win only if she receives more than 50% of the population's votes, we require that $0.50 z_c / \sqrt{N}$ be less than 0.05.
+
+(a) For 95% confidence, $0.50 z_c / \sqrt{N} = 0.50(1.96) / \sqrt{N} = 0.05$ when $N = 384.2$. Thus $N$ should be at least 385.
+
+(b) For 99.73% confidence, $0.50 z_c / \sqrt{N} = 0.50(3) / \sqrt{N} = 0.05$ when $N = 900$. Thus $N$ should be at least 901.
+
+> __Another method__
+
+> $1.50 / \sqrt{N} < 0.05$ when $\sqrt{N} / 1.50 > 1 / 0.05$ or $\sqrt{N} > 1.50 / 0.05$. Then $\sqrt{N} > 30$ or $N > 900$, so that $N$ should be at least 901.
+
+#### 9.12
+
+A survey is conducted and it is found that 156 out of 500 adult males are smokers. Use R to set a 99% confidence interval on $p$, the proportion in the population of adult males who are smokers. Check the confidence interval by computing it by hand.
+
+> __Solution__
+
+```{r Exercise 9.12}
+N <- 500
+s <- 156
+p <- s/N
+
+pm <- 2.58 * sqrt((p * (1 - p))/N)
+
+p + c(-pm, pm)
+```
+
+# Confidence intervals for differences and sums
+
+#### 9.14
+
+A study was undertaken to compare the mean time spent on cell phones by male and female college students per week. Fifty male and 50 female students were selected from Midwestern Univeristy and the number of hours per week spent talking on their cell phones determined. The results in hours are shown in Table 9.4. Set a 95% confidence interval on $\mu_1 - \mu_2$ using R.
+
+```{r Exercise 9.14}
+table_9.4 <- data.frame(
+  Males=c( 12,  7,  7, 10,  8, 10, 11,  9,  9, 13,
+            4,  9, 12, 11,  9,  9,  7, 12, 10, 13,
+           11, 10,  6, 12, 11,  9, 10, 12,  8,  9,
+           13, 10,  9,  7, 10,  7, 10,  8, 11, 10,
+           11,  7, 15,  8,  9,  9, 11, 13, 10, 13),
+  
+  Females=c(11, 10, 11, 10, 11, 12, 12, 10,  9,  9,
+             9, 10,  8,  7, 12,  9,  7,  8,  9,  8,
+             7,  7,  9,  9, 12, 10,  9, 13,  9,  9,
+            10,  9,  6, 12,  8, 11,  8,  8, 11, 12,
+             9, 10, 11, 14, 12,  7, 11, 10,  9, 11)
+)
+```
+
+> __Solution__
+
+When both samples exceed 30, the two sample $t$ test and the $z$ test may be used interchangeably since the $t$ distibution and the $z$ distribution are very similar.
+
+```{r Exercise 9.14 t-test}
+t.test(table_9.4$Males - table_9.4$Females)
+```
+
+According to R output, the difference in the population means between $-0.66$ and $0.90$. There is a good chance that there is no difference in the population means.
+
+The formula for a 95% confidence interval is $(\bar{X}_1 - \bar{X}_2) \pm z_c \left(\sqrt{(s_1^2/n_1) + (s_2^2/n_2)} \right)$. Substituting, we obtain $0.12 \pm 1.96(0.395)$ and get the answer given by R.
+
+```{r}
+mu.diff <- abs(mean(table_9.4$Males) - mean(table_9.4$Females))
+zc <- 1.96
+sq <- sqrt((sd(table_9.4$Males)^2)/50 + (sd(table_9.4$Females)^2)/50)
+mu.diff + c(-zc*sq, zc*sq)
+.12 + c(-1.96*.395, 1.96*.395)
+```
+
+# Confidence intervals for standard deviations
+
+#### 9.17
+
+A confidence interval for the variance of a population utilizes the chi-square distribution. The $(1 - \alpha) \times 100%$ confidence interval is $\left(\frac{(n-1)S^2}{\chi^2_{\alpha/2}} \right) < \sigma^2 < \left(\frac{(n-1)S^2}{\chi^2_{1 - \alpha/2}} \right)$, where $n$ is the sample size, $S^2$ is the sample variance, $\chi^2_{\alpha/2}$ and $\chi^2_{1- \alpha/2}$ come from the chi-square distribution with $(n - 1)$ degrees of freedom. Use R to find a 99% confidence interval for the variance of twenty 180 ounce containers. The data from twenty containers is shown in Table 9.5.
+
+```{r Exercise 9.17}
+table_9_5 <- c(181.5, 179.7, 178.7, 183.9, 179.7, 180.6, 180.4, 178.5, 178.8, 181.3,
+               180.8, 182.4, 178.5, 182.2, 180.9, 181.4, 181.4, 180.6, 180.1, 182.2)
+
+(S.sq <- var(table_9_5))
+(deg.freedom <- 19 * S.sq)
+(chi.r <- qchisq(.99, 19))
+(chi.r <- qchisq(.01, 19))
+```
+
+# Probable error
+
+#### 9.19
+
+The voltages of 50 batteries of the same type have a mean of 18.2 volts (V) and a standard deviation of 0.5 V. Find (a) the probable error of the mean and (b) the 50% confidence limits.
+
+> __Solution__
+
+(a)
+$$
+\begin{aligned}
+\text{Probable error of the mean} & = 0.674 \sigma_{\bar{X}}
+ = 0.6745 \frac{\sigma}{\sqrt{N}} = 0.6745 \frac{\hat{s}}{\sqrt{N}} \\
+ & = 0.6745 \frac{s}{\sqrt{N - 1}} = 0.6745 \frac{0.5}{\sqrt{49}} = 0.048 V
+ \end{aligned}
+ $$
+
+> Note that if the standard deviation of 0.5 V is computed as $\hat{s}$, the probable error is $0.6745(0.5 \sqrt{50}) = 0.048$ also, so that either estimate can be used if $N$ is large enough.
+
+(b) The 50% confidence limits are $18 \pm 0.048$V.
+
+#### 9.20
+
+A measurement was recorded as 216.480 grams (g) with a probable error of 0.272g. What are the 95% confidence limits for the measurement?
+
+> __Solution__
+
+The probable error is $0.272 = 0.6745 \sigma_{\bar{X}} = 0.272 / 0.6745$. Thus the 95% confidence limits are $\bar{X} \pm 1.96 \sigma_{\bar{X}} = 216.480 \pm 1.96(0.272/0.6745) = 216.480 \pm 0.790$g.
+
+
+

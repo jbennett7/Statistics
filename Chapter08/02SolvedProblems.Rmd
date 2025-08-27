@@ -1,0 +1,316 @@
+---
+title: 'Chapter 8: Elementary Sampling Theory'
+subtitle: 'Solved Problems'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Sampling distribution of means
+
+#### 8.1
+
+A population consists of the five numbers `r (p8.1 <- c(2, 3, 6, 8, 11))`. Consider all possible samples of size 2 that can be drawn with replacement from this population. Find (a) the mean of the population, (b) the standard deviation of the population, (c) the mean of the sampling distribution of means, and (d) the standard deviation of the sampling distribution of means (i.e., the standard error of means).
+
+__Solution__
+
+(a)
+$$
+\mu = \frac{2 + 3 + 6 + 8 + 11}{5} = \frac{`r sum(p8.1)`}{5} = `r (p8.1.mean <- mean(p8.1))`
+$$
+
+(b)
+$$
+\sigma^2 = \frac{(2 - 6)^2 + (3 - 6)^2 + (6 - 6)^2 + (8 - 6)^2 + (11 - 6)^2}{5} = 
+\frac{16 + 9 + 0 + 4 + 25}{5} = `r (p8.1.sd <- sum((p8.1 - p8.1.mean)^2)/length(p8.1))`
+$$
+
+> and $\sigma = `r signif(sqrt(p8.1.sd),3)`$.
+
+(c) There are $5(5) = 25$ samples of size 2 that can be drawn with replacement (since any one of the five numbers on the first draw can be associated with any one of the five numbers on the second draw). These are
+
+```{r}
+X <- c(2, 3, 6, 8, 11)
+sample.space <- expand.grid(X,X)
+sample.means <- rowMeans(sample.space)
+(mean.of.sample.means <- mean(sample.means))
+```
+
+(d) The variance $\sigma^2_{\bar{X}}$ of the sampling distribution of means is obtained by subtracting the mean 6 from each number in the sample means, squaring the result, adding all 25 numbers thus obtained, and dividing by 25. The final result is $\sigma^2_{\bar{X}} = 135/25 = 5.40$, and thus $\sigma_{\bar{X}} = \sqrt{5.40} = 2.32$. This illustrates the fact that for finite populations involving sampling with replacement (or infinite populations), $\sigma^2_{\bar{X}} = \sigma^2/N$ since the right-hand side is $10.8/2 = 5.40$, agreeing with the above value.
+
+```{r}
+(sd.sample.distribution.means <- sum((sample.means - mean.of.sample.means)^2)/length(X)^2)
+```
+
+#### 8.2
+
+Solve Problem 8.1 for the case that the sampling is without replacement.
+
+__Solution__
+
+As in parts (a) and (b) of Problem 8.1, $\mu = 6$ and $\sigma = 3.29$.
+
+```{r}
+X <- c(2, 3, 6, 8, 11)
+N <- choose(length(X), 2)
+(p8.2.space <- combn(X, 2))
+(p8.2.means <- colMeans(p8.2.space))
+(p8.2.mean <- mean(p8.2.means))
+(p8.2.sd <- sum((p8.2.means - p8.2.mean)^2)/N)
+```
+
+(c) There are $\binom{5}{2} = `r choose(5,2)`$ samples of size 2 that can be drawn without replacement (this means that we draw one number and then another number different from the first) from the population: $(2, 3), (2, 6), (2, 8), (2, 11), (3, 6), (3, 8), (3, 11), (6, 8), (6, 11),$ and $(8, 11)$. The selection $(2, 3)$, for example, is considered the same as $(3,2)$.
+The corresponding sample means are $`r p8.2.means`$, and the mean of sampling distribution of means is
+$$
+\mu_{\bar{X}} = \frac{2.5 + 4.0 + 5.0 + 6.5 + 4.5 + 5.5 + 7.0 + 7.) + 8.5 + 9.5}{10} = 6.0
+$$
+> illustrating the fact that $\mu_{\bar{X}} = \mu$.
+
+(d) The variance of sampling distribution of means is
+
+$$
+\sigma^2_{\bar{X}} = \frac{(2.5 - 6.0)^2 + (4.0 - 6.0)^2 + (5.0 - 6.0)^2 + \cdots + (9.5 - 6.0)^2}{10} = 4.05
+$$
+
+> and $\sigma_{\bar{X}} = 2.01$. This illustrates
+
+$$
+\sigma^2_{\bar{X}} = \frac{\sigma^2}{N} \left(\frac{N_p - N}{N_p - 1}\right)
+$$
+
+> since the right side equals
+
+$$
+\frac{10.8}{2} \left(\frac{5 - 2}{5 - 1}\right) = 4.05
+$$
+
+> as obtained above.
+
+#### 8.3
+
+Assume that the heights of 3000 male students at a university are normally distributed with mean 68.0 inches (in) and standard deviation 3.0 in. If 80 samples consisting of 25 students each are obtained, what would be the expected mean and standard deviation of the resulting sampling distribution of means if the sampling were done (a) with replacement and (b) without replacement?
+
+__Solution__
+
+The numbers of samples of size 25 that could be obtained theoretically from a group of 3000 students with and without replacement are $(3000)^{25}$ and $\binom{3000}{25}$, which are much larger than 80. Hence we do not get a true sampling distribution of means, but only an _experimental_ sampling distribution. Nevertheless, since the number of samples is large, there should be close agreement between the two sampling distributions. Hence the expected mean and standard deviation would be close to those of the theoretical distribution. Thus we have:
+
+(a)
+
+```{r}
+p8.3.with.replacement.sample.size <- 3000^25
+p8.3.without.replacement.sample.size <- choose(3000, 25)
+
+(mean <- 68.0)
+(sigma <- 3/sqrt(25))
+```
+
+$$
+\mu_{\bar{X}} = \mu = 68.0 \text{in}\ \ \ \ \text{and}\ \ \ \ \sigma_{\bar{X}} =
+\frac{\sigma}{\sqrt{N}} = \frac{3}{\sqrt{25}} = 0.6 \text{in}
+$$
+
+(b) 
+
+```{r}
+p8.3.with.replacement.sample.size <- 3000^25
+p8.3.without.replacement.sample.size <- choose(3000, 25)
+
+(mean <- 68.0)
+(sigma <- 3/sqrt(25)* sqrt((3000 - 25)/(3000 - 1)))
+```
+
+$$
+\mu_{\bar{X}} = 68.0 \text{in}\ \ \ \ \text{and}\ \ \ \ \sigma_{\bar{X}} =
+\frac{\sigma}{\sqrt{N}} \sqrt{\frac{N_p - N}{N_p - 1}} =
+\frac{3}{\sqrt{25}} \sqrt{\frac{3000 - 25}{3000 - 1}}
+$$
+
+> which is only very slightly less than 0.6 in and can therefore, for all practical purposes, be considered the same as in sampling with replacement.
+
+> Thus we would expect the experimental sampling distribution of means to be approximately noramlly distributed with mean 68.0 in and standard deviation 0.6 in.
+
+#### 8.4
+
+In how many samples of Problem 8.3 would you expect to find the mean (a) between 66.8 and 68.3 in and (b) less than 66.4 in?
+
+__Solution__
+
+The mean $\bar{X}$ of a sample in standard units is here given by
+
+$$
+z = \frac{\bar{X} - \mu_{\bar{X}}}{\sigma_{\bar{X}}} = \frac{\bar{X} - 68.0}{0.6}
+$$
+
+(a)
+$$
+66.8\ \text{in standard units} = \frac{66.8 - 68.0}{0.6} = -2.0
+$$
+
+$$
+68.3\ \text{in standard units} = \frac{68.3 - 68.0}{0.6} = 0.5
+$$
+
+```{r}
+x <- seq(-3, 3, length=100)
+mu.xbar <- 68.0
+sigma.xbar <- 0.6
+z.1 <- (66.8 - mu.xbar)/sigma.xbar
+z.2 <- (68.3 - mu.xbar)/sigma.xbar
+x.z <- seq(z.1, z.2, length=100)
+y <- dnorm(x.z)
+plot(x, dnorm(x), type='l')
+polygon(c(z.1,x.z,z.2), c(0, y, 0), col="gray")
+cat("(a) Expected mean:", pnorm(z.2) - pnorm(z.1))
+```
+
+(b)
+
+```{r}
+mu <- 68.0
+sigma <- 0.6
+x <- seq(-3, 3, length=100)
+z <- (66.4 - mu)/sigma
+x.z <- seq(-3, z, length=100)
+y <- dnorm(x.z)
+plot(x, dnorm(x), type='l')
+polygon(c(-3,x.z,z), c(0, y, 0), col="gray")
+cat("Expected mean:", pnorm(z))
+```
+
+#### 8.5
+
+Five hunbred ball bearings have a mean weight of 5.02 grams (g) and a standard deviation of 0.30 g. Find the probability that a random sample of 100 ball bearings chosen from this group will have a combined weight of (a) between 496 and 500 g and (b) more than 510 g.
+
+__Solution__
+
+For the sample distribution of means, $\mu_{\bar{X}} = \mu = 5.02$g, and
+
+$$
+\sigma_{\bar{X}} = \frac{\sigma}{\sqrt{N}} \sqrt{\frac{N_p - N}{N_p - 1}} =
+\frac{0.30}{\sqrt{100}} \sqrt{\frac{500 - 100}{500 - 1}} = 0.027\text{g}
+$$
+
+(a) The combined weight will lie between 496 and 500 g if the  mean weight of the 100 ball bearings lies between 4.96 and 5.00 g.
+
+$$
+4.96\ \text{in standard units} = \frac{4.96 - 5.02}{0.0027} = -2.22
+$$
+
+$$
+5.00\ \text{in standard units} = \frac{500 - 5.02}{0.0027} = -0.74
+$$
+
+```{r}
+N.pop <- 500
+N.sample <- 100
+mu.pop <- 5.02
+sigma.pop <- .3
+
+mu.sample <- mu.pop
+sigma.sample <- signif(sigma.pop/sqrt(N.sample) * sqrt((N.pop - N.sample)/(N.pop - 1)),2)
+x <- seq(-3, 3, length=100)
+z.1 <- signif((4.96 - mu.sample)/(sigma.sample), 3)
+z.2 <- signif((5.00 - mu.sample)/(sigma.sample), 3)
+x.z <- seq(z.1, z.2, length=100)
+y <- dnorm(x.z)
+plot(x, dnorm(x), type='l')
+polygon(c(z.1,x.z,z.2), c(0, y, 0), col="gray")
+cat("(a) Expected mean:", signif(pnorm(z.2) - pnorm(z.1), 4))
+```
+
+(b)
+```{r}
+N.pop <- 500
+N.sample <- 100
+mu.pop <- 5.02
+sigma.pop <- .3
+
+mu.sample <- mu.pop
+sigma.sample <- signif(sigma.pop/sqrt(N.sample) * sqrt((N.pop - N.sample)/(N.pop - 1)),2)
+x <- seq(-3, 3, length=100)
+z <- (5.10 - mu.sample)/sigma.sample
+x.z <- seq(z, 3, length=100)
+y <- dnorm(x.z)
+plot(x, dnorm(x), type='l')
+polygon(c(z, x.z, 3), c(0, y, 0), col="gray")
+cat("Expected mean:", pnorm(z, lower.tail=FALSE))
+```
+
+#### 8.6
+
+(a) Show how to select 30 random samples of 4 students eac (with replacement) from Table 2.1 by using random numbers.
+
+(b) Find the mean and standard deviation of the sampling distribution of means in part (a).
+
+(c) Compare the results of part (b) with theoretical values, explaining any discrepancies.
+
+__Solution__
+
+(a) We create a coding scheme where shown below. The `code` column shows the minimum value for a sample number to be assigned to that class. For example if the sample number drawn is `8` then it belongs to class `63-65`.
+
+```{r}
+height <- c("60-62", "63-65", "66-68", "69-71", "72-74")
+mark <- c(61, 64, 67, 70, 73)
+f <- c(5, 18, 42, 27, 8)
+code <- c(0, cumsum(f))
+data.frame(height, f, head(code,-1))
+```
+
+> The `translate.height` function will take the sample code number and translate it to the mark value for the class, which is the middle value of the class heights: `r mark`.
+
+```{r}
+translate.height <- function(x) {
+  heights <- c()
+  for( i in x) {
+    heights <- c(heights, mark[max(which(i >= code))])
+  }
+  heights
+}
+```
+
+> We will now take 30 samples of four students each, translate their codes to height marks, and find the mean of the heights.
+
+```{r}
+set.seed(1)
+mean.heights <- c()
+for ( k in 1:30) {
+    draws <- sample(0:99, 4, replace=TRUE)
+    heights <- translate.height(draws)
+    cat(k, ":", draws, "\t\t", heights, "\t\t", (mean.height <- mean(heights)), "\n")
+    mean.heights <- c(mean.heights, mean.height)
+}
+```
+
+(b) The table and histogram below is the frequency distribution of the sample means obtained in part (a). This is a _sampling distribution of means_. The mean and the standard deviation are obtained as usual by the coding methods of Chapters 3 and 4:
+
+```{r}
+h <- hist(mean.heights,plot=F)
+names(h)
+class.size <- unique(diff(h$breaks))
+A <- h$mids[1]
+u <- seq(0, length(h$mids)-1)
+(fu <- h$counts*u)
+(fu.sq <- h$counts*u^2)
+(mean <- A + class.size*(sum(fu)/30))
+(standard.deviation <- class.size*sqrt(sum(fu.sq)/30-(sum(fu)/30)^2))
+```
+
+The mean and the standard deviation are obtained as usual by the coding methods of Chapters 3 and 4:
+
+$$
+\text{Mean} = A + c\bar{u} = A + \frac{c \sum{fu}}{N} = `r A` + \frac{ (`r class.size`)(`r sum(fu)`) }{30} = `r signif(mean,4)`
+$$
+
+$$
+\text{Standard deviation} = c \sqrt{\overline{u^2} - \bar{u}^2} = c \sqrt{\frac{\sum{fu^2}}{N} - \left(\frac{\sum{fu}}{N}\right)^2} = `r class.size` \sqrt{\frac{`r sum(fu.sq)`}{30} - \left(\frac{`r sum(fu)`}{30}\right)^2} = `r signif(standard.deviation,3)`
+$$
+
+
+
+
+
+
+
+

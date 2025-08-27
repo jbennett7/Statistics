@@ -1,0 +1,595 @@
+---
+title: 'Chapter 2: Frequency Distributions'
+subtitle: 'Solved Problems'
+author: 'Murray R. Spiegel, PhD and Larry J. Stephens, PhD'
+date: '2024-06-15'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Arrays
+
+## Creating an array (ascending and descending) from raw data
+
+#### 2.1
+
+(a) Arrange the numbers `r (p2.1 <- c(17, 45, 38, 27, 6, 48, 11, 57, 34, 22))` in an array.
+
+(b) Determine the range of these numbers.
+
+__Solution__
+
+(a) In ascending order of magnitude, the array is `r sort(p2.1, decreasing = FALSE)`. In descending order of magnitude, the aray is: `r sort(p2.1, decreasing = TRUE)`.
+
+(b) Since the smallest number is 6 and the largest number is 57, the range is $57 - 6 = 51$.
+
+```{r}
+cat("(a) ascending:", sort(p2.1, decreasing = FALSE),
+    "\n    descending:", sort(p2.1, decreasing = TRUE),
+    "\n(b) range:", range(p2.1), ": ", diff(range(p2.1)))
+```
+
+## Studying the properties of raw data (with stem and leaf plot)
+
+#### 2.2
+
+The final grades in mathematics of 80 students at State University are recorded in the accompanying table.
+
+```{r}
+p2.2 <- c( 68, 84, 75, 82, 68, 90, 62, 88, 76, 93,
+           73, 79, 88, 73, 60, 93, 71, 59, 85, 75,
+           61, 65, 75, 87, 74, 62, 95, 78, 63, 72,
+           66, 78, 82, 75, 94, 77, 69, 74, 68, 60,
+           96, 78, 89, 61, 75, 95, 60, 79, 83, 71,
+           79, 62, 67, 97, 78, 85, 76, 65, 71, 75,
+           65, 80, 73, 57, 88, 78, 62, 76, 53, 74,
+           86, 67, 73, 81, 72, 63, 76, 75, 85, 77)
+```
+
+with reference to this table, find:
+
+(a) The highest grade.
+
+```{r}
+max(p2.2)
+```
+
+(b) The lowest grade.
+
+```{r}
+min(p2.2)
+```
+
+(c) The range.
+
+```{r}
+cat("Lowest-Highest:", range(p2.2),
+    "\nDifference:", diff(range(p2.2)))
+```
+
+(d) The grades of the five highest-ranking students.
+
+```{r}
+(sort(p2.2, decreasing = TRUE))[1:5]
+```
+
+(e) The grades of the five lowest-ranking students.
+
+```{r}
+(sort(p2.2, decreasing = FALSE))[1:5]
+```
+
+(f) The grade of the student ranking tenth highest.
+
+```{r}
+(sort(p2.2, decreasing = TRUE))[10]
+```
+
+(g) The number of students who received grades of 75 or higher.
+
+```{r}
+p2.2.sort.high <- sort(p2.2, decreasing = TRUE)
+length(p2.2.sort.high[p2.2.sort.high >= 75])
+```
+
+(h) The number of students who received grades below 85.
+
+```{r}
+p2.2.sort.low <- sort(p2.2, decreasing = FALSE)
+length(p2.2.sort.low[p2.2.sort.low < 85])
+```
+
+(i) The percentage of students who received grades higher than 65 but not higher than 85.
+
+```{r}
+p2.2.sort.range <- p2.2.sort.high[p2.2.sort.high <= 85 & p2.2.sort.high > 65]
+length(p2.2.sort.range)/length(p2.2) * 100
+```
+
+(j) The grades that did not appear.
+
+```{r}
+setdiff(1:100, p2.2)
+```
+
+Stem and leaf
+
+```{r}
+stem(p2.2)
+```
+
+# Frequency distributions, histograms, and frequency polygons
+
+## Using Frequency distribution tables
+
+
+#### 2.3
+
+Table 2.6 shows a frequency distribution of the weekly wages of 65 employees at the P&R Company. With reference to this table, determine:
+
+__Table 2.6__
+
+|Wages|Number of Employees|
+|:---:|:---:|
+|\$250.00--\$259.99|8|
+|260.00--269.99|10|
+|270.00--279.99|16|
+|280.00--289.99|14|
+|290.00--299.99|10|
+|300.00--309.99|5|
+|310.00--319.99|2|
+| |Total  65|
+
+### Creating a histogram from a frequency  distribution table
+
+```{r}
+h <- list(counts = c(8, 10, 16, 14, 10, 5, 2),
+          xname="Wages",
+          breaks = c(250, 260, 270, 280, 290, 300, 310, 320),
+          mids = c(255, 265, 275, 285, 295, 305, 315))
+class(h) <- "histogram"
+plot(h, xaxt='n')
+axis(side=1, at=h$mids)
+table_2_6 <- matrix(h$counts, ncol=1)
+rownames(table_2_6) <- c("250.00-259.99", "260.00-269.99", "270.00-279.99",
+                         "280.00-289.99", "290.00-299.99", "300.00-309.99",
+                         "310.00-319.99")
+colnames(table_2_6) <- "Number of Employees"
+table_2_6
+```
+
+(a) The lower limit of the sixth class.  $300.00
+
+(b) The upper limit of the fourth class. $289.99
+
+(c) The class mark (or class midpoint of the third class). The class mark of the third class $= \frac{1}{2}(\$270.00+\$279.99)= \$274.995$. For most practical purposes, this is rounded to $\$275.00$.
+
+(d) Lower class boundary of fifth class $=\frac{1}{2}(\$290.00+\$289.99) = \$289.995$. Upper class boundary of fifth class $=\frac{1}{2}(\$299.99+\$300.00)=\$299.995$.
+
+(e) Size of fifth-class interval $=$ upper boundary of fifth class $-$ lower boundary of fifth class $= \$299.995-\$289.985 = $10.00$. In this case all class intervals have the same size: $\$10.00$.
+
+(f) 16
+
+(g) $16/65 = 0.246 = 24.6\%$
+
+(h) $\$270.00-\$279.99$
+
+(i) Total number of employees earning less that $\$280$ per week $= 16 + 10 + 8 = 34$. Percentage of employees earning less than $\$280$ per week = $34/65 = 52.3\%$.
+
+(f) Number of employees earning less than $\$300.00$ per week but at least $\$260$ per week $= 10 + 14 + 16 + 10 = 50$. Percentage of employees earning less than $\$300$ per week but at least $\$260$ per week = $50/65 = 76.9\%$.
+
+## Determining Class marks, intervals, limits, boundaries, and sizes
+
+#### 2.4
+
+If the class marks in a frequency distribution of the weights of students are `r (p2.4 <- c(128, 137, 146, 155, 164, 173, 182))` pounds (lb), find (a) the class-interval size, (b) the class boundaries, and (c) the class limits assuming that the weights were measured to the nearest pound.
+
+```{r}
+cat("Class marks:", p2.4)
+cat( "(a) Class-interval size:", (size <- unique(diff(p2.4))),
+     "\n(b) Class boundaries:", (boundaries <- c(p2.4 - size/2, tail(p2.4,1) + size/2)),
+     "\n(c) Class limits:", (limits <- floor(boundaries)))
+```
+
+## Using the data set range to determine class intervals, boundaries, and marks
+
+#### 2.5
+
+The smallest of 150 measurements is 5.18 in, and the largest is 7.44 in. Determine a suitable set of (a) class intervals, (b) class boundaries, and (c) class marks that might be used in forming a frequency distribution of these measurement.
+
+__Solution__
+
+```{r}
+range <- diff((r <- c(5.18, 7.44)))
+N <- 150
+cat("For five class intervals, the size would be:", (r.5 <- range/5),
+    "\nFor 20 class intervals, the size would be:", (r.20 <- range/20),
+    "\nGood candidates would be:", (class.size <- c(.2, .3, .4)),
+    "\n\nStarting at 5.10:", seq(5.10, 7.5, by=.2))
+
+```
+
+#### 2.6
+
+#### 2.7
+
+## Constructing a frequency distribution
+
+In the following table the weights of 40 male students at State University are recorded to the nearest pound. Construct a frequency distribution.
+
+```{r}
+p2.8 <- c(138, 164, 150, 132, 144, 125, 149, 157,
+          146, 158, 140, 147, 136, 148, 152, 144,
+          168, 126, 138, 176, 163, 119, 154, 165,
+          146, 173, 142, 147, 135, 153, 140, 135,
+          161, 145, 135, 142, 150, 156, 145, 128)
+
+h <- hist(p2.8, breaks=seq(118, 178, by=5), right=F)
+table(cut(p2.8, breaks=h$breaks, right=F))
+
+h <- hist(p2.8, right=F)
+table(cut(p2.8, breaks=h$breaks, right=F))
+```
+
+## Constructing a histogram from data
+
+#### 2.9
+
+In the following, the heights of 45 female students at Midwestern University are recorded to the nearest inch. Construct a  histogram.
+
+```{r}
+p2.9 <- c(67, 67, 64, 64, 74, 61, 68, 71, 69, 61, 65, 64, 62, 63, 59,
+          70, 66, 66, 63, 59, 64, 67, 70, 65, 66, 66, 56, 65, 67, 69,
+          64, 67, 68, 67, 67, 65, 74, 64, 62, 68, 65, 65, 65, 66, 67)
+
+h <- hist(p2.9, breaks=seq(55, 75, by=4))
+table(cut(p2.9, breaks=h$breaks))
+```
+
+## Calculating the data in a frequency distribution classes
+
+#### 2.10
+
+Table 2.9 gives the one-way commuting distances for 50 Metropolitan College students in miles.
+
+```{r}
+table_2_9 <- c( 4.3, 7.0,  8.0,  3.9,  3.7, 8.4,  2.6,  1.0, 15.7, 3.9,
+                6.5, 8.7,  0.9,  0.9,  12.6, 4.0, 10.3, 10.0, 6.2, 1.1,
+                7.2, 8.8,  7.8,  4.9,  2.0, 3.0,  4.2,  3.3, 4.8, 4.4,
+                7.7, 2.4,  8.0,  8.0,  4.6, 1.4,  2.2,  1.9, 3.2, 4.8,
+                5.0, 10.3, 12.3, 3.8,  3.8, 6.6,  2.0,  1.6, 4.4, 4.3)
+
+h <- hist(table_2_9, breaks=seq(0, 16, by=2), right=F)
+cat("Mean:", mean(table_2_9),
+    "\nStd. Dev.:", sd(table_2_9),
+    "\nN:", length(table_2_9))
+```
+
+(a) What data values are in the first class?
+
+```{r}
+sort(table_2_9[table_2_9 < h$breaks[2]])
+```
+
+(b) What data values are in the second class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[2] & table_2_9 < h$breaks[3]])
+```
+
+(c) What data values are in the third class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[3] & table_2_9 < h$breaks[4]])
+```
+
+(d) What data values are in the fourth class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[4] & table_2_9 < h$breaks[5]])
+```
+
+(e) What data values are in the fifth class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[5] & table_2_9 < h$breaks[6]])
+```
+
+(f) What data values are in the sixth class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[6] & table_2_9 < h$breaks[7]])
+```
+
+(g) What data values are in the seventh class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[7] & table_2_9 < h$breaks[8]])
+```
+
+(h) What data values are in the eighth class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[8] & table_2_9 < h$breaks[9]])
+```
+
+## Calculating the data in a frequency distribution classes
+
+#### 2.11
+
+The histogram for the commuting distances in Table 2.9 is shown in Fig. 2-14. The midpoints of the class intervals are shown. The classes are 0 to 2.5, 2.5 to 5.0, 5.0 to 7.5, 7.5 to 10.0, 10.0 to 12.5, 12.5 to 15.0, 15.0 to 17.5, and 17.5 to 20.0. A number is counted in the class if it falls on the lower class limit but in the next class if it falls on the upper class limit.
+
+```{r}
+h <- hist(table_2_9, breaks=seq(0.0, 20.0, by=2.5))
+```
+
+(a) What data values are in the first class?
+
+```{r}
+sort(table_2_9[table_2_9 < h$breaks[2]])
+```
+
+(b) What data values are in the second class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[2] & table_2_9 < h$breaks[3]])
+```
+
+(c) What data values are in the third class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[3] & table_2_9 < h$breaks[4]])
+```
+
+(d) What data values are in the fourth class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[4] & table_2_9 < h$breaks[5]])
+```
+
+(e) What data values are in the fifth class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[5] & table_2_9 < h$breaks[6]])
+```
+
+(f) What data values are in the sixth class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[6] & table_2_9 < h$breaks[7]])
+```
+
+(g) What data values are in the seventh class?
+
+```{r}
+sort(table_2_9[table_2_9 >= h$breaks[7] & table_2_9 < h$breaks[8]])
+```
+
+## Constructing frequency tables
+
+#### 2.12
+
+At the P&R Company (Problem 2.3), five new employees were hired at weekly wages are \$285.34, \$316.83, \$335.78, \$356.21, \$374.50. Construct a frequency distribution of wages for the 70 employees.
+
+```{r}
+table_2_10 <- table_2_6
+table_2_10[4] <- table_2_10[4] + 1
+table_2_10[7] <- table_2_10[7] + 1
+rnames <- rownames(table_2_10)
+table_2_10_a <- matrix(c(table_2_10, 0, 1, 0, 1, 0, 1),ncol=1)
+colnames(table_2_10_a) <- "Number of Employees"
+rownames(table_2_10_a) <- c(rnames, "320.00-329.99", "330.00-339.99", "340.00-349.99",
+                          "350.00-359.99", "360.00-369.99", "370.00-379.99")
+table_2_10_a
+```
+
+```{r}
+table_2_10_b <- matrix(c(table_2_10,3))
+rownames(table_2_10_b) <- c(rnames, "320.00 and over")
+colnames(table_2_10_b) <- "Number of Employees"
+table_2_10_b
+```
+
+
+```{r}
+table_2_10_c <- matrix(c(sum(table_2_10[1:2]), sum(table_2_10[3:4]),
+                         sum(table_2_10[5:6]), table_2_10[7], 1, 1, 1))
+rownames(table_2_10_c) <- c("250.00-269.99", "270.00-289.99", "290.00-309.99",
+                            "310.00-329.99", "330.00-349.99", "350.00-369.99",
+                            "370.00-389.99")
+colnames(table_2_10_c) <- "Number of Employees"
+table_2_10_c
+```
+
+```{r}
+table_2_10_d <- matrix(c(head(table_2_10,-2), sum(table_2_10[6:7]), 3), ncol=1)
+rownames(table_2_10_d) <- c(head(rnames, -2), "300.00-319.99", "320.00-379.99")
+colnames(table_2_10_d) <- "Number of Employees"
+table_2_10_d
+```
+
+## Determining the class ownership of an observation
+
+#### 2.13
+
+Fig. 2-15 shows the histogram for Table 2.9. The classes are 0 to 3, 3 to 6, 6 to 9, 9 to 12, 12 to 15, and 15 to 18. A number is counted in the class if it falls on the upper class limit but in the prior class if it falls on the lower class limit.
+
+```{r}
+h <- hist(table_2_9, breaks=c(0, 3, 6, 9, 12, 15, 18), yaxt='n')
+axis(side=2, at=seq(0, 20, by=2))
+table(cut(table_2_9, breaks=h$breaks))
+```
+
+(a) What data values are in the first class?
+
+```{r}
+sort(table_2_9[table_2_9 <= h$breaks[2]])
+```
+
+(b) What data values are in the second class?
+
+```{r}
+sort(table_2_9[table_2_9 > h$breaks[2] & table_2_9 <= h$breaks[3]])
+```
+
+(c) What data values are in the third class?
+
+```{r}
+sort(table_2_9[table_2_9 > h$breaks[3] & table_2_9 <= h$breaks[4]])
+```
+
+(d) What data values are in the fourth class?
+
+```{r}
+sort(table_2_9[table_2_9 > h$breaks[4] & table_2_9 <= h$breaks[5]])
+```
+
+(e) What data values are in the fifth class?
+
+```{r}
+sort(table_2_9[table_2_9 > h$breaks[5] & table_2_9 <= h$breaks[6]])
+```
+
+(f) What data values are in the sixth class?
+
+```{r}
+sort(table_2_9[table_2_9 > h$breaks[6] & table_2_9 <= h$breaks[7]])
+```
+
+# Cumulative-Frequency Distributions and Ogives
+
+#### 2.14
+
+Construct (a) a cumulative-frequency distribution, (b) a percentage cumulative distribution, (c) an ogive, and (d) a percentage ogive from the frequency distribution in Table 2.6 of Problem 2.3.
+
+__Solution__
+
+(a) and (b) The cumulative-frequency distribution and percentage cumulative distribution (or cumulative relative-frequency distribution) are shown in Table 2.11.
+
+Note that each entry in column 2 is obtained by adding successive entries from column 2 of Table 2.6, thus, $18 = 8 + 10, 34 = 8 + 10 + 16$, etc.
+
+Each entry in column 3 is obtained from the previous column by dividing by 65, the total frequency, and expressing the result as a percentage. Thuse, $34/65 = 52.3\%$. Entries in this column can also be obtained by adding successive entries from column 2 of Table 2.9. Thus, $27.7 = 12.3 + 15.4, 52.3 = 12.3 + 15.4 + 24.6$, etc.
+
+(c) and (d) The ogive (or cumulative-frequency polygon) is shown in Fig. 2-16(a) and the percentage ogive (relative cumulative-frequency polygon) is shown in Fig. 2-16(b).
+
+```{r}
+Employees <-  c(0,   8,   10,  16,  14,  10,  5,   2)
+Wage.lower <- c(250, 260, 270, 280, 290, 300, 310, 320)
+t2.11 <- data.frame(
+  Wages=Wage.lower, Cumulative.Frequency=cumsum(Employees), Pct.Cum.Freq=signif(cumsum(Employees)/sum(Employees)*100, 3))
+knitr::kable(t2.11, caption="__Table 2.11__")
+plot(t2.11$Wages, t2.11$Cumulative.Frequency, type="b", xlab="Wages", ylab="")
+plot(t2.11$Wages, t2.11$Pct.Cum.Freq, type="b", xlab="Wages", ylab="")
+```
+
+#### 2.15
+
+From the frequency distribution in Table 2.6 of Problem 2.3, construct (a) an "or more" cumulative-frequency distribution and (b) an "or more" ogive.
+
+__SOLUTION__
+
+(a) Note that each entry in column 2 of Table 2.12 is obtained by adding successive entries from column 2 of Table 2.6, _starting at the bottom_ of Table 2.6; thus $7 = 2 + 5, 17 = 2 + 5 + 10$, etc. These entries can also be obtained by subtracting each entry in column 2 of Table 2.11 from the total frequency, 65; thus $57 = 65 - 8, 47 = 65 - 18$, etc.
+
+(b) Figure 2-17 shows the "or more" ogive.
+
+```{r}
+Employees <-  c(8,   10,  16,  14,  10,  5,   2)
+rev.cumsum <- c(rev(cumsum(rev(Employees))),0)
+Wage.lower <- c(250, 260, 270, 280, 290, 300, 310, 320)
+t2.11 <- data.frame(Wages=Wage.lower, Cumulative.Frequency=rev.cumsum)
+knitr::kable(t2.11, caption="__Table 2.12__")
+plot(t2.11$Wages, t2.11$Cumulative.Frequency, type="b", xlab="Wages", ylab="")
+```
+
+#### 2.16
+
+From the ogives in Figs. 2-16 and 2-17 (of Problems 2.14 and 2.15, respectively), estimate the number of employees earning (a) less than \$288.00 per week, (b) \$296.00 or more per week, and (c) at least \$263.00 per week but less than \$275.00 per week.
+
+__SOLUTION__
+
+(a) Referring to the "less than" ogive of Fig. 2-16, construct a vertical line intersecting the "Wages" axis at \$288.00. This line meets the ogive at the point with coordinates $(288, 45)$; hence 45 employees earn less than \$288.00 per week.
+
+(b) In the "or more" ogive of Fig. 2-17, construct a vertical line at \$296.00. This line meets the ogive at the point $(296, 11)$; hence 11 employees earn \$296.00 or more per week.
+
+> This can also be obtained from the "less than" ogive of Fig. 2-16. By constructing a line \$296.00, we find that 54 employees earn less than \$296.00 per week; hence $65-54=11$ employees earn \$296.00 or more per week.
+
+(c) Using the "less than" ogive of Fig. 2-16, we have: $\text{Required number of employees} = \text{number earning less than \$275.00 per week} - \text{number earning less than \$263.00 per week} = 26 - 11 = 15$.
+
+Note that the above results could just as well have been obtained by the process of _interpolation_ in the cumulative-frequency tables. In part (a), for example, since \$288.00 is 8/10, or 4/5, of the way between \$280.00 and \$290.00, the required number of employees should be 4/5 of the way between the corresponding values 34 and 48 (see Table 2.11). But 4/5 of the way between 34 and 48 is $\frac{4}{5}(48-34)=11$. THus the required number of employees is $34+11=45$.
+
+#### 2.17
+
+Five pennies were tossed 1000 times, and at each toss the number of heads was observed. The number of tosses during which 0, 1, 2, 3, 4, and 5 heads were obtained is shown in Table 2.13
+
+```{r}
+Table.2.13 <- matrix(c(0, 1, 2, 3, 4, 5, 38, 144, 342, 287, 164, 25), ncol=2)
+colnames(Table.2.13) <- c("Number of Heads", "Number of Tosses (frequency)")
+Table.2.13
+```
+
+(a) Graph the data of Table 2.13.
+
+(b) Construct a table showing the percentage of tosses resulting in a number of heads less than 0, 1, 2, 3, 4, 5, or 6.
+
+(c) Graph the data of the table in part (b).
+
+__SOLUTION__
+
+(a) The data can be shown graphically either as in Fig. 2-18 or as in Fig. 2-19.
+
+```{r}
+dotchart(Table.2.13[,2], labels=Table.2.13[,1])
+barplot(Table.2.13[,2])
+```
+
+Figure 2-18 seems to be a more natural graph to use--since, for example, th enumber of heads cannot be 1.5 or 3.2. The graph is called a _dot plot_. It is especially used when the data are discrete.
+
+> Figure 2-19 shows a histogram of the data. Note that the total area of the histogram is the total frequency 1000, as it should be. In using the histogram representation or the corresponding frequency polygon, we are essentially treating the data _as if_ they were continuous. This will later be found useful. Note that we have already used the histogram and frequency polygon for discrete data in Problem 2.10.
+
+(b) Referring to the required Table 2.14, not that it shows simply a cumulative-frequency distribution and percentage cumulative distribution of the number of heads. It should be observed that the entries "Less than 1," "Less than 2," etc., could just as well have been "Less than or equal to 0," "Less than or equal to 1," etc.
+
+```{r}
+Table.2.14 <- matrix(c(0, cumsum(Table.2.13[,2]), 0, cumsum(Table.2.13[,2])/10), nrow=length(Table.2.13[,2])+1)
+colnames(Table.2.14) <- c("Number of Tosses (cumulative frequency)", "Percentage Number of Tosses (percentage cumulative frequency)")
+rownames(Table.2.14) <- c("Less than 0", "Less than 1", "Less than 2", "Less than 3", "Less than 4", "Less than 5", "Less than 6")
+p17.X <- c(0, 1, 2, 3, 4, 5, 6)
+Table.2.14
+```
+
+(c) The required graph can be presented either as in Fig. 2-20 or as in Fig. 2-21.
+
+```{r}
+par(mfrow=c(1,2))
+options(repr.plot.width=24, repr.plot.height=8)
+plot(stepfun(p17.X[2:7], Table.2.14[,2]), main="Fig. 2-20 MINITAB step function")
+plot(p17.X, Table.2.14[,2], type="l", col="red", main="Fig. 2-21 MINITAB cumulative frequency polygon")
+points(p17.X, Table.2.14[,2], pch=20)
+options(repr.plot.width=7, repr.plot.height=7)
+```
+
+> Figure 2-20 is the most natural for presenting discrete data--since, for example, the percentage of tosses in which there will be less than 2 heads is equal to the percentage in which there will be less than 1.75, 1.56, or 1.23 heads, so that the same percentage (18.2%) should be shown for these values (indicated by the horizontal line).
+
+> Figure 2-21 shows the cumulative-frequency polygon, or ogive, for the data and essentially treats the data as if they were continuous.
+
+> Note that Figs. 2-20 and 2-21 correspond, respectively, to Figs. 2-18 and 2-19 of part (a).
+
+# Frequency Curves and Smoothed Ogives
+
+#### 2.18
+
+Samples from populations have histograms and frequency polygons that have certain shapes. If the samples are extremely large, the histograms and frequency polygons approach the frequency distribution of the population. Consider two such population frequency distributions. (a) Consider a machine that fills cola containers uniformly between 15.9 and 16.1 ounces. Construct the frequency curve and determine what percent put more than 15.95 ounces in the containers. (b) Consider the heights of females. They have a population frequency distribution that is symmetrical or bell shaped with an average equal to 65 in and standard deviation equal to 3 in. (Standard deviation is discussed in a later chapter.) What percent of the heights are between 62 and 68 in tall, that are within one standard deviation of the mean? What percent are within two standard deviations of the mean? What percent are within three standard deviations of the mean?
+
+__SOLUTION__
+
+Figure 2-22 shows a uniform frequency curve. The cross-hatched region corresponds to fills of more than 15.95 ounces. Note that the region covered by the frequency curve is shaped as a rectangle. The area under the frequency curve is $\text{length} \times \text{width}$ or $(16.10 - 15.90) \times 5 = 1$. The area of the cross-hatched region is $(16.10 - 15.90) \times 5 = 0.75$. This is interpreted to mean that 75% of the machine fills exceed 15.95 ounces.
+
+Figure 2-23 shows a symmetrical or bell-shaped frequency curve. It shows the heights within one standard deviation as the cross-hatched region. Calculus is used to find this area. The area within one standard deviation is approximately 68% of the total area under the curve. The area within two standard deviations is approximately 95% of the total area under the curve. The area within three standard deviations is approximately 99.7% of the total area under the curve.
+
+We shall have more to say about finding areas under these curves in later chapters.
+
+
+
+

@@ -1,0 +1,140 @@
+---
+title: 'Chapter 10: Statistical Decision Theory'
+subtitle: 'Solved Problems'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Preliminary
+
+## Define the `normal_area` function
+
+```{r define normal_area}
+normal_area <-function(mean = 0, sd = 1, lb, ub, acolor = "lightgray", ...) {
+  x <- seq(mean - 3 * sd, mean + 3 * sd, length = 100)
+  
+  if (missing(lb)) {
+    lb <- min(x)
+  }
+  
+  if (missing(ub)) {
+    ub <- max(x)
+  }
+  
+  x2 <- seq(lb, ub, length = 100)
+  plot(x, dnorm(x, mean, sd), type = "n", ylab = "", ...)
+  
+  y <- dnorm(x2, mean, sd)
+  polygon(c(lb, x2, ub), c(0, y, 0), col = acolor)
+  lines(x, dnorm(x, mean, sd), type = "l", ...)
+}
+```
+
+## Define the `inv_normal_area` function
+
+```{r define inv_normal_area}
+inv_normal_area <-function(mean = 0, sd = 1, lb, ub, acolor = "lightgray", ...) {
+  x <- seq(mean - 3 * sd, mean + 3 * sd, length = 100)
+  
+  if (missing(lb)) {
+    lb <- min(x)
+  }
+  
+  if (missing(ub)) {
+    ub <- max(x)
+  }
+  
+  x1 <- seq(min(x), lb, length = 100)
+  y1 <- dnorm(x1, mean, sd)
+  
+  x2 <- seq(ub, max(x), length = 100)
+  y2 <- dnorm(x2, mean, sd)
+  
+  plot(x, dnorm(x, mean, sd), type = "n", ylab = "", ...)
+  
+  polygon(c(min(x), x1, lb), c(0, y1, 0), col = acolor)
+  polygon(c(ub, x2, max(x)), c(0, y2, 0), col = acolor)
+  
+  lines(x, dnorm(x, mean, sd), type = "l")
+}
+```
+
+# Tests of means and proportions, using normal distributions
+
+#### 10.1
+
+Find the probability of getting between 40 and 60 heads inclusive in 100 tosses of a fair coin.
+
+__Solution__
+
+According to the binomial distribution, the required probability is
+
+$$
+\binom{100}{40} \left(\frac{1}{2}\right)^{40} \left(\frac{1}{2}\right)^{60} +
+  \binom{100}{41} \left(\frac{1}{2}\right)^{41} \left(\frac{1}{2}\right)^{59} +
+  \cdots +
+  \binom{100}{60} \left(\frac{1}{2}\right)^{60} \left(\frac{1}{2}\right)^{40}
+$$
+
+Since $N_p = 100 \left(\frac{1}{2}\right)$ and $Nq = 100 \left(\frac{1}{2}\right)$ are both greater than 5, the normal approximation to the binomial distribution can be used in evaluating this sum. THe mean and standard deviation of the number of heads in 100 tosses are given by
+
+$$
+\mu = Np = 100\left(\frac{1}{2}\right) = 50\ \ \ \text{ and }
+  \ \ \ \sigma = \sqrt{Npq} =
+  \sqrt{(100)\left(\frac{1}{2}\right) \left(\frac{1}{2}\right)} = 5
+$$
+
+On a continuous scale, between 40 and 60 heads inclusive is the same as between 39.5 and 60.5 heads. We thus have
+
+$$
+39.5 \text{ in standard units } = \frac{39.5 - 50}{5} = -2.10
+  \ \ \ \ 60.5 \text{ in standard units } = \frac{60.5 - 50}{5} = 2.10
+$$
+
+$$
+\begin{aligned}
+\text{ Required probability } & = \text{ area under normal curve between } z = 
+  -2.10 \text{ and } z = 2.10 \\
+ & = 2(\text{area between } z = 0 \text{ and } z = 2.10) = 2(0.4821) = 0.9642
+\end{aligned}
+$$
+
+#### 10.2
+
+To test the hypothesis that a coin is fair, adopt the following decision rule:
+
+> Accept the hypothesis if the number of heads in a single sample of 100 tosses is between 40 and 60 inclusive.
+
+> Reject the hypothesis otherwise.
+
+(a) Find the probability of rejecting the hypothesis when it is actually correct.
+(b) Graph the decision rule and the result of part (a).
+(c) What conclusions would you draw if the sample of 100 tosses yielded 53 heads? And if it yielded 60 heads?
+(d) Could you be wrong in your conclusions about part (c)? Explain.
+
+__Solution__
+
+(a) From Problem 10.1, the probability of not getting between 40 and 60 heads inclusive if the coin is fair is $1 - 0.9642 = 0.0358$. Thus the probability of rejecting the hypothesis when it is correct is $0.0358$.
+
+(b) The decision rule is illustrated in Fig. 10-2, which shows the probability distribution of heads in 100 tosses of a fair coin. If a single sample of 100 tosses yields a _z_ score between $-2.10$ and $2.10$, we accept the hypothesis; otherwise, we reject the hypothesis and decide that the coin is not fair.
+
+> The error made in rejecting the hypothesis when it should be accepted is the _Type I error_ of the decision rule; and the probability of making this error, equal to 0.0358 from part (a), is represented by the total shaded area of the figure. If a single sample of 100 tosses yields a number of heads whose _z_ score (or _z_ statistic) lies in the shaded regions, we would say that this _z_ score differed _significantly_ from what would be expected if the hypothesis were true. For this reason, the total shaded area (i.e., the probability of a Type I  error) is called the _significance level_ of the decision rule and equals 0.0358 in this case. Thus we speak of rejecting the hypothesis at the 0.0358 (or 3.58%) significance level.
+
+(c) According to the decision rule, we would have to accept the hypothesis that the coin is fair in both cases. One might argue that if only one more head had been obtained, we would have rejected the hypothesis. This is what one must face when any sharp line of division is used in making decisions.
+
+(d) Yes. We could accept the hypothesis when it actually should be rejected--as would be the case, for example, when the probability of heads is really 0.7 instead of 0.5. The error made in accepting the hypothesis when it should be rejected is the _Type II error_ of the decision.
+
+```{r p10.2, fig_cap="__Fig. 10-2__ Standard normal curve showing the acceptance and rejection regions for testing that the coin is fair."}
+p10.2.mean <- 100*.5
+p10.2.sd <- sqrt(100*.5*.5)
+inv_normal_area(p10.2.mean, p10.2.sd, lb=39.5, ub=60.5, xaxt='n', xlab='')
+text(39.5, -0.01, "z = 39.5", xpd=NA)
+text(60.5, -0.01, "z = 60.5", xpd=NA)
+text(36.5, 0.01, "Critical region", xpd=NA, cex=.6)
+text(63.5, 0.01, "Critical region", xpd=NA, cex=.6)
+text(50, 0.01, "Acceptance region", xpd=NA, cex=.8)
+```
+

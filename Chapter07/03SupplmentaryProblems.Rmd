@@ -1,0 +1,574 @@
+---
+title: 'Chapter 7: The Binomial, Normal, and Poisson Distributions'
+subtitle: 'Supplementary Problems'
+author: "Murray R. Spiegel, PhD and Larry J. Stephens, PhD"
+date: "2024-06-15"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+```{r echo=F, message=F}
+load("../../data/binom_sum.Rdata")
+load("../../data/normal_area.Rdata")
+```
+
+# The Binomial Distribution
+> TODO: 7.47 and 7.48: Moment coefficients of skewness and kurtosis.
+
+## Using the factorial and binomial functions
+
+#### 7.35
+
+Evaluate (a) $7!$, (b) $10!/(6!4!)$, (c) $\binom{9}{5}$, (d) $\binom{11}{8}$, and (e) $\binom{6}{1}$.
+
+(a) $7! = `r factorial(7)`$
+(b) $\frac{10!}{6!4!} = `r factorial(10)/(factorial(6)*factorial(4))`$
+(c) $\binom{9}{5} = `r choose(9, 5)`$
+(d) $\binom{11}{8} = `r choose(11, 8)`$
+(e) $\binom{6}{1} = `r choose(6, 1)`$
+
+```{r}
+cat("(a) 7!:", factorial(7),
+    "\n(b) (10!)/(6!4!):", factorial(10)/(factorial(6)*factorial(4)),
+    "\n(c) binom(9 5):", choose(9, 5),
+    "\n(d) binom(11 8):", choose(11, 8),
+    "\n(e) binom(6 1):", choose(6, 1))
+```
+
+## The binomial expansion
+
+#### 7.36
+
+Expand (a) $(q + p)^7$ and (b) $(q + p)^{10}$.
+
+(a)
+
+$$
+\begin{aligned}
+(q + p)^7 & = q^7 + \binom{7}{1}q^6p +
+\binom{7}{2}q^5p^2 +
+\binom{7}{3}q^4p^3 +
+\binom{7}{4}q^3p^4 +
+\binom{7}{5}q^2p^5 +
+\binom{7}{6}qp^6 +
+p^7 \\
+\end{aligned}
+$$
+
+$$
+ = q^7 + `r choose(7, 1)`q^6p +
+ `r choose(7, 2)`q^5p^2 +
+ `r choose(7, 3)`q^4p^3 +
+ `r choose(7, 4)`q^3p^4 +
+ `r choose(7, 5)`q^2p^5 +
+ `r choose(7, 6)`qp^6 +
+ p^7
+$$
+
+(b)
+
+$$
+\begin{aligned}
+(q + p)^{10} = q^{10} & + \binom{10}{1}q^9p
++ \binom{10}{2}q^8p^2
++ \binom{10}{3}q^7p^3
++ \binom{10}{4}q^6p^4
++ \binom{10}{5}q^5p^5
++ \binom{10}{6}q^4p^6
++ \binom{10}{7}q^3p^7 \\ \\
+& + \binom{10}{8}q^2p^8
++ \binom{10}{9}qp^9
++ p^10
+\end{aligned}
+$$
+
+$$
+ = q^{10} + `r choose(10, 1)`q^9p +
+ `r choose(10, 2)`q^8p^2 +
+ `r choose(10, 3)`q^7p^3 +
+ `r choose(10, 4)`q^6p^4 +
+ `r choose(10, 5)`q^5p^5 +
+ `r choose(10, 6)`q^4p^6 +
+ `r choose(10, 7)`q^3p^7 +
+ `r choose(10, 8)`q^2p^8 +
+ `r choose(10, 9)`qp^9 +
+ p^{10}
+$$
+
+## Finding the probability of specific events
+
+#### 7.37
+
+Find the probability that in tossing a fair coin six times there will appear (a) 0, (b) 1, (c) 2, (d) 3, (e) 4, (f) 5, and (g) 6 heads.
+
+For each of these the probabilities can be calculated:
+(a) $\mathrm{Pr}\{0 heads\}$
+In R we use the binomial probability function `dbinom` to find the probability for each of these.
+
+```{r}
+cat(" (a) 0: ", dbinom(0, 6, .5), "\n",
+    "(b) 1: ", dbinom(1, 6, .5), "\n",
+    "(c) 2: ", dbinom(2, 6, .5), "\n",
+    "(d) 3: ", dbinom(3, 6, .5), "\n",
+    "(e) 4: ", dbinom(4, 6, .5), "\n",
+    "(f) 5: ", dbinom(5, 6, .5), "\n",
+    "(g) 6: ", dbinom(6, 6, .5), "\n")
+```
+
+## Finding the probability based on cumulative probability criteria
+
+#### 7.38
+
+Find the probability of (a) 2 or more heads and (b) fewer than 4 heads in a single toss of 6 fair coins.
+
+```{r}
+cat(" (a) 2 or more heads: ", 1 - pbinom(1, 6, .5), "\n",
+    "    Alternatively you can set the lower.tail option to FALSE: ",
+    pbinom(1, 6, .5, lower.tail = F), "\n",
+    "(b) fewer than 4 heads: ", pbinom(3, 6, .5))
+```
+
+## Finding the probability based on cumulative probability criteria using notation
+
+#### 7.39
+
+If $X$ denotes the number of heads in a single toss of 4 fair coins, find (a) $\mathrm{Pr}\{X = 3\}$, (b) $\mathrm{Pr}\{X < 2\}$, (c) $\mathrm{Pr}\{X \ge 2\}$, and (d) $\mathrm{Pr}\{1 < X \le 3\}$.
+
+```{r}
+cat(" (a) Pr{X = 3}: ", dbinom(3, 4, .5), "\n",
+    "(b) Pr{X < 2}: ", pbinom(1, 4, .5), "\n",
+    "(c) Pr{X <= 2}: ", pbinom(2, 4, .5), "\n",
+    "(d) Pr{1 < X <= 3}: ", pbinom(3, 4, .5) - pbinom(1, 4, .5))
+```
+
+## Finding the probability of specific events
+
+#### 7.40
+
+Out of 800 families with 5 children each, how many would you expect to have (a) 3 boys, (b) 5 girls, and (c) either 2 or 3 boys?
+
+```{r}
+cat("(a) 3 boys: ", 800*dbinom(3, 5, .5),
+    "\n(b) 5 girls: ", 800*dbinom(5, 5, .5),
+    "\n(c) either 2 or 3 boys: ", 800*(dbinom(2, 5, .5) + dbinom(3, 5, .5)))
+```
+
+## Using an outcome to calculate the probability of events
+
+#### 7.41
+
+### Dice outcome table
+
+| D1/D2  | 1 | 2 | 3 | 4 | 5 | 6 |
+|---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | 1-1 | 1-2 | 1-3 | 1-4 | 1-5 | 1-6 |
+| 2 | 2-1 | 2-2 | 2-3 | 2-4 | 2-5 | 2-6 |
+| 3 | 3-1 | 3-2 | 3-3 | 3-4 | 3-5 | 3-6 |
+| 4 | 4-1 | 4-2 | 4-3 | 4-4 | 4-5 | 4-6 |
+| 5 | 5-1 | 5-2 | 5-3 | 5-4 | 5-5 | 5-6 |
+| 6 | 6-1 | 6-2 | 6-3 | 6-4 | 6-5 | 6-6 |
+
+Find the probability of getting a total of 11 (a) once and (b) twice in two tosses of a pair of fair dice.
+
+
+
+```{r}
+cat( " (a) once: ", dbinom(1, 2, 2/36), "\n",
+     "(b) twice: ", dbinom(2, 2, 2/36))
+```
+
+#### 7.42
+
+What is the probability of getting a 9 exactly once in 3 throws with a pair of dice?
+
+
+
+```{r}
+dbinom(1, 3, 1/9)
+```
+
+## Finding the cumulative probability
+
+#### 7.43
+
+Find the probability of guessing correctly at least 6 of the 10 answers on a true-false examination.
+
+```{r}
+dbinom(6, 10, .5)
+```
+
+## Finding the cumulative probability and the probability of specific events for a specific probability
+
+#### 7.44
+
+An insurance salesperson sells policies to 5 men, all of identical age and in good health. According to the actuarial tables, the probability that a man of this particular age will be alive in 30 years hence is $\frac{2}{3}$. Find the probability that in 30 years (a) all 5 men, (b) at least 3 men, (c) only 2 men, and (d) at least 1 man will be alive.
+
+
+
+```{r}
+cat(" (a) all 5 men: ", dbinom(5, 5, 2/3), "\n",
+    "(b) at least 3 men: ", pbinom(2, 5, 2/3, lower.tail=F), "\n",
+    "(c) only 2 men: ", dbinom(2, 5, 2/3), "\n",
+    "(d) at least 1 man: ", pbinom(0, 5, 2/3, lower.tail=F), "\n")
+```
+
+## Computing the mean, standard deviation, and the moment coefficient of skewness and kurtosis
+
+#### 7.45
+
+Compute the (a) mean, (b) standard deviation, (c) moment coefficient of skewness, and (d) moment coefficient of kurtosis for a binomial distribution in which $p = 0.7$ and $N = 60$. Interpret the result.
+
+
+
+```{r}
+cat(" (a) mean: ", 60*0.7, "\n",
+    "(b) standard deviation: ", 60*0.7*0.3, "\n",
+    "(c) skewness: ", (0.3 - 0.7)/(sqrt(60*0.7*0.3)), "\n",
+    "(d) kurtosis: ", 3 + (1 - 6*0.7*0.3)/(60*0.7*0.3))
+```
+
+Since the skewness is negative, the distribution is skewed to the left. Also, since the kurtosis is positive, the distribution is _leptokurtic_ with respect to the normal distribution.
+
+## Describing the shape of the binomial distribution based on skewness and Kurtosis
+
+#### 7.46
+
+Show that if a binomial distribution with $N = 100$ is symmetrical, its moment coefficient of kurtosis is $2.98$.
+
+For a binomial distribution to be symmetrical $p = q = 0.5$. This also means the moment coefficient of skewness is zero.
+
+```{r}
+3 + (1 - 6*0.5*0.5)/(100*0.5*0.5)
+```
+
+#### 7.47
+
+Evaluate (a) $\sum(X - \mu)^3 p(X)$ and (b) $\sum(X - \mu)^4 p(X)$ for the binomial distribution.
+
+$$
+\begin{aligned}
+\sum(X - \mu)^3p(X) & = (X - Np)^3\left(\frac{N!}{X!(N-X)!}\right)p^Xq^{N-X} \\
+ & = 
+\end{aligned}
+$$
+
+#### 7.48
+
+Prove formulas (1) and (2) at the beginning of this chapter for the moment coefficients of skewness and kurtosis.
+
+# The Normal Distribution
+
+## Calculating values from standard units
+
+#### 7.49
+
+On a statistics examination the mean was 78 and the standard deviation was 10.
+
+(a) Determine the standard scores of two students whose grades were 93 and 62, respectively.
+(b) Determine the grades of two students whose standard scores were $-0.6$ and $1.2$ respectively.
+
+```{r}
+standard.units <- function(X, mean, sd) { (X - mean)/sd }
+score <- function(Z, mean, sd) { Z * sd + mean }
+mean <- 78
+sd <- 10
+cat("(a):", standard.units(93, mean, sd), standard.units(62, mean, sd),
+    "\n(b):", score(-0.6, mean, sd), score(1.2, mean, sd))
+```
+
+## Finding the mean and standard deviation given real values and standard values
+
+#### 7.50
+
+Find (a) the mean and (b) the standard deviation on an examination in which grades of $70$ and $88$ correspond to standard scores of $-0.6$ and $1.4$, respectively.
+
+We have two equations two unknowns:
+$$
+\mu_1 = -(-0.6) \sigma_1 + 70 \\ \\
+\mu_2 = -(1.4) \sigma_2 + 88
+$$
+
+```{r}
+xy.intersect <- function(p_set1, p_set2) { 
+  x <- (p_set2[1] - p_set1[1]) / (p_set1[2] - p_set2[2])
+  y <- p_set1[1] + p_set1[2] * x
+  return(xy=c(x,y))
+}
+val <- xy.intersect(c(70,0.6), c(88, -1.4))
+cat("mean:", val[2], 
+    "standard deviation:", val[1])
+```
+
+## Finding the area under the normal curve using standard units ($z$)
+
+#### 7.51
+
+Find the area under the normal curve between (a) $z = -1.20$ and $z = 2.40$, (b) $z = 1.23$ and $z = 1.87$, and (c) $z = -2.35$ and $z = -0.50$.
+
+```{r fig.height=12}
+cat("(a):", pnorm(2.40) - pnorm(-1.2),
+    "\n(b):", pnorm(1.87) - pnorm(1.23),
+    "\n(c):", pnorm(-.5) - pnorm(-2.35))
+par(mfrow=c(3,1))
+normal_area(lb=-1.2, ub=2.4)
+normal_area(lb=1.23, ub=1.87)
+normal_area(lb=-2.35, ub=-0.5)
+```
+
+#### 7.52
+
+Find the area under the normal curve (a) to the left of $z = -1.78$, (b) to the left of $z = 0.56$, (c) to the right of $z = -1.45$, (d) corresponding to $z \ge 2.16$, (e) corresponding to $-0.80 \ge z \ge 1.53$, and (f) to the left of $z = -2.52$ and to the right of $z = 1.83$.
+
+```{r fig.height=18}
+cat("(a):", pnorm(-1.78),
+    "\n(b):", pnorm(.56),
+    "\n(c):", pnorm(-1.45, lower.tail = FALSE),
+    "\n(d):", pnorm(2.16, lower.tail = FALSE),
+    "\n(e):", pnorm(1.53) - pnorm(-.8),
+    "\n(f):", pnorm(-2.52) + pnorm(1.83, lower.tail = FALSE))
+
+par(mfrow=c(6,1))
+normal_area(ub=-1.78)
+title("z < -1.78")
+normal_area(ub=.56)
+title("z > .56")
+normal_area(lb=-1.45)
+title("z < -1.45")
+normal_area(lb=2.16)
+title("z < 2.16")
+normal_area(lb=-.8, ub=1.53)
+title("-.8 < z < 2.16")
+x <- seq(-3, 3, length = 100)
+x1 <- seq(1.83, 3, length = 100)
+y1 <- dnorm(x1)
+x2 <- seq(-3, -2.52, length = 100)
+y2 <- dnorm(x2)
+plot(x, dnorm(x), type = "n", ylab = "")
+polygon(c(1.83, x1, 3), c(0, y1, 0), col = "lightgray")
+polygon(c(-3, x2, -2.52), c(0, y2, 0), col = "lightgray")
+lines(x, dnorm(x, 0, 1), type = "l")
+title("z < -2.52 and z < 1.83")
+```
+
+## Using standard units ($z$) to find probabilities
+
+#### 7.53
+
+If $z$ is normally distributed with mean $0$ and variance $1$, find (a) $\mathrm{Pr}\{z \ge -1.64\}$, (b) $\mathrm{Pr}\{-1.96 \ge z \ge 1.92\}$, and (c) $\mathrm{Pr}\{|z| \ge 1\}$.
+
+```{r fig.height=12}
+cat("(a) Pr{z >= -1.64}:", pnorm(-1.64, lower.tail = FALSE),
+    "\n(b) Pr{-1.96 <= z <= 1.96}:", pnorm(1.96) - pnorm(-1.96),
+    "\n(c) Pr{|z| >= 1}:", pnorm(-1) + pnorm(1, lower.tail = FALSE))
+
+par(mfrow=c(3,1))
+normal_area(lb=-1.64)
+title("z > -1.64")
+normal_area(lb=-1.96, ub=1.96)
+title("-1.96 < z < 1.96")
+x <- seq(-3, 3, length = 100)
+x1 <- seq(1, 3, length = 100)
+y1 <- dnorm(x1)
+x2 <- seq(-3, -1, length = 100)
+y2 <- dnorm(x2)
+plot(x, dnorm(x), type = "n", ylab = "")
+polygon(c(1, x1, 3), c(0, y1, 0), col = "lightgray")
+polygon(c(-3, x2, -1), c(0, y2, 0), col = "lightgray")
+lines(x, dnorm(x), type = "l")
+title("z < -1 and z < 1")
+```
+
+## Finding the standard unit ($z$) that satisfies the area under a curve
+
+#### 7.54
+
+Find the value of $z$ such that (a) the area to the right of $z$ is $0.2266$, (b) the area to the left of $z$ is $0.0314$, (c) the area between $-0.23$ and $z$ is $0.5722$, (d) the area between $1.15$ and $z$ is $0.0730$, and (e) the area between $-z$ and $z$ is $0.9000$.
+
+```{r}
+cat("(a) Area to the right is 0.2266:", qnorm(.2266, lower.tail=FALSE),
+    "\n(b) Area to the left of 0.0314:", qnorm(.0314),
+    "\n(c) Area between -0.23 and z is 0.5722:", qnorm(pnorm(-.23) + .5722),
+    "\n(d) Area between 1.15 and z is 0.0730:", qnorm(pnorm(1.15) + 0.0730),
+    "\n(e) Area between |z| is 0.9000:", qnorm((.5 + .4500)))
+```
+
+## Using probabilities and standard units ($z$) to find a upper tail ($z \ge z_1$) cut off point
+
+#### 7.55
+
+Find $z_1$ if $\mathrm{Pr}\{z \ge z_1\} = 0.84$, where $z$ is normally distributed with mean 0 and variance 1.
+
+```{r}
+cat("Pr{z >= z1}, z1 is:", qnorm(0.84, lower.tail=FALSE))
+```
+
+## Using the normal curve and standard units ($z$) to find the ordinate
+
+#### 7.56
+
+Find the ordinates of the normal curve at (a) z = 2.25, (b) z = -0.32, and (c) z = -1.18.
+
+```{r}
+cat("(a) z = 2.25, y:", dnorm(2.25),
+    "\n(b) z = -0.32, y:", dnorm(-.32),
+    "\n(c) z = -1.18, y:", dnorm(-1.18))
+```
+
+## Finding the percentage of a population that fit a criteria based on a normal distribution
+
+#### 7.57
+
+Adult males have normally distributed heights with mean equal to 70 in and standard deviation equal to 3 in. (a) What percent are shorter than 65 in? (b) What percent are taller than 72 in? (c) What percent are between 68 and 73 in?
+
+```{r}
+mean <- 70
+sd <- 3
+pnorm(65, mean, sd)
+cat("(a) percent shorter than 65 inches:", pnorm(65, mean, sd)*100,
+    "\n(b) Percent taller than 72 inches:", pnorm(72, mean, sd, lower.tail=FALSE)*100,
+    "\n(c) Percent between 68 and 73 inches:", (pnorm(73, mean, sd) - pnorm(68, mean, sd))*100)
+```
+
+#### 7.58
+
+The amount spent for goods online is normally distributed with mean equal to $\$125$ and standard deviation equal to $\$25$ for a certain age group. (a) What percent spend more than $\$175$? (b) What percent spend between $\$100$ and $\$150$? (c) What percent spend less than $\$50$?
+
+```{r}
+mean <- 125
+sd <- 25
+cat("(a) Percent that spend more than $175:", pnorm(175, mean, sd, lower.tail = FALSE)*100,
+    "\n(b) Percent spend between $100 and $150:", (pnorm(150, mean, sd) - pnorm(100, mean, sd))*100,
+    "\n(c) Percent spend less than $50:", pnorm(50, mean, sd)*100)
+```
+
+## Finding the probability value that a population sample fits into
+
+#### 7.59
+
+The mean grade on a final examination was 72 and the standard deviation was 9. The top $10\%$ of the students are to receive A'. What is the minimum grade that a student must get in order to receive an A?
+
+```{r}
+mean <- 72
+sd <- 9
+cat("The minimum grade for an A is:", qnorm(.1, mean, sd, lower.tail = FALSE))
+```
+
+## Finding the probability based on standard deviation
+
+#### 7.60
+
+If a set of measurements is normally distributed, what percentage of the measurements differ from the mean by (a) more than half the standard deviation and (b) less than three-quarters of the standard deviation?
+
+```{r}
+cat("(a) > sd/2:", (pnorm(-.5) + pnorm(.5, lower.tail = FALSE)) * 100,
+    "\n(b) < 3*sd/4", (pnorm(.75) - pnorm(-.75)) * 100)
+```
+
+## Using the mean and standard deviation to calculate probabilities within a range
+
+#### 7.61
+
+If $\bar{X}$ is the mean and $s$ is the standard deviation of a set of normally distributed measurements, what percentage of the measurements are (a) within the range $\bar{X} \pm 2s$, (b) outside the range $\bar{X} \pm 1.2s$, and (c) greater than $\bar{X} - 1.5s$?
+
+```{r}
+cat("(a) within 2 sd:", (pnorm(2) - pnorm(-2)) * 100,
+    "\n(b) within the range 1.2 sd:", (pnorm(-1.2) + pnorm(1.2, lower.tail = FALSE)) * 100,
+    "\n(c) greater than 1.5 sd:", pnorm(-1.5, lower.tail = FALSE) * 100)
+```
+
+## Finding the standard unit that contains a percentage of the sample
+
+#### 7.62
+
+In Problem 7.61, find the constant $a$ such that the percentage of the cases (a) within the range $\bar{X} \pm a$s is $75\%$ and (b) less than $\bar{X} - a$s is $22\%$.
+
+```{r}
+cat("(a) within 75%:", -qnorm(.125),
+    "\n(b) within 22%:", qnorm(.22, lower.tail = FALSE))
+```
+
+# Normal approximation to the binomial distribution
+
+#### 7.63
+
+Find the probability that 200 tosses of a coin will result in (a) between 80 and 120 heads inclusive, (b) less than 90 heads, (c) less than 85 or more than 115 heads, and (d) exactly 100 heads.
+
+```{r}
+mean <- 200*.5
+sd <- sqrt(200*.5*.5)
+cat ("(a) using the binomial:", sum(dbinom(80:120, 200, .5)),
+     "\n(a) using the normal approximation:", sum(dnorm(80:120, mean, sd)))
+normal_area(mean, sd, lb=80, ub=120)
+cat("(b) using the binomial:", pbinom(89, 200, .5),
+    "\n(b) using the normal approximation:", pnorm(89.5, mean, sd))
+normal_area(mean, sd, ub=89.5)
+cat("(c) using the binomial:", pbinom(84, 200, .5) + pbinom(115, 200, .5, lower.tail = FALSE),
+    "\n(c) using the normal approximation:", pnorm(84.5, mean, sd) + pnorm(115.5, mean, sd, lower.tail = FALSE))
+cat("(d) using the binomial:", dbinom(100, 200, .5),
+    "\n(d) using the normal approximation:", dnorm(100, mean, sd))# - dnorm(99.5, mean, sd))
+```
+
+#### 7.64
+
+Find the probability that on a true-false examination a student can guess correctly the answers to (a) 12 or more out of 20 questions and (b) 24 or more out of 40 questions.
+
+```{r}
+mean.a <- 20*.5
+sd.a <- sqrt(20*.5*.5)
+mean.b <- 40*.5
+sd.b <- sqrt(40*.5*.5)
+
+cat("(a) using the binomial:", pbinom(11, 20, .5, lower.tail = FALSE),
+    "\n(a) using the normal approximation:", pnorm(11.5, mean.a, sd.a, lower.tail = FALSE),
+    "\n(b) using the binomial:", pbinom(23, 40, .5, lower.tail = FALSE),
+    "\n(b) using the normal approximation:", pnorm(23.5, mean.b, sd.b, lower.tail = FALSE))
+```
+
+#### 7.65
+
+Ten percent of the bolts that a machine produces are defective. Find the probability that in a random sample of 400 bolts produced by this machine, (a) at most 30, (b) between 30 and 50, (c) between 35 and 45, and (d) 55 or more of the bolts will be defective.
+
+```{r}
+mean <- 400*.1
+sd <- sqrt(400*.1*.9)
+
+cat("(a) using the binomial:", pbinom(30, 400, .1),
+    "\n(a) using the normal approximation:", pnorm(30.5, mean, sd),
+    "\n(b) using the binomial:", pbinom(50, 400, .1) - pbinom(30, 400, .1),
+    "\n(b) using the normal approximation:", pnorm(50.5, mean, sd) - pnorm(29.5, mean, sd),
+    "\n(c) using the binomial", pbinom(45, 400, .1) - pbinom(35, 400, .1),
+    "\n(c) using the normal approximation:", pnorm(45.5, mean, sd) - pnorm(34.5, mean, sd),
+    "\n(d) using the binomial:", pbinom(55, 400, .1, lower.tail = FALSE),
+    "\n(d) using the normal approximation:", pnorm(54.5, mean, sd, lower.tail = FALSE))
+```
+
+
+#### 7.66
+
+Find the probability of getting more than 25 sevens in 100 tosses of a pair of fair dice.
+
+There are $6/36 = 1/6$ probability of getting a seven on a toss of a pair of fair dice.
+
+```{r}
+mean <- 100*(1/6)
+sd <- sqrt(100*(1/6)*(5/6))
+
+cat("using the binomial:", pbinom(25, 100, 1/6, lower.tail = FALSE),
+    "\nusing the normal approximation:", pnorm(25.5, mean, sd, lower.tail = FALSE))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

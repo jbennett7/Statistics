@@ -1,0 +1,247 @@
+---
+title: 'Chapter 10: Statistical Decision Theory'
+subtitle: 'Text'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Preliminary
+
+## Define the `normal_area` function
+
+```{r define normal_area}
+normal_area <-function(mean = 0, sd = 1, lb, ub, acolor = "lightgray", ...) {
+  x <- seq(mean - 3 * sd, mean + 3 * sd, length = 100)
+  
+  if (missing(lb)) {
+    lb <- min(x)
+  }
+  
+  if (missing(ub)) {
+    ub <- max(x)
+  }
+  
+  x2 <- seq(lb, ub, length = 100)
+  plot(x, dnorm(x, mean, sd), type = "n", ylab = "", ...)
+  
+  y <- dnorm(x2, mean, sd)
+  polygon(c(lb, x2, ub), c(0, y, 0), col = acolor)
+  lines(x, dnorm(x, mean, sd), type = "l", ...)
+}
+```
+
+## Define the `inv_normal_area` function
+
+```{r define inv_normal_area}
+inv_normal_area <-function(mean = 0, sd = 1, lb, ub, acolor = "lightgray", ...) {
+  x <- seq(mean - 3 * sd, mean + 3 * sd, length = 100)
+  
+  if (missing(lb)) {
+    lb <- min(x)
+  }
+  
+  if (missing(ub)) {
+    ub <- max(x)
+  }
+  
+  x1 <- seq(min(x), lb, length = 100)
+  y1 <- dnorm(x1, mean, sd)
+  
+  x2 <- seq(ub, max(x), length = 100)
+  y2 <- dnorm(x2, mean, sd)
+  
+  plot(x, dnorm(x, mean, sd), type = "n", ylab = "", ...)
+  
+  polygon(c(min(x), x1, lb), c(0, y1, 0), col = acolor)
+  polygon(c(ub, x2, max(x)), c(0, y2, 0), col = acolor)
+  
+  lines(x, dnorm(x, mean, sd), type = "l")
+}
+```
+
+# Statistical decisions
+
+Very often in practice we are called upon to make decisions about populations on the basis of sample information. Such decisions are called _statistical decisions_. For example, we may wish to decide on the basis of sample data whether a new serum is really effective in curing a disease, whether one educational procedure is better than another, or whether a given coin is loaded.
+
+# Statistical hypotheses
+
+In attempting to reach decisions, it is useful to make assumptions (or guesses) about the populations involved. Such assumptions, which may or may not be true, are called _statistical hypotheses_. They are generally statements about the probability distributions of the populations.
+
+## Null Hypotheses
+
+In many instances we formulate a statistical hypothesis for the sole purpose of rejecting or nullifying it. For example, if we want to decide whether a given coin is loaded, we formulate the hypothesis that the coin is fair (i.e., $p = 0.5$, where $p$ is the probability of heads). Similarly, if we want to decide whether one procedure is better than another, we formulate the hypothesis that there is _no difference_ betweent he procedures (i.e., any observed differences are due merely to fluctuations in sampling from the _same_ population). Such hypotheses are often called _null hypotheses_ and are denoted by $H_{0}$.
+
+## Alternative Hypotheses
+
+Any hypothesis that differes from a given hypothesis is called an _alternative hypothesis_. For example, if one hypothesis is $p = 0.5$, alternative hypotheses might be $p = 0.7$, $p \ne 0.5$, or $p > 0.5$. A hypothesis alternative to the null hypothesis is denoted by $H_{1}$.
+
+# Tests of hypotheses and significance, or decision rules
+
+If we suppose that a particular hyposthesis is true but find that the results observed in a random sample differ markedly from the results expected under the hypothesis (i.e., expected on the basis of pure chance, using sampling theory), then we would say that the observed differences are _significant_ and would thus be inclined to reject the hypothesis (or at least not accept it on the basis of the evidence obtained). For example, if 20 tosses of a coin yield 16 heads, we would be inclined to reject the hypothesis that the coin is fair, although it is conceivable that we might be wring.
+
+Procedures that enable us to determine whether observed samples differ significanly from the results expected, and thus help us decide whether to accept or reject hypotheses, are called _tests of hypotheses_, _tests of significance_, _rules of decision_, or simply _decision rules_.
+
+# Type I and Type II errors
+
+If we reject a hypothesis when it should be accepted, we say that a _Type I error_ has been made. If, on the other hand, we accept a hypothesis when it should be rejected, we say that a _Type II error_ has been made. In either case, a wrong decision or error in judgment has occurred.
+
+In order for decision rules (or tests of hypotheses) to be good, they must be designed so as to minimize errors of decision. This is not a simple matter, because for any given sample size, an attempt to decrease one type of error is generally accompanied by an increase in the other type of error. In practice, one type of error may be more serious than the other, and so a compromise should be reached in favor of limiting the more serious error. The only way to reduce both types of error is to increase the sample size, which may or may not be possible.
+
+# Level of significance
+
+In testing a given hypothesis, the maximum probability with which we would be willing to risk a Type I error is called the _level of significance_, or _significance level_, of the test. This probability, often denoted by $\alpha$, is generally specified before any samples are drawn so that the results obtained will not influence our choice.
+
+In practice, a significance level of 0.05 or 0.01 is customary, although other values are used. If, for example, the 0.05 (or 5%) significance level is chosen in designing a decision rule, then there are about 5 chances in 100 that we would reject the hypothesis when it should be accepted; that is, we are about 95% _confident_ that we have made the right decision. In such case we say that the hypothesis has been rejected at the 0.05 significance level, which means that the hypothesis has a 0.05 probability of being wrong.
+
+# Tests involving normal distributions
+
+To illustrate the ideas presented above, suppose that under a given hypothesis the sampling distribution of a statistic $S$ is a normal distribution with mean $\mu_{S}$ and standard deviation $\sigma_{S}$. Thus the distribution of the standardized variable (or $z$ score), given by $z = (S - \mu_{S}) / \sigma_{S}$, is the standardized normal distribution (mean 0, variance 1), as shown in Fig. 10-1.
+
+As indicated in Fig. 10-1, we can be 95% confident that if the hypothesis is true, then the $z$ score of an actual sample statistic $S$ will lie between $-1.96$ and $1.96$ (since the area under the normal curve between these values is 0.95). However, if on choosing a single sample at random we find that the $z$ score of its statistic lies _outside_ the range $-1.96$ to 1.96, we would conclude that such an event could happen with a probability of only 0.05 (the total shaded area in the figure) if the given hypothesis were true. We would then say that this $z$ score differed _significantly_ from what would be expected under the hypothesis, and we would then be inclined to reject the hypothesis.
+
+```{r Fig 10-1}
+inv_normal_area(lb=-1.96, ub=1.96, xaxt='n')
+text(-1.96, -0.03, "z = -1.96", xpd=NA)
+text(1.96, -0.03, "z = 1.96", xpd=NA)
+text(-2.5, 0.07, "Critical region 0.025", xpd=NA, cex=.6)
+text(2.5, 0.07, "Critical region 0.025", xpd=NA, cex=.6)
+text(0, 0.025, "Acceptance region 0.95", xpd=NA, cex=.8)
+```
+
+The total shaded area 0.05 is the significance level of the test. It represents the probability of our being wrong in rejecting the hypothesis (i.e., the probability of making a Type I error). Thus we say that the hypothesis is _rejected at 0.05 the significance level_ or that the _z_ score of the given sample statistic is _significant at the 0.05 level_.
+
+The set of _z_ scores outside the range $-1.96$ to 1.96 constitutes what is called the _critical region of the hypothesis_, _the region of rejection of the hypothesis_, or _the region of significance_. The set of _z_ scores inside the range $-1.96$ to 1.96 is thus called the _region of acceptance of the hypothesis_, or the _region of non-significance_.
+
+On the basis of the above remarks, we can formulate the following decision rule (or test of hypothesis or significance):
+
+> Reject the hypothesis at the 0.05 significance level if the _z_ score of the statistic $S$ lies outside the range $-1.96$ to 1.96 (i.e., either $z > 1.96$ or $z < -1.96$). This is equivalent to saying that the observed sample statistic is significant at the 0.05 level.
+
+> Accept the hypothesis otherwise (or, if desired, make no decision at all).
+
+> Because the _z_ score plays such an important part in tests of hypotheses, it is also called a _test statistic_.
+
+It should be noted that other significance levels could have been used. For example, if the 0.01 level were used, we would replace 1.96 everywhere above with 2.58 (sett Table 10.1). Table 9.1 can also be used, since the sum of the significance and confidence levels is 100%.
+
+|.|.|.|.|.|.|
+|:---:|---:|---:|---:|---:|---:|
+|significance, $\alpha$|0.10|0.05|0.01|0.005|0.002|
+|Critical values of _z_ for one-tailed tests|$-1.28$ _or_ 1.28|$-1.645$ _or_ 1.645|$-2.33$ _or_ 2.33|$-2.58$ _or_ 2.58|$-2.88$ _or_ 2.88|
+|Critical values of _z_ for two-tailed tests|$-1.645$ _and_ 1.645|$-1.96$ _and_ 1.96|$-2.58$ _and_ 2.58|$-2.81$ _and_ 2.81|$-3.08$ _and_ 3.08|
+
+# Two-tailed and one-tailed tests
+
+In the above test we were interested in extreme values of the statistic $S$ or its corresponding _z_ score on _both_ sides of the mean (i.e., in the both tails of the distribution). Such tests are thus called _two-sided tests_ or _two-tailed tests_.
+
+Often, however, we may be interested only in extreme values to one side of the mean (i.e., in one tail of the distribution), such as when we are testing the hypothesis that one process is better than another (which is different from testing whether one process is better or worse than the other). Such tests are called _one-sided tests_, or _one-tailed tests_. In such cases the critical region is a region to one side of the distribution, with area equal to the level of significance.
+
+Table 10.1, which gives critical values of _z_ for both one-tailed and two-tailed tests at various levels of significance, will be found useful for reference purposes. Critical values of _z_ for other levels of significance are found from the table of  normal-curve areas (Appendix II).
+
+# Special tests
+
+For large samples, the sampling distributions of many statistics are normal distributions (or at least nearly normal), and the above tests can be applied to the corresponding _z_ scores. The following special cases, taken from Table 8.1, are just a few of the statitics of practical interest. In each case the results hold for infinite populations or for sampling with replacement. For sampling without replacement from finite populations, the results must be modified. See page 182.
+
+1. __Means.__ Here $S = \bar{X}$, the sample mean; $\mu_{S} = \mu_{\bar{X}} = \mu$, the population mean; and $\sigma_{S} = \sigma_{\bar{X}} = \sigma / \sqrt{N}$, where $\sigma$ is the population standard deviation and $N$ is the sample size. The _z_ score is given by
+
+$$
+z = \frac{\bar{X} - \mu}{\sigma / \sqrt{N}}
+$$
+
+> When necessar, the sample deviation $s$ or $\bar{s}$ is used to estimate $\sigma$.
+
+2. __Proportions.__ Here $S = P$, the proportion of "successes" in a sample; $\mu_{S} = \mu_{P} = p$, where $p$ is the population proportion of successes and $N$ is the sample size; and $\sigma_{S} = \sigma_{P} = \sqrt{pq / N}$, where $q = 1 - p$.
+
+> The _z_ score is given by
+
+$$
+z = \frac{P - p}{\sqrt{pq/N}}
+$$
+
+> In case $P = X/N$, where $X$ is the actual number of successes in a sample, the $z$ score becomes
+
+$$
+z = \frac{X - Np}{\sqrt{Npq}}
+$$
+
+> That is, $\mu_{X} = \mu = Np$, $\sigma_{X} = \sigma = \sqrt{Npq}$, and $S = X$.
+
+The results for other statistics can be obtained similarly.
+
+# Operating-characteristic curves; the power of a test
+
+We have seen how the Type I error can be limited by choosing the significance level properly. It is possible to avoid risking Type II errors altogether simply by not makeing them, which amounts to never accepting hypotheses. In many practical cases, however, this cannot be done. In such cases, use is often made of _operating-characteristic curves_, or _OC curves_, which are graphs showing the probabilities of Type II errors under various hypotheses. These provide inications of how well a given test will enable us to minimize Type II errors; that is, they indicate the _power of a test_ to prevent us from making wrong decisions. THey are useful in designing experiments because they show such things as what sample sizes to use.
+
+# _p_-values for hypotheses tests
+
+The _p_-value is the probability of observing a sample statistic as extreme or more extreme than the one observed under the assumption that the null hypothesis is true. When testing a hypothesis, state the value of $\alpha$. Calculate your _p_-value and if the _p_-value $\le \alpha$, then reject $H_{0}$. Otherwise, do not reject $H_{0}$. FOr testing means, using large smaples ($n > 30$), calculate the _p_-value as follows:
+
+1. For $H_{0}$: $\mu = \mu_{0}$ and $H_{1}$: $\mu < \mu_{0}$, _p_-value $= P(Z < \text{computed test statistic})$,
+2. For $H_{0}$: $\mu = \mu_{0}$ and $H_{1}$: $\mu > \mu_{0}$, _p_-value $= P(Z > \text{computed test statistic})$, and
+3. For $H_{0}$: $\mu = \mu_{0}$ and $H_{1}$: $\mu \ne \mu_{0}$, _p_-value $= P(Z < -|\text{computed test statistic}|) + P(Z > |\text{computed test statistic}|)$.
+
+The computed test statistic is $\frac{\bar{x} - \mu_{0}}{(s / \sqrt{n})}$, where $\bar{x}$ is the mean of the sample, $s$ is the standard deviation of the sample, and $\mu_{0}$ is the value specified for $\mu$ in the null hypothesis. Note that if $\sigma$ is unknown, it is estimated from the sample by using $s$. This method of testing hypothesis is equivalent to the method of finding a critical value or values and if the computed test statistic falls in the rejection region, reject the null hypothesis. The same decision will be reached using either method.
+
+# Control Charts
+
+It is often important in practice to know when a process has changed sufficiently that steps should be taken to remedy the situation. Such problems arise, for example, in quality control. Quality control supervisors must often decide whether observed changes are due simply to chance fluctuations or are due to actual changes in a manufacturing process because of deteriorating machine parts, employees' mistakes, etc. _Control charts_ provide a useful and simple method for dealing with such problems (see Problem 10.16).
+
+# Tests involving sample differences
+
+## Differences of Means
+
+Let $\bar{X}_1$ and $\bar{X}_2$ be the sample means obtained in large samples of sizes $N_1$ and $N_2$ drawn from respective populations having means $\mu_1$ and $\mu_2$ and standard deviations $\sigma_1$ and $\sigma_2$. Consider the null hypothesis that there is _no difference_ between the population means (i.e., $\mu_1 = \mu_2$), which is to say that the samples are drawn from two populations having the same mean.
+
+Placing $\mu_1 = \mu_2$ in equation (5) of Chapter 8, we see that the sampling distribution of differences in means is approximately normally distributed, with its mean and standard deviation given by
+
+\begin{equation}
+\mu_{\bar{X}_1 - \bar{X}_2} = 0\ \ \ \text{ and }
+  \ \ \ \sigma_{\bar{X}_1 - \bar{X}_2} =
+  \sqrt{\frac{\sigma_1^2}{N_1} + \frac{\sigma_2^2}{N_2}}
+\end{equation}
+
+where we can, if necessary, use the sample standard deviations $s_1$ and $s_2$ (or $\hat{s}_2$ and $\hat{s}_2$) as estimates of $\sigma_1$ and $\sigma_2$.
+
+By using the standardized variable, or _z_ score, given by
+
+\begin{equation}
+z = \frac{\bar{X}_1 - \bar{X}_2 - 0}{\sigma{\bar{X}_1 - \bar{X}_2}} =
+  \frac{\bar{X}_1 - \bar{X}_2}{\sigma_{\bar{X}_1 - \bar{X}_2}}
+\end{equation}
+
+we can test the null hypothesis against alternative hypotheses (or the significance of an observed difference) at an appropriate level of significance.
+
+## Differences of Proportions
+
+Let $P_1$ and $P_2$ be the sample proportions obtained in large samples of sizes $N_1$ and $N_2$ drawn from respective populations having proportions $p_1$ and $p_2$. Consider the null hypothesis that there is _no difference_ between the population parameters (i.e., $p_1 = p_2$) and thus that the samples are really drawn from the same population.
+
+Placing $p_1 = p_2 = p$ in equation (6) of Chapter 8, we see that the sampling distribution of differences in proportions is approximately normally distributed, with its mean and standard devation given by
+
+\begin{equation}
+\mu_{P_1 - P_2} = 0\ \ \ \text{ and }\ \ \ \sigma_{P_1 - P_2} = \sqrt{pq \left(\frac{1}{N_1} + \frac{1}{N_2} \right)}
+\end{equation}
+
+where
+
+$$
+p = \frac{N_1 P_1 + N_2 P_2}{N_1 + N_2}
+$$
+
+is used as an estimate of the population proportion and where $q = 1 - p$.
+
+By using the standarized variable
+
+\begin{equation}
+z = \frac{P_1 - P_2 - 0}{\sigma_{P_1 - P_2}} = \frac{P_1 - P_2}{\sigma_{P_1 - P_2}}
+\end{equation}
+
+we can test observed differences at an appropriate level of significance and thereby test the null hypothesis.
+
+Tests involving other statistics can be designed similarly.
+
+# Tests involving binomial distributions
+
+Tests involving binomial distributions (as well as other distributions) can be designed in a manner analogous to those using normal distibutions; the basic principles ae essentially the same. See Problems 10.23 to 10.28.
+
+

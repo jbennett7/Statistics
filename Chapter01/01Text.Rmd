@@ -1,0 +1,438 @@
+---
+title: 'Chapter 1: Variables and Graphs'
+subtitle: 'Text'
+author: "Murray R. Spiegel, PhD and Larry J. Stephens, Phd"
+date: "2024-06-15"
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+---
+
+# TODO
+
+1. Each section should use the standard heard capitalization style.
+2. For each section, describe how this relates to the `R` statistical language.
+3. Fig. 1-1, move axis lines to the 0 of both xy to create four quadrants.
+4. Fig. 1-1, Create a four-quadrant plot function.
+5. Fig. 1-2, Frequency and Percent values placed inside chart.
+6. Fig. 1-2, Frequency and Percent legend needs to be fixed.
+7. Fig. 1-3, 3D Pie Chart.
+8. Fig. 1-3, Labels with percent for each.
+9. Fig. 1-3, Title (Percent)
+10. References
+
+---
+
+# Statistics
+
+Statistics is concerned with scientific methods for collecting, organizing, summarizing, presenting, and analyizing data as well as with drawing valid conclusions and making reasonable decisions on the basis of such analysis.
+
+In a narrower sense, the term _statistics_ is used to denote the data themselves or numbers derived from the data, such as averages. Thus we speak of employment statistics, accident statistics, etc.
+
+# Population and sample; inductive and descriptive statistics
+
+In collecting data concerning the characteristics of a group of individuals or objects, such as the heights and wieghts of students in a university or the numbers of defective and nondefective bolts produced in a factory on a given day, it is often impossible or impractical to observe the entire group, especially if it is large.  Instead of examining the entire group, called the _population_, or _niverse_, one examines a small part of the group, called a _sample_.
+
+A population can be _finite_ or _infinite_. For example, the population consisting of all bolts produced in a factory on a given day is finite, whereas the population consisting of all possible outcomes (heads, tails) in successive tosses of a coin is infinite.
+
+If a sample is representative of a population, important conclusions about the population can often be inferred from analysis of the sample. The phase of statistics dealing with conditions under which such inference is valid is called _inductive statistics_, or _statistical inference_. Because such inference cannot be absolutely certain, the language of _probability_ is often used in stating conclusions.
+
+The phase of statistics that seeks only to describe and analyze a given group without drawing any conclusions or inferences about a larger group is called _descriptive_, or _deductive_, _statistics_.
+
+Before proceeding with the study of statistics, let us review some important mathematical concepts.
+
+# Variables: Discrete and continuous
+
+A _variable_ is a symbol, such as $X, Y, H, x,$ or $B$, that can assume any of a prescribed set of values, called the _domain_ of the variable. If the variable can assume only one value, it is called a _constant_.
+
+A variable that can theoretically assume any value between two given values is called a _continuous variable_, otherwise, it is called a _discrete variable_.
+
+#### EXAMPLE 1.
+
+The number $N$ of children in a family, which can assume any of the values $0, 1, 2, 3, \ldots$ but cannot be $2.5$ or $3.842$, is a discrete variable.
+
+#### EXAMPLE 2.
+
+The height $H$ of an individual, which can be $62$ inches (in), $63.8$ in, or $65.8341$ in, depending on the accuracy of measurement, is a continuous variable.
+
+Data that can be described by a discrete or continuous variable are called _discrete data_ or _continuous data_, respectively. The number of children in each of $1000$ families is an example of discrete data, while the heights of 100 university students is an example of continuous data. In general, _measurements_ give rise to continuous data, while _enumerations_, or _coutnings_, give rise to discrete data.
+
+It is sometimes convenient to extend the concept of variables to nonnumerical entities; for example, color $C$ in a rainbow is a variable that can take on the "values" red, orange, yellow, green, blue, indigo, and violet. It is generally possible to replace such variables by numerical quantities; for example, denote red by 1, orange by 2, etc.
+
+# Rounding of Data
+
+The result of rounding a number such as $72.8$ to the nearest unit is $73$, since $72.8$ is closer to $73$ than to $72$. Similarly, $72.8146$ rounded to the neares hundredth (or to two decimal places) is $72.81$, since $72.8146$ is closer to $72.81$ than to $72.82$.
+
+In rounding $72.465$ to the nearest hundredth, however, we are faced with a dilemma since $72.465$ is _just as far_ from $72.46$ as from $72.47$. It has become the practice in such cases to round to the _even integer_ preceding the $5$. Thus $72.465$ is rounded to $72.46$, $183.575$ is rounded to $183.58$, and $116,500,000$ rounded to the nearest million is $116,000,000$. This practice is especially useful in minimizing _cumulative rounding errors_ when a large number of operations is involved (see Problem 1.4).
+
+## Rounding in R
+
+# Scientific Notation
+
+When writing numbers, especially those involving many zeros before or after the decimal point, it is convenient to employ the scientific notation using powers of 10.
+
+#### EXAMPLE 3.
+
+$10^1 = 10, 10^2 = 10 \times 10 = 100, 10^5 = 10 \times 10 \times 10 \time 10 \times 10 = 100,000$, and $10^8 = 100,000,000$.
+
+#### EXAMPLE 4.
+
+$10^0 = 1$; $10^{-1} = .1$, or $.01$; $10^{-2} = .01$, or $0.01$; and $10^{-5} = .00001$, or $0.00001$.
+
+#### EXAMPLE 5.
+
+$864,000,000 = 8.64 \times 10^8$, and $0.00003416 = 3.416 \times 10^{-5}$.
+
+Note that multiplying a number by $10^8$, for example, has the effect of moving the decimal point of the number eight places _to the right_. Multiplying a number of $10^{-6}$ has the effect of moving the decimal point of the number siz places _to the left_.
+
+We often write $0.1253$ rather than $.1253$ to emphasize the fact that a number other than zero before the decimal point has not accidentally been omitted. However, the zero before the decimal point can be omitted in cases where no confusion can result, such as in tables.
+
+Often we use parentheses or dots to show the multiplicaiton of two or more numbers. Thus $(5)(3) = 5 \dot 3 = 5 \times 3 = 15$, and $(10)(10)(10) = 10 \dot 10 \dot 10 = 10 \times 10 \times 10 = 1000$. When letters are used to represent numbers, the parentheses or dots are often omitted; for example, $ab = (a)(b) = a \dot b = a \times b$.
+
+The scientific notation is often useful in computation, especially in locating decimal points. Use is then made of the rules
+
+$$
+(10^p)(10^q) = 10^{p+q} \ \ \frac{10^p}{10^q} = 10^{p-q}
+$$
+
+where $p$ and $q$ are any numbers.
+
+In $10^p$, $p$ is called the exponent and $10$ is called the _base_.
+
+#### EXAMPLE 6.
+
+$(10^3)(10^2) = 1000 \times 100 = 100,000 = 10^5$, i.e. $10^{3+2}$
+
+$$
+\frac{10^6}{10^4} = \frac{1,000,000}{10,000} = 100 = 10^2\text{,}\ \ \text{i.e.,}\ 10^{6-4}
+$$
+
+#### EXAMPLE 7.
+
+$(4,000,000)(0.0000000002) = (4 \times 10^6)(2 \times 10^{-10}) = (4)(2)(10^6)(10_{-10}) = 8 \times 10^{6-10} = 8 \times 10^{-4} = 0.0008$.
+
+#### EXAMPLE 8.
+
+$\frac{0.006)(80,000)}{0.04} = \frac{(6 \times 10^{-3})(8 \times 10^4)}{4 \times 10^{-3}} = \frac{48 \times 10^1}{4 \times 10^{-2}} = \left(\frac{48}{4}\right) \times 10^{1-(-2)} = 12 \times 10^3 = 12,000$
+
+## Scientific notation in R
+
+# Significant figures
+
+If a height is accurately recorded as $65.4$ in, it means that the true height lies between $65.35$ and $65.45$ in. The accurate digits, apart from zeros needed to locate the decimal point, are called the _significant digits_, or _significant figures_, of the number.
+
+#### EXAMPLE 9.
+
+$65.4$ has three significant figures.
+
+#### EXAMPLE 10.
+
+$4.5300$ has five significant figures.
+
+#### EXAMPLE 11.
+
+$.0018 = 0.0018 = 1.8 \times 10^{-3}$ has two significant figures.
+
+#### EXAMPLE 12.
+
+$.001800 = 0.001800 = 1.800 \times 10^{-3}$ has four significant figures.
+
+Numbers associated with enumerations (or counting), as opposed to measurements, are of course exact and so have an unlimited number of significant figures. In some of these cases, however, it may be difficult to decide which figures are significant without further information. For example, the number $186,000,000$ may have $3, 4, \ldots, 9$ significant figures. If it is known to have five significant figures, it would be better to record the number as either $186.00$ million or $1.8600 \times 10^8$.
+
+# Computations
+
+In performing calculations involving multiplication, division, and the extraction of roots of numbers, the final result can have no more significant figures than the numbers with the fewest significant figures (see Problem 1.9).
+
+#### EXAMPLE 13.
+
+$73.24 \times 4.52 = (73.24)(4.52) = 331$
+
+```{r}
+signif(73.24*4.52, digits=3)
+```
+
+#### EXAMPLE 14.
+
+$1.648/0.023 = 72
+
+#### EXAMPLE 15.
+
+$\sqrt{38.7} = 6.22$
+
+#### EXAMPLE 16.
+
+$(8.416)(50) = 420.8$ (if 50 is exact)
+
+In performing additions and subtractions of numbers, the final result can have no more significant figures after the decimal point than the numbers with the fewest significant figures after the decimal p oint (see Problem 1.10).
+
+#### EXAMPLE 17.
+
+$3.16 + 2.7 = 5.9$
+
+#### EXAMPLE 18.
+
+$83.42 - 72 = 11$
+
+#### EXAMPLE 19.
+
+$74.816 - 25 = 22.816$ (if 25 is exact)
+
+The above rule for addition and subtraction can be extended (see Problem 1.11).
+
+# Functions
+
+If to each value that a variable X can be assumed there corresponds one or more values of variable Y, we say that Y is a _function_ of X and write $Y = F(X)$ (read "_Y_ equals _F_ of _X_") to indicate this functional dependence. Other letters ($G$, $\phi$, etc.) can be used instead of $F$.
+
+The variable $X$ is called the _independent variable_ and $Y$ is called the _dependent variable_.
+
+If only one value of $Y$ corresponds to each value of $X$, we call $Y$ a _single-valued function_ of $X$; otherwise, it is called a _multiple-valued function_ of $X$.
+
+#### EXAMPLE 20.
+
+The total population $P$ of the United States is a function of the time $t$, and we write $P = F(t)$.
+
+#### EXAMPLE 21.
+
+The stretch $S$ of a vertical spring is a function of the weight $W$ placed on the end of the spring. In symbols, $S = G(W)$.
+
+The functional dependence (or correspondence) between  variables is often depicted in a table. However, it can also be indicated by an equation connecting the variables, such as $Y = 2X - 3$, from which $Y$ can be determined corresponding to various values of $X$.
+
+If $Y = F(X)$, it is customary to let $F(3)$ denote "the value of $Y$ when $X = 3$," to let $F(10)$ denote "the value of $Y$ when $X = 10$," etc. Thus if $Y = F(X) = X^2$, then $F(3) = 3^2 = 9$ is the value of $Y$ when $X = 3$.
+
+The concept of function can be extended to two or more variables (see Problem 1.17).
+
+# Rectangular Coordinates
+
+Figure 1-1 shows a scatter plot for four points. The _scatter plot_ is made up of two mutually perpendicular lines called the $X$ and $Y$ _axes_. The $X$ axis is horizontal and the $Y$ axis is vertical. The two axes meet at a point called the _origin_. The two lines dived the $XY plane$ into four regions denoted by I, II, III, and IV and called the first, second, third, and fourth _quadrants_. Four points are shown in Fig. 1-1. The point $(2,3)$ is in the first quadrant and is plotted by going 2 units to the right along the $X$ axis from the origin and 3 units up from there. The point $(-2.3, 4.5)$ is in the second quadrant and is plotted by going $2.3$ units to the left along the $X$ axis from the origin and then $4.5$ units up from there. The point $(-4,-3)$ is in the third quadrant and is plotted by going 4 units to the left of the origin along the $X$ axis and then 3 units down from there. The point $(3.5, -4)$ is in the fourth quadrant and is plotted by going 3.5 units to the right along the $X$ axis and then 4 units down from there. The first number in a pair is called the _abscissa_ of the point and the second number is called the _ordinate_ of the point. The abscissa and the ordinate taken together are called the _coordinates_ of the point.
+
+By constructing a $Z$ axis through the origin and perpendicular to the $XY$ plane, we can easily extend the above ideas. In such cases the coordinates of a point would be denoted by $(X, Y, Z)$.
+
+```{r}
+plot(2,3, xlim=c(-5,5), ylim=c(-5,5), bty="n",
+     pch=19, cex=.4, xlab="", ylab="")
+title("Fig 1-1: Plot of points in the four quadrants.")
+text(2.3,3, "2,3", cex=.6)
+text(4.8,4.8, "I")
+abline(v=0)
+abline(h=0)
+points(-2.3, 4.5, pch=19, cex=.4)
+text(-1.9,4.5, "-2.3,4.5", cex=.6)
+text(-4.8,4.8, "II")
+points(-4,-3, pch=19, cex=.4)
+text(-3.7,-3, "-4,-3", cex=.6)
+text(-4.8,-4.8, "III")
+points(3.5,-4, pch=19, cex=.4)
+text(4.8,-4.8, "IV")
+text(3.9,-4, "-3.5,-4", cex=.6)
+```
+
+# Graphs
+
+A _graph_ is a pictorial presentation of the relationship between variables. Many types of graphs are employed in statistics, depending on the nature of the data involved and the purpose for which the graph is intended. Amon these are _bar graphs_, _pie graphs_, _pictographs_, etc. These graphs are sometimes referred to as _charts_ or _diagrams_. Thus we speak of bar charts, pie diagrams, etc. (see Problems 1.23, 1.24, 1.25, 1.26, and 1.27).
+
+Table 1.1 lists responses from owners of iPhones to the question: How did you damage your iPhone? See the Internet article _iPhone Damage Costs Americans Big Bucks_ on HzO.com.
+
+__Table 1.1 Fifty causes for iPhone damage__
+
+|.|.|.|.|.|
+|:---|:---|:---|:---|:---|
+|Fell from hand|Immersed in liquid|Fell from lap|Immersed in liquid|Fell from lap|
+|Fell from lap|Fell from hand|Fell from hand|Immersed in liquid|Fell from lap|
+|Knocked off table|Liquid spilled on it|Fell from hand|Liquid spilled on it|Fell from hand|
+|Immersed in liquid|Fell from lap|Fell from lap|Fell from hand|Fell from hand|
+|Fell from lap|Immersed in liquid|Liquid spilled on it|Immersed in liquid|Fell from lap|
+|Fell from hand|Liquid spilled on it|Immersed in liquid|Fell from lap|Fell from hand|
+|Fell from lap|Immersed in liquid|Liquid spilled on it|Immersed in liquid|Liquid spilled on it|
+|Knocked off table|Fell from lap|Fell from lap|Immersed in liquid|Immersed in liquid|
+|Immersed in liquid|Knocked off table|Fell from lap|Fell from hand|Fell from lap|
+|Liquid spilled on it|Immersed in liquid|Immersed in liquid|Knocked off table|Fell from hand|
+
+```{r fig.height=2}
+data <- c(
+"Fell from hand","Immersed in liquid","Fell from lap","Immersed in liquid","Fell from lap",
+"Fell from lap","Fell from hand","Fell from hand","Immersed in liquid","Fell from lap",
+"Knocked off table","Liquid spilled on it","Fell from hand","Liquid spilled on it","Fell from hand",
+"Immersed in liquid","Fell from lap","Fell from lap","Fell from hand","Fell from hand",
+"Fell from lap","Immersed in liquid","Liquid spilled on it","Immersed in liquid","Fell from lap",
+"Fell from hand","Liquid spilled on it","Immersed in liquid","Fell from lap","Fell from hand",
+"Fell from lap","Immersed in liquid","Liquid spilled on it","Immersed in liquid","Liquid spilled on it",
+"Knocked off table","Fell from lap","Fell from lap","Immersed in liquid","Immersed in liquid",
+"Immersed in liquid","Knocked off table","Fell from lap","Fell from hand","Fell from lap",
+"Liquid spilled on it","Immersed in liquid","Immersed in liquid","Knocked off table","Fell from hand"
+)
+freq <- table(data)
+pct <- prop.table(freq)*100
+combined <- rbind(freq,pct)
+par(mar=c(1,8,1,1))
+bar = barplot(combined, beside=TRUE, horiz = TRUE, las=1, xaxt="n", col=c(1,2))
+legend(x="center", legend=c("Frequency", "Percent"), fill=c(1,2))
+```
+
+A _pie chart_ is a plot of qualitative data in which the size of the piece of pie is proportional to the frequency of a category. The angles of the pieces of pie that correspond to the categories add up to 360 degrees.
+
+For example the piece of pie that represents "Fell from lap" has an angle equal to $0.30$(360 degrees) = 108 degrees. The piece of pie that represents "Knocked off table" has an angle equal to $0.08$(360 degrees) = 28.8 degrees. The data in Table 1.1 may be summarized as follows
+
+|Category|Frequency|Percent|
+|:---|:---:|:---:|
+|Immersed in liquid|14|28|
+|Liquid spilled on it|7|14|
+|Fell from hand|10|20|
+|Knocked off table|4|8|
+|Fell from lap|15|30|
+
+```{r fig.height=6}
+pie(freq)
+title(main="Percent")
+```
+
+# Equations
+
+Equations are statements of the form $A=B$ where $A$ is called the _left-hand member_ (or _side_) of the equation, and $B$ is called the _right-hand member_ (or _side_). So long as we apply the _same_operations to both members of an equation, we obtain _equivalent equations_. Thus we can add, subtract, multiply, or divide both members of an equation by the same value and obtain an equivalent equation, the only exception being that _division by zero is not allowed_.
+
+#### EXAMPLE 22.
+
+Given the equation $2X + 3 = 9$, subtract 3 from both members: $2X+3-3=9-3$, or $2X=6$. Divide both members by 2: $2X/2 = 6/2$, or $X=3$. This value of $X$ is a _solution_ of the given equation, as seen by replacing $X$ by 3, obtaining $2(3)+3=9$, or $9=9$, which is an _identity_. The process of obtaining solutions of an equation is called _solving_ the equation.
+
+The above ideas can be extended to finding solutions of two equations in two unknowns, three equations in three unknowns, etc. Such equations are called _simultaneous equations_ (see Problem 1.29).
+
+# Inequalities
+
+The symblols $<$ and $>$ mean "less than" and "greater than," respectively. The symbols $\le$ and $\ge$ mean "less than or equal to" and "greater than or equal to," respectively. They are known as _inequality symbols_.
+
+#### EXAMPLE 23.
+
+$3<5$ is read "3 is less than 5."
+
+#### EXAMPLE 24.
+
+$5>3$ is read "5 is greater than 3."
+
+#### EXAMPLE 25.
+
+$X<8$ is read "$X$ is less than 8."
+
+#### EXAMPLE 26.
+
+$X \ge 10$ is read "$X$ is greater than or equal to 10."
+
+#### EXAMPLE 27.
+
+$4 < Y \le 6$ is read "4 is less than $Y$, which is less than or equal to 6," or "$Y$ is between 4 and 6, excluding 4 but including 6," or "$Y$ is greater than 4 and less than or equal to 6."
+
+Relations involving inequality symbols are called _inequalities_. Just as we speak of members of an equation, so we can speak of _members of an inequality_. Thus in the inequality $4 < Y \le 6$, the members are $4, Y$, and $6$.
+
+A valid inequality remains valid when:
+
+1. The same number is added to or subtracted from each member.
+
+#### EXAMPLE 28.
+
+Since $15 > 12$, $15 + 3 > 12 + 3$ (i.e., $18 > 15$) and $15 - 3 > 12 - 3$ (i.e., $12 > 9).
+
+2. Each member is multiplied or divided by the same _positive_ number.
+
+#### EXAMPLE 29.
+
+Since $15 > 12$, $(15)(3) > (12)(3)$ (i.e., $45 > 36$) and $15/3 > 12/3$ (i.e., $5>4$).
+
+3. Each member is multiplied or divided by the same _negative_ number, provided that the inequality symbols are reversed.
+
+#### EXAMPLE 30.
+
+Since $15 > 12$, $(15)(-3) < (12)(-3)$ (i.e., $-45 < -36$) and $15/(-3) < 12/(-3)$ (i.e., $-5 < -4$).
+
+# Logarithms
+
+For $x > 0$, $b > 0$, and $b \ne 1$, $y = \log_b{x}$ if and only if $\log{b^y} = x$. A logarithm is an exponent. It is the power that the base $b$ must be raised to in order to get the number for which you are taking the logarithm. The two bases that have traditionally been used are $10$ and $e$, which equals $2.71828182\ldots$. Logarithms with base $10$ are called _common logarithms_ and are written as $\log_{10}{x}$ or simply as $\log{(x)}$. Logarithms with base $e$ are called _natural logarithms_ and are written as $\ln{(x)}$.
+
+#### EXAMPLE 31.
+
+Find the following logarithms: $\log_{2}{8}$, $\log_{5}{25}$, and $\log_{10}{1000}$. THree is the power of 2 that gives 8, and so $\log_{2}{8}=3$. Two is the power of 5 that gives 25, and so $\log_{5}{25} = 2$. Three is the power of 10 that gives 1000, and so $\log_{10}{1000} = 3$.
+
+#### EXAMPLE 32.
+
+Find the natural logarithm of the integers 1 through 5.
+
+```{r}
+cat("ln(1:5):", log(1:5))
+```
+
+#### EXAMPLE 33.
+
+Show that the answers in Example 32 are correct by showing that $e^{\ln{(x)}}$ gives the value $x$.
+
+```{r}
+exp(log(1:5))
+```
+
+Example 33 illustrates that if you have the logarithms of numbers ($\log_{b}{(x)}$) the numbers ($x$) may be recovered by using the relation $b^{\log_{b}{(x)}} = x$.
+
+#### EXAMPLE 34.
+
+The number $e$ may be defined as a limiting entity. The quantity $(1 + (1/x))^x$ gets closer and closer to $e$ when $x$ grows larger. Evaluate $(1 + (1/x))^x$ for $x = `r (x <- c(1, 10, 100, 1000, 10000, 100000, 1000000))`
+
+```{r}
+(1+(1/x))^x
+```
+
+#### EXAMPLE 35.
+
+The balance of an account earning compound interest $n$ times per year is given by $A(t) = P(1 + (r/n))^{nt}$ where $P$ is the principal, $r$ is the interest rate, $t$ is the time in years, and $n$ is the number of compound periods per year. The balance of an account earning interest continuously is given by $A(t) = P e^{n}$. For the continuous growth of \$`r (P <- 1000)` and \$`r 1000` that is compounded quarterly `r n<-4` after `r (t <- 1:5)` years at interest rate `r (r <- .05)`$\%$. The results are:
+
+```{r}
+P*(1 + (r/n))^(n*t)
+P*exp(r*t)
+```
+
+# Properties of logarithms
+
+The following are the more important properties of logarithms:
+
+1. $\log_{b}{MN} = \log_{b}{M} + \log_{b}{N}$
+2. $\log_{b}{M/N} = \log_{b}{M} - \log_{b}{N}$
+3. $\log_{b}{M^P} = p \log_{b}{M}$
+
+# Logarithmic Equations
+
+To solve logarithmic equations:
+
+1. Isolate the logarithms on one side of the equation.
+2. Express a sum or difference of logarithms as a single logarithm.
+3. Re-express the equation in step 2 in exponential form.
+4. Solve the equation in step 3.
+5. Check all solutions.
+
+#### EXAMPLE 37.
+
+Solve the following logarithmic equation: $\log_{4}{(x + 5)} = 3$. First, re-express in exponential form as $x + 5 = 4^3 = 64$. Then solve for $x$. Then solve for $x$ as follows. $x=64-5=59$. Then check your solution. $\log_{4}{(59+5)} = \log{4}{(64)} = 3$ since $4^3=64$.
+
+#### EXAMPLE 38.
+
+Solve the following logarithmic equation, $\log{(6y-7)} + \log{y} = \log{(5)}$. Replace the sum of logs by the log of the products. $\log{(6y - 7)y} = \log{(5)}$. Now equate $(6y - 7)y$ and 5. The result is $6y^2 - 7y = 5$ or $6y^2 - 7y - 5 = 0$. This quadratic equation factors as $(3y-5)(2y+1)=0$. The solutions are $y=5/3$ and $y=-1/2$. The $-1/2$ is rejected since it gives logs of negative numbers which are not defined. The $y=5/3$ checks out as a solution when tried in the original equation. Therefore our only solution is $y=5/3$.
+
+#### EXAMPLE 39.
+
+Solve the following logarithmic equation:
+
+$$
+\ln{(5x)} - \ln{(4x + 2)} = 4\text{.}
+$$
+
+Replace the difference of l ogs by the log of the quotient, $\ln{(5x/(4x + 3))} = 4$. Apply the definition of a logarithm: $5x/(4x + 2) = e^{4} = `r exp(4)`$. Solving the equation $5x = 218.39260x + 109.19630$ for $x$ gives $x = -0.5117$. However, this answer does not check in the equation $\ln{(5x)} - \ln{(4x + 2)} = 4$, since the log function is not defined for negative numbers. The equation $\ln{(5x)} - \ln{(4x + 2)} = 4$ has no solutions.
+
+
+
+
+
+
+
+
+
+
+# References
+1. Larry J. Stephens, and Murray R. Spiegel. _Schaum’s outline of Statistics, sixth edition._ The McGraw-Hill Companies, Inc, 2018.
+2. https://r-coder.com/barplot-r/

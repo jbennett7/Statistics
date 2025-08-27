@@ -1,0 +1,399 @@
+---
+title: 'Chapter 3: The Mean, Median, Mode and Other Measures of Central Tendency'
+subtitle: 'Text'
+author: 'Murray R. Spiegel, PhD and Larry J. Stephens, PhD'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Index, or subscript, notation
+
+Let the symbol $X_j$ (read "X sub j") denote any of teh $N$ _values_ $X_1, X_2, X_3, \ldots, X_N$ assumed by a variable $X$. The letter $j$ in $X_j$, which can stand for any of the numbers $1, 2, 3, \ldots, N$ is called a _subscript_, or _index_. Clearly any letter other than $j$, such as $i, k, p, q,$ or $s$, could have been used as well.
+
+# Summation notation
+
+The symbol $\sum^N_{j=1}{X_j}$ is used to denote the sum of all the $X_j$'s from $j = 1$ to $j = N$; by definition,
+
+$$
+\sum^N_{j=1}{X_j} = X_1 + X_2 + X_3 + \cdots + X_N
+$$
+
+When no confusion can result, we often denote this sum simply by $\sum{X}$, $\sum{X_j}$, or $\sum_j{X_j}$. The symbol $\sum$ is the Greek capital letter _sigma_, denoting sum.
+
+#### EXAMPLE 1.
+
+$\sum^N_{j=1}{X_j Y_j} = X_1 Y_1 + X_2 Y_2 + X_3 Y_3 + \cdots + X_N Y_N$
+
+#### EXAMPLE 2.
+
+$\sum^N_{j=1}{a X_j} = a X_1 + a X_2 + \cdots + a X_N = a(X_1 + X_2 + \cdots + X_N) = a \sum^N_{j=1}{X_j}$
+
+#### EXAMPLE 3.
+
+If $a, b,$ and $c$ are any constants, then $\sum(a X + b Y - c Z) = a \sum{X} + b \sum{Y} - c \sum{Z}$. See Problem 3.3.
+
+# Averages, or measures of central tendency
+
+An _average_ is a value that is typical, or representative, of a set of data. Since such typical values tend to lie centrally within a set of data arranged according to magnitude, averages are also called _measures of central tendency_.
+
+Several types of averages can be defined, the most common being the _arithmetic mean_, the _median_, the _mode_, the _geometric mean_, and the _harmonic mean_. Each has advantages and disadvantages, depending on the data and the intended purpose.
+
+# The arithmetic mean
+
+The _arithmetic mean_, or briefly the _mean_, of a set of $N$ numbers $X_1, X_2, X_3, \ldots, X_N$ is denoted by $\bar{X}$ (read "X bar") and is defined as
+
+\begin{equation}
+\bar{X} = \frac{X_1 + X_2 + X_3 + \cdots + X_N}{N} = \frac{\sum^N_{j=1}{X_j}}{N} = \frac{\sum{X}}{N}
+\end{equation}
+
+#### EXAMPLE 4.
+
+The arithmetic mean of the numbers $8, 3, 5, 12$ and $10$ is
+```{r echo=F, message=F}
+e4.X <- c(8,3,5,12,10)
+```
+
+$$
+\bar{X} = \frac{8 + 3 + 5 + 12 + 10}{5} = \frac{38}{5} = `r mean(e4.X)`
+$$
+
+If the numbers $X_1, X_2, \ldots, X_K$ occur $f_1, f_2, \ldots, f_K$ times, respectively (i.e., occur with frequencies $f_1, f_2, \ldots, f_K$), the arithmetic mean is
+
+\begin{equation}
+\bar{X} = \frac{f_1 X_1 + f_2 X_2 + \cdots + f_K X_K}{f_1 + f_2 + \cdots + f_K} =
+\frac{\sum^K_{j=1}{f_j X_j}}{\sum^K_{j=1}{f_j}} = \frac{\sum{f X}}{\sum{f}} =
+\frac{\sum{f x}}{N}
+\end{equation}
+
+where $N = \sum{f}$ is the _total frequency_ (i.e., the total number of cases).
+
+#### EXAMPLE 5.
+
+If $5, 8, 6,$ and $2$ occur with frequencies $3, 2, 4,$ and $1$, respectively, the arithmetic mean is
+```{r echo=F, message=F}
+e5.X <- c(5, 8, 6, 2)
+e5.f <- c(3, 2, 4, 1)
+```
+
+$$
+\bar{X} = \frac{(3)(5) + (2)(8) + (4)(6) + (1)(2)}{3 + 2 + 4 + 1} = \frac{15 + 16 + 24 + 2}{10} = `r sum(e5.X*e5.f)/sum(e5.f)`
+$$
+
+# The weighted arithmetic mean
+
+Sometimes we associate with the numbers $X_1, X_2, \ldots, X_K$ certain _weighting foactors_ (or _weights_) $w_1, w_2, \ldots, w_K$, depending on the significance or importance attached to the numbers. In this case,
+
+\begin{equation}
+\bar{X} = \frac{w_1 X_1 + w_2 X_2 + \cdots + w_K X_K}{w_1 + w_2 + \cdots + w_K} = \frac{\sum{w X}}{\sum{w}}
+\end{equation}
+
+is called the _weighted arithmetic mean_. Note the similarity to equation (2), which can be considered a weighted arithmetic mean with weights $f_1, f_2, \ldots, f_K$.
+
+#### EXAMPLE 6.
+
+If a final examination in a course is weighted 3 times as much as a quiz and a student has a final examination grade of 85 and quiz grades of 70 and 90, the mean grade is
+
+$$
+\bar{X} = \frac{(1)(70) + (1)(90) + (3)(85)}{1 + 1 + 3} = \frac{415}{5} = 83
+$$
+
+# Properties of the arithmetic mean
+
+1. The algebraic sum of the deviations of a set of numbers from their arithmetic mean is zero.
+
+#### EXAMPLE 7.
+
+The deviations of the numbers $8, 3, 5, 12,$ and $10$ from their arithmetic mean `r (e7.mean <- mean(e4.X))` are `r e4.X - e7.mean` and their sum is `r sum(e4.X - e7.mean)`.
+
+2. The sum of the squares of the deviations of a set of numbers $X_j$ from any number $a$ is a minimum if and only if $a = \bar{X}$ (see Problem 4.27).
+
+3. If $f_1$ numbers have a mean $m_1,f_2$ numbers have mean $m_2,\ldots,f_K$
+
+\begin{equation}
+\bar{X} = \frac{ f_1 m_1 + f_2 m_2 + \cdots + f_K m_K}{f_1 + f_2 + \cdots + f_K}
+\end{equation}
+
+that is, a weighted artihmetic mean of all the means (see Problem 3.12).
+
+4. If A is any _guessed_ or _assumed arithmetic mean_ (which may be any number) and if $d_j = X_j - A$ are the deviations of $X_j$ from $A$, then equations (1) and (2) become, respectively,
+
+\begin{equation}
+\bar{X} = A + \frac{\sum^N_{j=1}{d_j}}{N} = A + \frac{\sum{d}}{N}
+\end{equation}
+
+\begin{equation}
+\bar{X} = A + \frac{\sum^K_{j=1}{f_j d_j}}{\sum^K_{j=1}{f_j}} = A + \frac{\sum{f d}}{N}
+\end{equation}
+
+where $N = \sum^K_{j=1}{f_j} = \sum{f}$. Note that formulas (5) and (6) are summarized in the equation $\bar{X} = A + \bar{d}$ (see Problem 3.18).
+
+# The arithmetic mean computed from grouped data
+
+When data are presented in a frequency distribution, all values falling within a given class interval are considered to be coincident with the class mark, or midpoint, of the interval. Formulas (2) and (6) are valid for such grouped data if we interpret $X_j$ as the class mark, $f_j$ as its corresponding class frequency, $A$ as any guessed or assumed class mark, and $d_j = X_j - A$ as the deviations of $X_j$ from $A$.
+
+Computations using formulas (2) and (6) are sometimes called the _long_ and _short methods_, respectively (see Problems 3.15 and 3.20).
+
+If class intervals all have equal size $c$, the deviations $d_j = X_j - A$ can all be expressed as $cu_j$, where $u_j$ can be positive or negative intergers or zero (i.e., $0, \pm 1, \pm 2, \pm 3, \ldots$), and formula (6) becomes
+
+\begin{equation}
+\bar{X} = A + \left(\frac{\sum^K_{j=1}{f_j u_j}}{N}\right) = A + \left(\frac{\sum{f u}}{N}\right)c
+\end{equation}
+
+which is equivalent to the equation $\bar{X} = A + c\bar{u}$ (see Problem 3.21). This is called the _coding method_ for computing the mean. It is a very short method and should always be used for grouped data where the class-interval sizes are equal (see Problems 3.22 and 3.23). Note that in the coding method the values of the variable $X$ are _transformed_ into the values of the variable $u$ according to $X = A + cu$.
+
+# The median
+
+The _median_ of a set of numbers arranged in order of magnitude (i.e., in an array) is either the middle value of the arithmetic mean of the two middle values.
+
+#### EXAMPLE 8.
+
+The set of numbers `r (ex8 <- c(3, 4, 4, 5, 6, 8, 8, 8, 10))` has median `r median(ex8)`
+
+#### EXAMPLE 9.
+
+The set of numbers `r (ex9 <- c(5, 5, 7, 9, 11, 12, 15, 18))` has median $\frac{1}{2}(9 + 11) = `r median(ex9)`$
+
+For grouped data, the median, obtained by interpolation, is given by
+
+\begin{equation}
+\mathrm{Median} = L_1 + \left( \frac{\frac{N}{2} - (\sum f)_1}{f_{\mathrm{median}}}\right)c
+\end{equation}
+
+$$
+\begin{aligned}
+\text{where}\ \ & L_1 & = &\ \text{lower class boundary of the median class (i.e., the class containing the median)} \\
+\ \ & N & = &\ \text{number of items in the data (i.e., total frequency)} \\
+\ \ & (\sum f)_1 & = &\ \text{sum of frequencies of all classes lower than the median class} \\
+\ \ & f_{\text{median}} & = &\ \text{frequency of the median class} \\
+\ \ & c & = &\ \text{size of the median class interval}
+\end{aligned}
+$$
+
+Geometrically the median is the value of $X$ (abscissa) corresponding to the vertical line which divides a histogram into two parts having equal areas. This value of $X$ is sometimes denoted by $\bar{X}$.
+
+# The mode
+
+```{r}
+mode <- function(X) { 
+  ret <- names(which(table(X) == max(table(X))))
+  if (length(ret) == length(X)) {
+    return(NULL)
+  } else {
+    return(ret)
+  }
+}
+```
+
+The _mode_ of a set of numbers is that value which occurs with the greatest frequency; that is, it is the most common value. The mode may not exist, and even if it does exist it may not be unique.
+
+
+#### EXAMPLE 10.
+
+The set `r (ex10 <- c(2, 2, 5, 7, 9, 9, 9, 10, 10, 11, 12, 18))` has mode `r mode(ex10)`.
+
+#### EXAMPLE 11.
+
+The set `r (ex11 <- c(3, 5, 8, 10, 12, 15, 16))` `r ifelse(is.null(ans <- mode(ex11)),"has no mode", ans)`.
+
+#### EXAMPLE 12.
+
+The set `r (ex12 <- c(2, 3, 4, 4, 4, 5, 5, 7, 7, 7, 9))` has two modes: `r mode(ex12)`. It is called _bimodal_.
+
+A distribution having only one mode is called _unimodal_.
+
+In the case of grouped data where a frequency curve has been constructed to fit the data, the mode will be the value (or values) of $X$ corresponding to the maximum point (or points) on the curve.
+
+This value of $X$ is sometimes denoted by $\hat{X}$.
+
+From a frequency distribution or histogram the mode can be obtained from the formula
+
+\begin{equation}
+\text{Mode} = L_1 + \left( \frac{\Delta_1}{\Delta_1 + \Delta_2}\right) c
+\end{equation}
+
+$$
+\begin{aligned}
+\text{where}\ \ & L_1 & = &\ \text{lower class boundary of the median class (i.e., the class containing the mode)} \\
+\ \ & \Delta_1 & = &\ \text{excess of modal frequency over frequency of next-lower class} \\
+\ \ & \Delta_2 & = &\ \text{excess of modal frequency over freqeuncy of next-higher class} \\
+\ \ & c & = &\ \text{size of the modal class interval}
+\end{aligned}
+$$
+
+# The empirical  relation between the mean, median, and mode
+
+For unimodal frequency curves that are moderately skewed (asymmetrical), we have the empirical relation
+
+\begin{equation}
+\text{mean} - \text{mode} = 3(\text{mean} - \text{median})
+\end{equation}
+
+Figures 3-1 and 3-2 show the relative positions of the mean, median, and mode for frequency curves skewed to the right and left, respectively. For symmetrical curves, the mean, mode, and median all coincide.
+
+
+```{r}
+ set.seed(1)
+x <- rbeta(10000, 2, 5)
+plot(density(x), type='l',
+     xlab="", ylab="")
+abline(v=mean(x), col="red", lwd=1)
+abline(v=median(x), col="green", lwd=1)
+abline(v=median(x)-abs(median(x)-mean(x)), col="blue", lwd=1)
+legend(x="topright", legend=c("mean", "median", "est. mode"),
+       lty=c(1, 1, 1), col = c("red", "green", "blue", lwd=1))
+```
+
+```{r}
+set.seed(1)
+x <- rbeta(10000, 5, 2)
+plot(density(x), type='l', main="",
+     xlab="", ylab="")
+abline(v=mean(x), col="red", lwd=1)
+abline(v=median(x), col="green", lwd=1)
+abline(v=abs(median(x) - mean(x))+median(x), col="blue", lwd=1)
+legend(x="topleft", legend=c("mean", "median", "est. mode"),
+       lty=c(1, 1, 1), col = c("red", "green", "blue", lwd=1))
+```
+
+# The geomteric mean _G_
+
+The geometric mean $G$ of a set of $N$ positive numbers $X_1, X_2, X_3, \ldots, X_N$ is the $N$th root of the product of the numbers:
+
+\begin{equation}
+G = \sqrt[N]{X_1 X_2 X_3 \cdots X_N}
+\end{equation}
+
+```{r}
+geometric.mean <- function(X) {  exp(mean(log(X)))  }
+```
+
+#### EXAMPLE 13.
+
+The geometric mean of the numbers `r (ex13 <- c(2, 4, 8))` is $G = \sqrt[3]{(2)(4)(8)} = \sqrt[3]{64} = `r geometric.mean(ex13)`$.
+
+We can compute $G$ by logarithms (see Problem 3.35) or by using a calculator. For the geometric mean from grouped data, see Problems 3.36 and 3.91.
+
+# The harmonic mean _H_
+
+The harmonic mean $H$ of a set of $N$ numbers $X_1, X_2, X_3, \ldots, X_N$ is the reciprocal of the arithmetic mean of the reciprocals of the numbers:
+
+\begin{equation}
+H = \frac{1}{\frac{1}{N} \sum^N_{j=1}{\frac{1}{X_j}}} = \frac{N}{\sum{\frac{1}{X}}}
+\end{equation}
+
+In practice it may be easier to remember that
+
+\begin{equation}
+\frac{1}{H} = \frac{ \sum{\frac{1}{X}}}{N} = \frac{1}{N} \sum{\frac{1}{N}}
+\end{equation}
+
+```{r}
+harmonic.mean <- function(X) {
+  N <- length(X)
+  N / sum(X^(-1))
+  }
+```
+
+#### EXAMPLE 14.
+
+The harmonic mean of the numbers `r (ex14 <- c(2, 4, 8))` is
+
+$$
+H = \frac{3}{\frac{1}{3} + \frac{1}{4} + \frac{7}{8}} = \frac{3}{\frac{7}{8}} = `r harmonic.mean(ex14)`
+$$
+
+For the harmonic mean from grouped data, see Problems 3.99 and 3.100.
+
+# The relation between the arithmetic, geometric, and harmonic means
+
+The geometric mean of a set of positive numbers $X_1, X_2, \ldots, X_N$ is less than or equal to their arithmetic mean but is greater than or equal to their harmonic mean. In symbols,
+
+\begin{equation}
+H \le G \le \bar{X}
+\end{equation}
+
+The equality signs hold only if all the numbers $X_1, X_2, \ldots, X_N$ are identical.
+
+#### EXAMPLE 15.
+
+The set `r (ex15 <- c(2, 4, 8))` has arithmeitc mean `r mean(ex15)`, geometric mean `r geometric.mean(ex15)`, and harmonic mean `r harmonic.mean(ex15)`.
+
+```{r}
+(harmonic.mean(ex15) <= geometric.mean(ex15)) <= mean(ex15)
+```
+
+# The root mean square
+
+The root mean square (RMS), or _quadratic mean_, of a set of numbers $X_1, X_2, \ldots, X_N$ is sometimes denoted by $\sqrt{\overline{X^2}}$ and is defined by
+
+\begin{equation}
+\mathrm{RMS} = \sqrt{\overline{X^2}} = \sqrt{\frac{\sum^N_{j=1}{X_j^2}}{N}} = \sqrt{\frac{\sum{X^2}}{N}}
+\end{equation}
+
+```{r}
+rms <- function(X) {sqrt(mean(X^2))}
+```
+
+This type of average is frequently used in physical applications.
+
+#### EXAMPLE 16.
+
+The RMS of the set `r (ex16 <- c(1, 3, 4, 5, 7))` is
+
+$$
+\sqrt{\frac{1^2 + 3^2 + 4^2 + 5^2 + 7^2}{5}} = \sqrt{20} = `r rms(ex16)`
+$$
+
+# Quartiles, deciles, and percentiles
+
+If a set of data is arranged in order of magnitude, the middle value (or arithmetic mean of the two middle values) that divides the set into two equal parts is the median. By extending this idea, we can think of those values which divide the set into four equal parts. These values, denoted by $Q_1, Q_2$, and $Q_3$, are called the first, second, and third _quartiles_, respectively, the value $Q_2$ being equal to the median.
+
+Similarly, the values that divide the data into 10 equal parts are called _deciles_ are denoted by $D_1, D_2, \ldots, D_9$, while the values dividing the data into 100 equal parts are called _percentiles_ and are denoted by $P_1, P_2, \ldots, P_{99}$. The fifth decile and the 50th percentile correspond to the median. The 25th and 75th percentiles correspond to the first and third quartiles, respectively.
+
+Collectively, quartiles, deciles, percentiles, and other values obtained by equal subdivisions of the data are called _quantiles_. For computations of these from grouped data, see Problems 3.44 to 3.46.
+
+#### EXAMPLE 17.
+
+Find $Q_1, Q_2, Q_3, D_9$, and $P_{95}$ for the following sample of test scores:
+
+```{r}
+ex17 <- c( 88, 45, 53, 86, 33, 86, 85, 30, 89, 53, 41, 96, 56, 38, 62,
+           71, 51, 86, 68, 29, 28, 47, 33, 37, 25, 36, 33, 94, 73, 46,
+           42, 34, 79, 72, 88, 99, 82, 62, 57, 42, 28, 55, 67, 62, 60,
+           96, 61, 57, 75, 93, 34, 75, 53, 32, 28, 73, 51, 69, 91, 35)
+
+quantile(ex17)[2:4]
+quantile(ex17, probs=seq(0, 1, by=0.1))[10]
+quantile(ex17, probs=seq(0, 1, by=0.01))[96]
+```
+
+## How to calculate quartiles, deciles, and percentiles by hand
+
+(1) First arrange the data in ascending order
+
+```{r}
+sort(ex17)
+```
+
+(2) Use $i = np/100$ to calculate the index in the data set and proceed depending:
+
+  (a) To calculate the first quartile (25th percentile). Calculate $i = np/100 = 60(25)/100 = 15$. Since 15 is a whole number, go the the 15th and 16th numbers in the sored array and average the 15th and 16th numbers. That is average 37 and 38 to get 37.5 as the first quartile ($Q_1 = 37.5$).
+  
+  (b) To find the 93rd percentile, calculate $np/100 = 60(93)/100$ to get $55.8$. Since this number is not a whole number, always round it up to get 56. The 56th number in the sorted array is 93 and $P_{93} = 93$. The R function `quantile(ex17, probs=.93)` gives r  quantile(ex17, probs=.93)`. Its not the same but its close. As the data set becomes larger, the values tend to equal each other.
+
+# Measures of central tendency in R
+
+In R you can use the `summary` function to describe the statistics of the data set. These values are called the descriptive statistics of the data set:
+
+```{r}
+summary(ex17)
+```
+
+To produce the standard deviation use the `sd` command:
+
+```{r}
+sd(ex17)
+```

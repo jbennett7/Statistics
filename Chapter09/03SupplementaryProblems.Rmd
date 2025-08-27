@@ -1,0 +1,12 @@
+---
+title: 'Chapter 9: Statistical Estimation Theory'
+subtitle: 'Supplementary Problems'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Unbiased and efficient estimates
+

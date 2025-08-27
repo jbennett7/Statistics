@@ -1,0 +1,446 @@
+---
+title: "Elementary Probability Theory"
+subtitle: "Text"
+author: "Joseph Bennett"
+date: "`r Sys.Date()`"
+#header-includes:
+#  - \usepackage{epsdice}
+#  - \usepackage{pst-poker}
+output:
+  pdf_document:
+    keep_tex: yes
+    toc: true
+    latex_engine: xelatex
+    extra_dependencies:
+      epsdice: null
+      pst-poker: null
+---
+
+# Definitions of probability
+
+## Classic definition
+
+Suppose that an event $E$ can happen in $h$ ways out of a total of $n$ possible
+equally likely ways. Then the probability of occurrence of the event (called its
+_success_) is denoted by
+
+
+$$
+p = \text{Pr}\{E\} = \frac{h}{n}
+$$
+
+The probability of nonoccurrence of the event (called its _failure_) is denoted
+by
+
+$$
+q = \text{Pr}\{\text{not } E\} = \frac{n - h}{n} = 1 - \frac{h}{n} = 1 - p
+  = 1 - \text{Pr}\{E\}
+$$
+
+Thus $p + q = 1$, or $\text{Pr}\{E\} + \text{Pr}\{\text{not } E\} = 1$.
+The event "not $E$" is sometimes denoted by $\bar{E}, \tilde{E},$ or $\sim E$.
+
+__Example 1.__
+When a die is tossed, there are 6 equally possible ways in which the die can
+fall:
+
+$$
+\scalebox{4}{
+\epsdice{1} \epsdice{2} \epsdice{3} \epsdice{4} \epsdice{5} \epsdice{6}
+}
+$$
+
+The event $E$, that a 3 or 4 turns up, is:
+
+$$
+\scalebox{4}{
+\epsdice{3} \epsdice{4}
+}
+$$
+
+and the probability of $E$ is $\text{Pr}\{E\} = 2/6$ or $1/3$. The probability
+of not getting a 3 or 4 (i.e., getting a 1, 2, 5, or 6) is
+$\text{Pr}\{\bar{E}\} = 1 - \text{Pr}\{E\} = 2/3$.
+
+Note that the probability of an event is a number between 0 and 1. If the event
+cannot occur, its probability is 0. If it must occur (i.e., its occurrence is
+_certain_), its probability is 1.
+
+If $p$ is the probability that an event will occur, the _odds_ in favor of its
+happening are $p : q$ (read "$p$ to $q$"); the odds agains its happening are
+$q : p$. Thus the odds against a 3 or 4 in a single toss of a fair die are
+$q : p = \frac{2}{3} : \frac{1}{3} = 2 : 1$ (i.e., 2 to 1).
+
+## Relative-frequency definition
+
+The classic definition of probability has a disadvantage in that the words
+"equally likely" are vague. In fact, since these words seem to be synonymous
+with "equally probable," the definition is _circular_ because we are essentially
+defining probability in terms of itself. For this reason, a statistical
+definition of probability has been advocated by some people. According to this
+the estimated probability, or _empirical probability_, of an event is taken to
+be the _relative frequency_ of occurrence of the event when the number of
+observations is very large. The probability itself is the _limit_ of the
+relative frequency as the number of observations increases indefinitely.
+
+__Example 2.__
+If 1000 tosses of a coin results in 529 heads, the relative frequency of heads
+is $529/100 = 0.529$. If another 1000 tosses results in 493 heads, the relative
+frequency in the total of 2000 tosses is $(529 + 493)/2000 = 0.511$. According
+to the statistical definition, by continuing in this manner we should ultimately
+get closer and closer to a number that represents the probability of a head in
+a single toss of the coin. From the results so far presented, this should be
+$0.5$ to one significant figure. To obtain more significant figures, further
+observations must be made.
+
+The statistical definition, although useful in practice, has difficulties from
+a mathematical point of view, since an actual limiting number may not really
+exist. For this reason, modern probability theory has been developed
+_axiomatically_; that is, the theory leaves the concept of probability
+undefined, much the same as _point_ and _line_ are undefined in geometry.
+
+# Conditional probability: Independent and dependent events
+
+If $E_1$ and $E_2$ are two events, the probability that $E_2$ occurs given that
+$E_1$ has occurred is denoted by $\text{Pr}\{E_2|E_1\}$, or
+$\text{Pr}\{E_2 \text{ given } E_1\}$, and is called the
+_conditional probability_ of $E_2$ given that $E_1$ has occurred.
+
+If the occurrence or nonoccurrence of $E_1$ does not affect the probability of
+occurrence of $E_2$, then $\text{Pr}\{E_2|E_1\} = \text{Pr}\{E_2\}$ and we say
+that $E_1$ and $E_2$ are _independent events_; otherwise, they are
+_dependent events_.
+
+If we denote by $E_1E_2$ the event that "both $E_1$ and $E_2$ occur," sometimes
+called a _compound event_, then
+
+\begin{equation}
+\text{Pr}\{E_1E_2\} = \text{Pr}\{E_1\}\ \text{Pr}\{E_2|E_1\}
+\end{equation}
+
+In particular,
+
+\begin{equation}
+\text{Pr}\{E_1E_2\} = \text{Pr}\{E_1\}\ \text{Pr}\{E_2\}
+\ \ \ \ \text{ for independent events}
+\end{equation}
+
+For three events $E_1$, $E_2$, and $E_3$, we have
+
+\begin{equation}
+\text{Pr}\{E_1 E_2 E_3\} = \text{Pr}\{E_1\}\ \text{Pr}\{E_2|E_1\}
+\ \text{Pr}\{E_3|E_1 E_2\}
+\end{equation}
+
+That is, the probability of occurrence of $E_1$, $E_2$, and $E_3$ is equal to
+(the probability of $E_1$) \times (the probability of $E_2$ given that $E_1$
+has occurred) \times (the probabilty of $E_3$ given that both $E_1$ and $E_2$
+have occurred). In particular,
+
+\begin{equation}
+\text{Pr}\{E_1 E_2 E_3\} = \text{Pr}\{E_1\}\ \text{Pr}\{E_2\}\ \text{Pr}\{E_3\}
+\ \ \ \text{ for independent events}
+\end{equation}
+
+In general, if $E_1$, $E_2$, $E_3$, $\ldots$, $E_n$ are $n$ independent events
+having respective probabilities $p_1$, $p_2$, $p_3$, $\ldots$, $p_n$, then the
+probability of occurrence of $E_1$ and $E_2$ and $E_3$ and $\cdots E_n$ is
+$p_1 p_2 p_3 \cdots p_n$.
+
+__Example 3.__
+Let $E_1$ and $E_2$ be the events "heads on fifth toss" and "heads on sixth
+toss" of a coin, respectively. Then $E_1$ and $E_2$ are independent events, and
+thus the probability of heads on both the fifth and sixth tosses is (assuming
+the coin to be fair)
+
+$$
+\text{Pr}\{E_1 E_2\} = \text{Pr}\{E_1\}\ \text{Pr}\{E_2\}
+  = \left(\frac{1}{2}\right) \left( \frac{1}{2} \right) = \frac{1}{4}
+$$
+
+__Example 4.__
+If the probability that $A$ will be alive in 20 years is 0.7 and the probability
+that $B$ will be alive in 20 years is 0.5, then the probability that they will
+both be alive in 20 years is $(0.7)(0.5) = 0.35$.
+
+__Example 5.__
+Suppose that a box contains 3 white balls and 2 black balls. Let $E_1$ be the
+event "first ball drawn is black" and $E_2$ the event "second ball drawn is
+black," where the balls are not replaced after being drawn. Here $E_1$ and
+$E_2$ are dependent events.
+
+The probability that the first ball drawn is black is
+$\text{Pr}\{E_1\} = 2 / (3 + 2) = \frac{2}{5}$. The probability that the
+second ball is drawn is black, given that the first ball drawn was black, is
+$\text{Pr}\{E_2|E_1\} = 1 / (3 + 1) = \frac{1}{4}$. Thus the probability that
+both balls drawn are black is
+
+$$
+\text{Pr}\{E_1 E_2\} = \text{Pr}\{E_1\}\ \text{Pr}\{E_2|E_1\}
+= \frac{2}{5} \cdot \frac{1}{4} = \frac{1}{10}
+$$
+
+# Mutually exclusive events
+
+Two or more events are called _mutually exclusive_ if the occurrence of any one
+of them excludes the occurrences of the others. Thus if $E_1$ and $E_2$ are
+mutually exclusive events, then $\text{Pr}\{E_1 E_2\} = 0$.
+
+If $E_1 + E_2$ denotes the event that "either $E_1$ or $E_2$ or both occur,"
+then
+
+\begin{equation}
+\text{Pr}\{E_1 + E_2\} = \text{Pr}\{E_1\} + \text{Pr}\{E_2\}
+  - \text{Pr}\{E_1 E_2\}
+\end{equation}
+
+In particular,
+
+\begin{equation}
+\text{Pr}\{E_1 + E_2\} = \text{Pr}\{E_1\} + \text{Pr}\{E_2\}
+\ \ \ \text{ for mutually exclusive events}
+\end{equation}
+
+As an extension of this, if $E_1$, $E_2$, $\ldots$, $E_n$ are $n$ mutually
+exclusive events having respective probabilities of occurrence $p_1$, $p_2$,
+$\ldots$, $p_n$, then the probability of occurrence of either $E_1$ or $E_2$ or
+$\cdots E_n$ is $p_1 + p_2 + \cdots + p_n$.
+
+Result (5) can also be generalized to three or more mutually exclusive events.
+
+__Example 6.__
+If $E_1$ is the event "drawing an ace from a deck of cards" and $E_2$ is the
+event "drawing a king," then $\text{Pr}\{E_1\} = \frac{4}{52} = \frac{1}{13}$
+and $\text{Pr}\{E_2\} = \frac{4}{52} = \frac{1}{13}$. The probability of drawing
+either an ace or a king in a single draw is
+
+$$
+\text{Pr}\{E_1 + E_2\} = \text{Pr}\{E_1\} + \text{Pr}\{E_2\}
+  = \frac{1}{13} + \frac{1}{13} = \frac{2}{13}
+$$
+
+since both an ace and a king cannot be drawn in a single draw and are thus
+mutually exclusive events (Fig. 6-1).
+
+<<Fig. 6-1>>
+<<Caption: __Fig. 6-1__ $E_1$ is the event "drawing an ace" and $E_2$ is the
+event "drawing a king.">>
+
+Note that $E_1$ and $E_2$ have no outcomes in common. They are mutually
+exclusive.
+
+__Example 7.__
+If $E_1$ is the event "drawing an ace" from a deck of cards and $E_2$ is the
+event "drawing a spade," then $E_1$ and $E_2$ are not mutually exclusive since
+the ace of spades can be drawn (Fig. 6-2). Thus the probability of drawing
+either an ace or a spade or both is
+
+$$
+\text{Pr}\{E_1 + E_2 \} = \text{Pr}\{E_1\} + \text{Pr}\{E_2\}
+  - \text{Pr}\{E_1 E_2\} = \frac{4}{52} + \frac{13}{52} - \frac{1}{52}
+  = \frac{16}{52} = \frac{4}{13}
+$$
+
+<<Fig. 6-2>>
+<<Caption: __Fig. 6-2__ $E_1$ is the event "drawing an ace" and $E_2$ is the
+event "drawing a spade.">>
+
+Note that the event "$E_1$ and $E_2$" consisting of those outcomes in both
+events is the ace of spades.
+
+# Probability distributions
+
+## Discrete
+
+If a variable $X$ can assume a discrete set of values $X_1, X_2, \ldots, X_K$
+with respective probabilities $p_1, p_2, \ldots, p_K$, where
+$p_1 + p_2 + \cdots + p_K = 1$, we say that a _discrete probability distribution_
+for $X$ has been defined. The function $p(X)$, which has the respective values
+$p_1, p_2, \ldots, p_K$ for $X = X_1, X_2, \ldots, X_K$, is called the
+_probability function_, or _frequency function_, of $X$. Because $X$ can assume
+certain values with given probabilities, it is often called a
+_discrete random variable_. A random variable is also known as a _chance variable_
+or _stochastic variable_.
+
+__Example 8.__ Let a pair of fair dice be tossed and let $X$ denote the sum of
+the points obtained. Then the probability distribution is as shown in Table 6.1.
+For example, the probability of getting sum 5 is $\frac{4}{36} = \frac{1}{9}$;
+thus in 900 tosses of the dice we would expect 100 tosses to give the sum 5.
+
+Note that this is analogous to a relative-frequency distribution with
+probabilities replacing the relative frequencies. Thus we can think of
+probability distributions as theoretical or ideal limiting forms of
+relative-frequency distributions when the number of observations made is very
+large. For this reason, we can think of probability distributions as being
+distributions of _populations_, whereas relative-frequency distributions are
+distributions of _samples_ drawn from this population.
+
+The probability distribution can be represented graphically by plotting $p(X)$
+against $X$, just as for relative-frequency distributions (see Problem 6.11).
+
+By cumulating probabilities, we obtain _cumulative probability distributions_,
+which are analogous to cumulative relative-frequency distributions. The
+function associated with this distribution is sometimes called a
+_distribution function_.
+
+```{r, echo=F}
+X <- 2:12
+p.X <- c("1/36", "2/36", "3/36", "4/36", "5/36", "6/36",
+         "5/36", "4/36", "3/36", "2/36", "1/36")
+
+table_6.1 <- matrix( c(X,p.X), nrow=2, byrow=TRUE)
+rownames(table_6.1) <- c("X", "p(X)")
+knitr::kable(table_6.1, caption = "probability distribution of a pair of dice")
+```
+
+## Continuous
+
+The above ideas can be extended to the case where the variable $X$ may assume a
+continuous set of values. The relative-frequency polygon of a sample becomes, in
+the theoretical or limiting case of a population, a continuous curve (such as
+in Fig. 6-3) whose equation is $Y = p(X)$. The total area under this curve
+bounded by the $X$ axis is equal to 1, and the area under the curve between
+lines $X = a$ and $X = b$ (shaded in Fig. 6-3) gives the probability that $X$
+lies between $a$ and $b$, which can be denoted by Pr{$a < X < b$}.
+
+<<Fig. 6-3 Pr{$a < X < b$} is shown as the cross-hatched area under the density
+function.>>
+
+We call $p(X)$ a _probability density function_, or briefly a
+_density function_, and when such a function is given we say that a
+_continuous probability distribution_ for $X$ has been defined. The variable $X$
+is then often called a _continuous random variable_.
+
+As in the discrete case, we can define cumulative probability distributions and
+the associated distribution functions.
+
+# Mathematical expectation
+
+If $p$ is the probability that a person will receive a sum of money $S$, the
+_mathematical expectation_ (or simply the _expectation_) is defined as $pS$.
+
+__Example 9.__ Find $E(X)$ for the distribution of the sum of the dice given in
+Table 6.1. The distribution is given below. The distribution is given by `p(X)`,
+the mathematical expectation is given below the table.
+
+```{r}
+table_6.1 <- matrix(data=c(2:12,1:6/36,5:1/36), nrow=2, byrow=T)
+output <- t(rbind(table_6.1, table_6.1[1,]*table_6.1[2,]))
+colnames(output) <- c("X", "p(X)", "XP(X)")
+knitr::kable(output)
+cat("Mathematical expectation:", sum(output[,3]))
+```
+
+The concept of expectation is easily extended. If $X$ denotes a discrete random
+variable that can assume the values $X_1, X_2, \ldots, X_K$ with respective
+probabilities $p_1, p_2, \ldots, p_K$, where $p_1 + p_2 + \cdots + p_K = 1$,
+the _mathematical expectation_ of $X$ (or simply the _expectation_ of $X$),
+denoted by $E(X)$, is defined as
+
+\begin{equation}
+E(X) = p_1 X_1 + p_2 X_2 + \cdots + p_k X_k = \sum^K_{j=1}{p_j X_j} = \sum{pX}
+\end{equation}
+
+If the probabilities $p_j$ in this expectation are replaced with the relative
+frequencies $f_j/N$, where $N = \sum{f_j}$, the expectation reduces to
+$(\sum{fX})/N$, which is the arithmetic mean $\bar{X}$ of a sample of size $N$
+in which $X_1, X_2, \ldots, X_K$ appear with these relative frequencies. As $N$
+gets larger and larger, the relative frequencies $f_j/N$ approach the
+probabilities $p_j$. Thus we are led to the interpretation that $E(X)$
+represents the mean of the population from which the sample is drawn. If we call
+$m$ the sample mean, we can denote the population mean by the corresponding
+Greek letter $\mu$ (mu).
+
+Expectation can also be defined for continuous random variables, but the
+definition requires the use of calculus.
+
+# Relation between population, sample mean, and variance
+
+If we select a sample of size $N$ at random from a population (i.e., we assume
+that all such samples are equally probable), then it is possible to show that
+the _expected value of the sample mean m is the population mean $\mu$_.
+
+It does not follow, however, that the expected value of any quantity computed
+from a sample is the corresponding population quantity. For example, the
+expected value of the sample variance as we have defined it is not the
+population variance, but $(N-1)/N$ times this variance. This is why some
+staticians choose to define the sample variance as our variance multiplied by
+$N/(N-1)$.
+
+# Combinatorial analysis
+
+In obtaining probabilities of complex events, an enumeration of cases is often
+difficult, tedious, or both. To facilitate the labor involved, use is made of
+basic principles studied in a subject called _combinatorial analysis_.
+
+## Fundamental Principle
+
+If an event can happen in any one of $n_1$ ways, and if when this has occurred
+another event can happen in any one of $n_2$ ways, then the number of ways in
+which both events can happen in the specified order is $n_1 n_2$.
+
+__Example 10.__ The following is the function of the _factorial_ for the numbers
+0 through 5
+
+```{r echo=F, message=F, fig.cap="Chart for n!"}
+require(ggplot2)
+x <- 0:5
+factorial.x <- factorial(x)
+ggplot(data.frame(x,factorial.x), aes(x=x, y=factorial.x)) + geom_point()
+```
+
+__Example 11.__ The number of permutations of the letters a, b, and c taken two
+at a time is $_{3}P_{2} = 3 \cdot 2 = 6$. These are ab, ba, ac, ca, bc, and cb.
+
+The number of permutations of $n$ objects consisting of groups of which $n_1$
+are alike, $n_2$ are alike, $\cdots$ is
+
+\begin{equation}
+\frac{n!}{n_1! n_2! \cdots}\ \ \ \ \text{where } n = n_1 + n_2 + \cdots
+\end{equation}
+
+__Example 12.__ The number of permutations of letters in the word _statistics_
+is
+
+$$
+\frac{10!}{3! 3! 1! 2! 1!} = 50, 400
+$$
+
+since there are 3 _s_'s, 3 _t_'s, 1 _a_, 2 _i_'s, and 1 _c_.
+
+__Combinations__
+
+A combination of $n$ different objects taken $r$ at a time is a selection of $r$
+out of the $n$ objects, with no attention given to the order of arrangement. The
+number of combinations of $n$ objects taken $r$ at a time is denoted by the
+symbol $\binom{n}{r}$ and is given by
+
+\begin{equation}
+\binom{n}{r} = \frac{n (n - 1) \cdots (n - r + 1)}{r!} = \frac{n!}{r! (n-r)!}
+\end{equation}
+
+__Example 13.__ The number of combinations of the letters a, b, and c taken
+two at a time is
+
+$$
+\binom{3}{2} = \frac{3 \cdot 2}{2!} = 3
+$$
+
+# Stirling's approximation to n!
+
+When $n$ is large, a direct evaluation of $n!$ is impractical. In such cases,
+use is made of an approximate formula developed by James Stirling:
+
+\begin{equation}
+n! \approx \sqrt{2 \pi n} n^n e^{-n}
+\end{equation}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,195 @@
+---
+title: 'Chapter 4: The Standard Deviation and Other Measures of Dispersion'
+subtitle: 'Solved Problems'
+author: 'Murray R. Spiegel, PhD and Larry J. Stephens, PhD'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Preliminary
+
+## Load required libraries
+
+```{r Libraries, message=FALSE}
+require(data.table)
+```
+
+# The Range
+
+## Finding the range from a set of data
+
+#### 4.1
+
+Find the range of the sets (a) 12, 6, 7, 3, 15, 10, 18, 5 and (b) 9, 3, 8, 8, 9, 8, 9, 18.
+
+```{r}
+p4.1a <- c(12, 6, 7, 3, 15, 10, 18, 5)
+p4.1b <- c(9, 3, 8, 8, 9, 8, 9, 18)
+range(p4.1a)
+range(p4.1b)
+```
+
+## Finding the range from grouped data
+
+#### 4.2
+
+Find the range of heights of the students at XYZ University as given in Table 2.1
+
+```{r}
+table_2_1.path <- "../../data/table_2_1.csv"
+table_2_1 <- read.csv(table_2_1.path)
+table_2_1
+```
+
+There are two ways of defining the range for group data.
+
+### First method: Using the class mark
+
+$$
+\begin{aligned}
+\mathrm{Range} & = \text{class mark of highest class} - \text{class mark of lowest class} \\
+ & = 73 - 61 = 12 \text{in}
+ \end{aligned}
+$$
+
+### Second method: Using the class boundary
+
+$$
+\begin{aligned}
+\mathrm{Range} & = \text{upper class boundary of highest class} - \text{lower class boundary of lowest class} \\
+ & = 74.5 - 59.5 = 15 \text{in}
+\end{aligned}
+$$
+
+The first method tends to eliminate extreme cases to some extent.
+
+# The mean deviation
+
+## The mean deviation formula
+
+```{r}
+mean.deviation <- function(x) { mean(abs(x - mean(x))) }
+```
+
+## Finding the mean devaion for a set of numbers
+
+#### 4.3
+
+Find the mean deviation of the sets of numbers in Problem 4.1.
+
+```{r}
+p4.1a
+p4.1b
+cat(" (a) The arithmetic mean is ", mean(p4.1a), "\n",
+    "    The mean deviation is ", mean.deviation(p4.1a), "\n\n",
+    "(b) The arithmetic mean is ", mean(p4.1b), "\n",
+    "    The mean deviation is ", mean.deviation(p4.1b))
+```
+
+The mean deviation indicates that set (b) shows less dispersion than set (a), as it should.
+
+## Finding the mean deviation for grouped data
+
+#### 4.4
+
+Find the mean deviation of the heights of the 100 male students at XYZ University (see Table 3.2 of Problem 3.20).
+
+### Summary of Problem 3.20
+
+Problem 3.20 found the arithmetic mean of grouped data using the _coding method_ as defined by Spiegel. Using this method we derived Table 3.2 and arrived at the arithmetic mean of 67.45 in. We also derived a function to calculate this parameter quickly.
+
+```{r sum p3.20}
+table_3_2.path <- "../../data/table_3_2.csv"
+(table_3_2 <- fread(table_3_2.path))
+grouped.mean <- function(freq, mark){ sum(freq*(mark-mark[1]))/sum(freq)+mark[1]}
+```
+
+__Solution__
+
+From Problem 3.20 $\bar{X} = 67.45$ in. The work can be arranged as in Table 4.1. It is also possible to devise a coding method for computing the mean deviation (see Problem 4.47).
+
+```{r p4.4}
+p4.4.X.bar <- grouped.mean(table_3_2$frequency, table_3_2$class.mark)
+p4.4.h <- c("60-62", "63-65", "66-68", "69-71", "72-74")
+p4.4.X <- table_3_2$class.mark
+p4.4.f <- table_3_2$frequency
+p4.4.dev <- abs(p4.4.X - p4.4.X.bar)
+p4.4.f.dev <- p4.4.f * p4.4.dev
+p4.4.N <- sum(p4.4.f)
+p4.4.sum.f.dev <- sum(p4.4.f.dev)
+
+table_4_1 <- data.table( p4.4.h, p4.4.X, p4.4.dev, p4.4.f, p4.4.f.dev)
+colnames(table_4_1) <- c("height", "class.mark", "deviation", "frequency", "freq.dev")
+table_4_1
+
+cat("MD:", (p4.4.md <- p4.4.sum.f.dev / p4.4.N), "in\n")
+```
+
+## Finding the percentage within mean deviations
+
+#### 4.5
+
+Determine the percentage of the students' heights in Problem 4.4 that fall within the ranges (a) $\bar{X} \pm \mathrm{MD}$, (b) $\bar{X} \pm 2 \mathrm{MD}$, and (c) $\bar{X} \pm 3 \mathrm{MD}$.
+
+__Solution__
+
+(a) The range from 65.19 to 69.71 in is $\bar{X} \pm \mathrm{MD} = 67.45 \pm 2.26$. This range includes all individuals in the third class $+ \frac{1}{3}(65.5 - 65.19)$ of the students in the second class $+ \frac{1}{3}(69.71 - 68.5)$ of the students in the fourth class (since the class-interval size is 3 in, the upper class boundary of the second class is 65.5 in, and the lower class boundary of the fourth class is 68.5 in). The number of students in the fange $\bar{X} \pm \mathrm{MD}$ is
+
+$$
+42 + \frac{0.31}{3}(18) + \frac{1.21}{3}(27) = 42 + 1.86 + 10.89 = 54.75\ \ \ \text{ or }\ \ \ 55
+$$
+
+> which is 55% of the total.
+
+(b) The range from 62.93 to 71.97 in is $\bar{X} \pm 2 \mathrm{MD} = 67.45 \pm 2(2.26) = 67.45 \pm 4.52$. The number of students in the range $\bar{X} \pm 2 \mathrm{MD}$ is
+
+$$
+5 - \left(\frac{62.93 - 59.5}{3} \right)(5) + 18 + 42 + 27 + 
+  \left(\frac{74.5 - 74.23}{3} \right)(8) = 97.33
+  \ \ \ \text{ or }\ \ \ 86
+$$
+
+> which is 86% of the total.
+
+(c) The range from 60.67 to 74.23 in is $\bar{X} \pm 3 \mathrm{MD} = 67.45 \pm 3(2.26) = 67.45 \pm 6.78$. The number of students in the range $\bar{X} \pm 3 \mathrm{MD}$ is
+
+$$
+5 - \left(\frac{60.67 - 59.5}{3} \right)(5) + 18 + 42 + 27 +
+  \left(\frac{74.5 - 74.23}{3} \right)(8) = 97.33\ \ \ \text{ or }\ \ \ 97
+$$
+
+> which is 97% of the total.
+
+# The standard deviation
+
+## Finding the standard deviation from a set of data
+
+### Note on the use of the R `sd` function.
+
+As stated in the test, R, uses the slightly larger $\mathrm{SD}^{+}$ function. To compensate we will be defining our own standard deviation function.
+
+```{r definition.sd}
+def.sd <- function(x) { sqrt(mean((x - mean(x))^2)) }
+```
+
+We can use the corrected R `sd` as well.
+
+```{r corrected.sd}
+corrected.sd <- function(x) { sd(x)*sqrt((length(x)-1)/length(x))}
+```
+
+#### 4.9
+
+Find the standard deviation $s$ of a set of numbers in Problem 4.1
+
+```{r}
+def.sd(p4.1a)
+corrected.sd(p4.1a)
+def.sd(p4.1b)
+corrected.sd(p4.1b)
+```
+
+

@@ -1,0 +1,1227 @@
+---
+title: 'Chapter 7: The Binomial, Normal, and Poisson Distributions'
+subtitle: 'Text'
+author: 'Murray R. Spiegel, PhD and Larry J. Stephens, PhD'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+# The Binomial Distribution
+
+If $p$ is the probability that an event will happen in any single trial (called the probability of a _success_) and $q=1-p$ is the probability that it will fail to happen in any single trial (called the probability of a _failure_), then the probability that the event will happen exactly $X$ times in $N$ trials (i.e., $X$ successes and $N-X$ failures will occur) is given by
+
+\begin{equation}
+p(X) = \binom{N}{X} p^X q^{N-X} = \frac{N!}{X! (N-X)!} p^X q^{N-X}
+\end{equation}
+
+where $X = 0, 1, 2, \ldots, N$; $N! = N(N-1)(N-2) \cdots 1$; and $0! = 1$ by definition (see Problem 6.34).
+
+#### EXAMPLE 1.
+
+The probability of getting exactly 2 heads in 6 tosses of a fair coin is
+
+$$
+\binom{6}{2} \left(\frac{1}{2}\right)^2 \left(\frac{1}{2}\right)^{6-2} = \frac{6}{2! 4!} \left(\frac{1}{2}\right)^6 = \frac{15}{64}
+$$
+
+using formula (1) with $N = 6$, $X = 2$, and $p = q = \frac{1}{2}$.
+
+```{r}
+dbinom(2, 6, .5)
+```
+
+#### EXAMPLE 2.
+
+The probability of getting at least 4 heads in 6 tosses of a fair coin is
+
+$$
+\binom{6}{4} \left(\frac{1}{2}\right)^4 \left(\frac{1}{2}\right)^{6-4} + \binom{6}{5} \left(\frac{1}{2}\right)^5 \left(\frac{1}{2}\right)^{6-5} + \binom{6}{6} \left(\frac{1}{2}\right)^6 \left(\frac{1}{2}\right)^{6-6} =
+\frac{15}{64} + \frac{6}{64} + \frac{1}{64} = \frac{11}{32}
+$$
+
+```{r}
+sum(dbinom(4:6, 6, .5))
+```
+
+The discrete probability distribution (1) is often called the _binomial distribution_ since for $X = 0, 1, 2, \ldots, N$ it corresponds to successive terms of the _binomial formula_, or _binomial expansion_,
+
+\begin{equation}
+(q + p)^N = q^N + \binom{N}{1} q^{N-1} p + \binom{N}{2} q^{N-2} p^2 + \cdots + p^N
+\end{equation}
+
+where 1, $\binom{N}{1}, \binom{N}{2}, \ldots$ are called the _binomial coefficients_.
+
+#### EXAMPLE 3.
+
+$$
+\begin{aligned}
+(q + p)^4 & = q^4 + \binom{4}{1} q^3 p + \binom{4}{2} q^2 p^2 + \binom{4}{3} q p^3 + p^4 \\
+          & = q^4 + 4 q^3 p + 6 q^2 p^2 + 4q p^3 + p^4
+\end{aligned}
+$$
+
+Some properties of the binomial distribution are listed in Table 7.1.
+
+|.|.|
+|---:|:---|
+| Mean| $\mu = Np$ |
+| Variance | $\sigma^2 = Npq$ |
+| Standard deviation | $\sigma = \sqrt{Npq}$ |
+| Moment coefficient of skewness | $\alpha^3 = \frac{q - p}{\sqrt{Npq}}$ |
+| Moment coefficient of kurtosis | $\alpha^4 = 3 + \frac{1 - 6pq}{Npq}$ |
+
+#### EXAMPLE 4.
+
+In 100 tosses of a fair coin the mean number of heads is $\mu = Np = (100)(\frac{1}{2}) = 50$; this is the _expected_ number of heads in 100 tosses of the coin. The standard deviation is $\sigma =  \sqrt{Npq} = \sqrt{(100)(\frac{1}{2})(\frac{1}{2})} = 5$.
+
+## The Binomial Distribution in R
+
+The binomial distribution is a discrete distribution that counts the number of successes in Bernoulli experiments or trials. In this tutorial we will explain how to work with the binomial distribution in R with the `dbinom`, `pbinom`, `qbinom`, and `rbinom` functions and how to create the plots of the probability mass, distribution and quantile functions.
+
+Denote a __Bernoulli process__ as the repetition of a random experiment (a Bernoulli trial) where each independent observation is classified as success if the event occurs or failure otherwise and the proportion of successes in the population is constant and it doesn't depend on its size.
+
+Let $X \sim B(n, p)$, this is, a random variable that follows a __binomial distribution__, being $n$ the number of Bernoulli trials, $p$ the probability of success and $q = 1 - p$ the probability of failure:
+
+- The __probability mass function__ (PMF) is $P(X = x) = \binom{n}{x} p^x q^{n-x}$ if $x = 0, 1, 2, \ldots, n$.
+- The cumulative __distribution function__ (CDF) is $F(x) = I_q (1 - x, n - x)$.
+- The __quantile function__ is $Q(p) = F^{-1}(p)$.
+- The __expected mean and variance__ of $X$ are $E(X) = np$ and $\mathrm{Var}(X) = npq$, respectively.
+
+The functions of the previous lists can be computed in R for a set of values with the `dbinom` (probability), `pbinom` (distribution) and `qbinom` (quantile) functions. In addition, the `rbinom` function allows drawing $n$ random samples from a binomial distribution in R.
+
+1. `dbinom(x, size, prob, log = FALSE)` - Binomial probability mass function (Probability function)
+2. `pbinom(q, size, prob, lower.tail = TRUE, log.p = FALSE)` - Binomial distribution (Cumulative distribution function)
+3. `qbinom(p, size, prob, lower.tail = TRUE, log.p = FALSE)` - Binomial quantile function
+4. `rbinom(n, size, prob)` - Binomial pseudorandom generation function
+
+### The `dbinom` function
+
+In order to calculate the binomial probabilty function for a set of values $x$, a number of trials $n$ and a probability of success $p$ you can make use of the `dbinom` function, which has the following syntax:
+
+```
+dbinom(x,
+       size,
+       prob,
+       log = FALSE)
+```
+
+For instance, if you want to calculate the binomial probability mass function for $x = 1, 2, \ldots, 10$ and a probability of success in each trial of $0.2$, you can type:
+
+```{r}
+dbinom(x = 1:10, size = 10, prob = 0.2)
+```
+
+### Plot of the binomial probability function in R
+
+The binomial probability mass function can be plotted in R making use of the `plot` function, passing the output of the `dbinom` function of a set of values to the first argument of the function and setting `type = "h"` as follows:
+
+```{r}
+# Grid of X-axis values
+x <- 1:80
+
+# size = 80, prob = 0.2
+plot(dbinom(x, size = 80, prob = 0.2), type = "h", lwd = 2,
+     main = "Binomial probability function",
+     ylab = "P(X = x)", xlab = "Number of successes")
+
+# size = 80, prob = 0.3
+lines(dbinom(x, size = 80, prob = 0.3), type = "h",
+      lwd = 2, col = rgb(1,0,0, 0.7))
+
+# size = 80, prob = 0.4
+lines(dbinom(x, size = 80, prob = 0.4), type = "h",
+      lwd = 2, col = rgb(0, 1, 0, 0.7))
+
+# Add a legend
+legend("topright", legend = c("80  0.2", "80  0.3", "80  0.4"),
+       title = "size  prob", title.adj = 0.95,
+       lty = 1, col = 1:3, lwd = 2, box.lty = 0)
+```
+
+### The `pbinom` function
+
+In order to calculate the probability of a variable $X$ following a binomial distribution taking values lower than or equal to $x$ you can use the `pbinom` function.
+
+```
+pbinom(q,
+       size,
+       prob,
+       lower.tail = TRUE,
+       log.p = FALSE)
+```
+
+By ways of illustration, the probability of the success occurring less than 3 times if the number of trials is 10 and the probability of success is 0.3 is:
+
+```{r}
+pbinom(3, size = 10, prob = 0.3)
+```
+
+As the binomial distribution is discrete, the previous probability could also be calculated adding each value of the probability function up to three:
+
+```{r}
+sum(dbinom(0:3, size = 10, prob = 0.3))
+```
+
+As the binomial distribution is discrete, the cumulative probability can be calculated adding the corresponding probabilities of the probability function. The following R function allows visualizing the probabilities that are added based on a lower bound and an upper bound.
+
+```{r}
+# size: number of trials (n >= 0)
+# prob: probability of success on each trial
+# lb: lower bound of the sum
+# ub: upper bound of the sum
+# col: color
+# lwd: line width
+binom_sum <- function(size, prob, lb,
+                      ub, col = 4, lwd = 1, ...){
+  x <- 0:size
+  
+  if (missing(lb)) {
+    lb <- min(x)
+  }
+  if (missing(ub)) {
+    ub <- max(x)
+  }
+  
+  plot(dbinom(x, size = size, prob = prob), type = 'h',
+       lwd = lwd, ...)
+  
+  if(lb == min(x) & ub == max(x)) {
+    color <- col
+  } else {
+    color <- rep(1, length(x))
+    color[(lb + 1):ub ] <- col
+  }
+  
+  lines(dbinom(x, size = size, prob = prob), type = 'h',
+        col = color, lwd = lwd, ...)
+}
+```
+
+As an example, you can represent the probabilities that are added to calculate the probability of a binomial variable taking values equal or lower than 5 if the number of trials is 20 and the probabilty of success is 0.2 with the following code:
+
+```{r}
+binom_sum(size = 20, prob = 0.2, lwd = 2, col = 2, ub = 5,
+          ylab = "P(X = x)", xlab = "Number of successes")
+```
+
+The sum of the probabilities displayed in red is equal to
+
+```{r}
+pbinom(5, size = 20, prob = 0.2)
+```
+
+### `pbinom` example
+
+In this section we will review a more complete example to understand how to calculate binomial probabilties in several scenarios. Consider that a basketball player scores 4 out of 10 baskets ($p = 0.4$). If the player throws 20 baskets (20 trials):
+
+- The probability of __scoring 6 or less baskets__, $P(X \le 6)$, is:
+
+```{r}
+pbinom(6, size = 20, prob = 0.4)
+1 - pbinom(6, size = 20, prob = 0.4, lower.tail = FALSE)
+```
+
+This probability can also be calculated adding the corresponding elements of the binomial probability function, as we pointed out in the previous section:
+
+```{r}
+sum(dbinom(0:6, size = 20, prob = 0.4))
+```
+
+Using the function that we defined before we can represent the calculated probability:
+
+```{r}
+binom_sum(size = 20, prob = 0.4, ub = 6, lwd = 2,
+          ylab = "P(X = x)", xlab = "Number of successes")
+```
+
+- The probability of __scoring less than 6 baskets__, $P(X < 6)$, is
+
+```{r}
+pbinom(5, size = 20, prob = 0.4)
+1 - pbinom(5, size = 20, prob = 0.4, lower.tail = FALSE)
+sum(dbinom(0:5, size = 20, prob = 0.4))
+```
+
+Note that we set 5 on the first argument of the function instead of 6 because the binomial distribution is discrete, so $P(X<6) = P(X \le 5)$. The calculated probability can be represented with the sum of the following probabilities of the probability mass function:
+
+```{r}
+binom_sum(size = 20, prob = 0.4, ub = 5, lwd = 2,
+          ylab = "P(X = x)", xlab = "Number of successes")
+```
+
+- The probability of __scoring more than 12 baskets__, $P(X > 12)$, is:
+
+```{r}
+pbinom(12, size = 20, prob = 0.4, lower.tail = FALSE)
+1 - pbinom(12, size = 20, prob = 0.4)
+sum(dbinom(13:20, size = 20, prob = 0.4))
+```
+
+This probability corresponds to:
+
+```{r}
+binom_sum(size = 20, prob = 0.4, lb = 12, lwd = 2,
+          ylab = "P(X = x)", xlab = "Number of successes")
+```
+
+- The probability  of __scoring between 7 and 11 baskets__, $P(7 \le X \le 11)$, is
+
+```{r}
+pbinom(11, size = 20, prob = 0.4) - pbinom(7, size = 20, prob = 0.4)
+sum(dbinom(8:11, size = 20, prob = 0.4))
+```
+
+The corresponding plot can be created with the following code:
+
+```{r}
+binom_sum(size = 20, prob = 0.4, lb = 7, ub = 11, lwd = 2,
+          ylab = "P(X = x)", xlab = "Number of successes")
+```
+
+> As the binomial distribution is a discrete distribution $P(X = x) \ne 0$, $P(X \ge x) \ne P(X > x)$ and $P(X \le x) \ne P(X < x)$.  
+
+### Plot of the binomial cummulative distribution
+
+The binomial distribution function can be plotted in R with the `plot` function, setting `type = "s"` and passing the output of the `pbinom` function for a specific number of experiments and a probabilty of success.
+
+The following block of code can be used to plot the binomial cumulative distribution functions for 80 trials and different probabilities.
+
+```{r}
+# Grid of X-axis values
+x <- 1:80
+
+# size = 80, prob = 0.2
+plot(pbinom(x, size = 80, prob = 0.2), type = "s", lwd = 2,
+     main = "Binomial distribution function",
+     xlab = "Number of successes", ylab = "F(x)")
+
+# size = 80, prob = 0.3
+lines(pbinom(x, size = 80, prob = 0.3), type = "s",
+      lwd = 2, col = 2)
+
+# size = 80, prob = 0.4
+lines(pbinom(x, size = 80, prob = 0.4), type = "s",
+      lwd = 2, col = 3)
+
+# Add a legend
+legend("bottomright", legend = c("80  0.2", "80  0.3", "80  0.4"),
+       title = "size  prob", title.adj = 0.95,
+       lty = 1, col = 1:3, lwd = 2, box.lty = 0)
+rm(x)
+```
+
+### The `qbinom` function
+
+Given a probability or a set of probabilities, the `qbinom` function allows you to obtain the corresponding binomial quantile. The following block of code describes briefly the arguments of the function:
+
+```
+qbinom(p,
+       size,
+       prob,
+       lower.tail = TRUE,
+       log.p = FALSE)
+```
+
+As an example, the binomial quantile for the probability $0.4$ if $n = 5$ and $p = 0.7$ is:
+
+```{r}
+qbinom(p = 0.4, size = 5, prob = 0.7)
+```
+
+### Plot of the binomial quantile function in R
+
+The binomial quantile function can be plotted in R for a set of probabilities, a number of trials and a probability of success with the following code:
+
+```{r}
+# Grid of X-axis values
+x <- 1:80
+
+# size = 80, prob = 0.2
+plot(qbinom(seq(0, 1, 0.001), size = 80, prob = 0.2),
+     main = "Binomial quantile function",
+     ylab = "Q(p)", xlab = "p",
+     type = "s", col = 3, xaxt = "n")
+axis(1, labels = seq(0, 1, 0.1), at = 0:10 * 100)
+
+# size = 80, prob = 0.3
+lines(qbinom(seq(0, 1, 0.001), size = 80, prob = 0.3), type = "s", col = 2)
+
+# size = 80, prob = 0.4
+lines(qbinom(seq(0, 1, 0.001), size = 80, prob = 0.4), type = "s", col = 1)
+
+# Add a legend
+legend("topleft", legend = c("80  0.2", "80  0.3", "80  0.4"),
+       title = "size  prob", title.adj = 0.95,
+       lty = 1, col = 1:3, lwd = 2, box.lty = 0)
+```
+
+### The `rbinom` function
+
+The `rbinom` function allows you to draw $n$ random observations from a binomial distribution in R. The arguments of the function are described below:
+
+```
+rbinom(n,
+       size,
+       prob)
+```
+
+If you want to obtain, for instance, 15 random observations from a binomial distribution if the number of trials is 30 and the probability of success on each trial is $0.1$ you can type:
+
+```{r}
+rbinom(n = 15, size = 30, prob = 0.1)
+```
+
+Nonetheless, if you don't specify a seed before executing the function you will obtain a different set of random observations. If you want to make the output reproducible you can set a seed as follows:
+
+```{r}
+set.seed(2)
+rbinom(n = 15, size = 30, prob = 0.1)
+```
+
+# The Normal Distribution
+
+One of the most important examples of a continuous probability distribution is the _normal distribution_, _normal curve_, or _gaussian distribution_. It is defined by the equation
+
+\begin{equation}
+Y = \frac{1}{\sigma \sqrt{2 \pi}} e^{-1/2(X - \mu)^2/\sigma^2}
+\end{equation}
+
+where $\mu =$ mean, $\sigma =$ standard deviation, $\pi = 3.14159\cdots$, and $e = 2.71828\cdots$. The total area bounded by curve (3) and the $X$ axis is 1; hence the area under the curve between two ordinates $X = a$ and $X =b$, where $a < b$, represents the probability that $X$ lies between $a$ and $b$. This probability is denoted by $\mathrm{Pr}\{a < X < b\}$.
+
+When the variable $X$ is expressed in terms of standard units $[z = (X - \mu) / \sigma]$, equation (3) is replaced by the so-called _standard form_:
+
+\begin{equation}
+Y = \frac{1}{\sqrt{2 \pi}} e^{-1/2z^2}
+\end{equation}
+
+In such cases we say that $z$ is _normally distributed with mean 0 and variance 1_. Figure 7-1 is a graph of this standardized normal curve. It shows that the areas included between $z = -1$ and $+1$, $z = -2$ and $+2$, and $z = -3$ and $+3$ are equal, respectively, to $68.2\%$, $95.45\%$, and $99.73\%$ of the total area, which is 1. The table in Appendix II shows the areas under this curve bounded by the orinates at $z = 0$ and any positive value of $z$. From this table the area between any two ordinates can be found by using the symmetry of the curve about $z = 0$.
+
+Some properties of the normal distribution given by equation (3) are listed in Table 7.2.
+
+```{r echo=F}
+x <- seq(-3, 3, 0.1)
+y <- dnorm(x, 0, 1)
+plot(x, y, type="l")
+polygon(c(x[x>=2], max(x), 2), c(y[x>=2], 0, 0), col="cornsilk")
+polygon(c(min(x), x[x<=-2], -2), c(0, y[x<=-2], 0), col="cornsilk")
+polygon(c(-2,  x[x>= -2 & x<=-1], -1), c(0, y[x >= -2 & x<=-1], 0), col="cornsilk2")
+polygon(c(1,  x[x>= 1 & x<=2], 2), c(0, y[x >= 1 & x<=2], 0), col="cornsilk2")
+polygon(c(-1, x[x >= -1 & x <= 1], 1), c(0, y[x>=-1 & x<=1], 0), col="cornsilk3")
+rm(x,y)
+```
+
+<p> __Fig. 7-1.__ Standard normal curve: $68.27\%$ of the area is between $z = -1$ and $z = +1$, $95.45\%$ is between $z = -2$ and $z = 2$, and $99.73\%$ is between $z = -3$ and $z = 3$.<p>
+
+__Table 7.2 Normal Distribution__
+
+| . | . |
+|---:|:---|
+| Mean | $\mu$ |
+| Variance | $\sigma^2$ |
+| Standard deviation | $\sigma$ |
+| Moment coefficient of skewness | $\alpha_3 = 0$ |
+| Moment coefficient of kurtosis | $\alpha_4 = 3$ |
+| mean deviation | $\sigma \sqrt{2/\pi} = 0.7979 \sigma$ |
+
+## The Normal Distribution in R
+
+The Normal or Gaussian distribution is the most known and important distribution in Statistics. In this tutorial you will learn what are and what does `dnorm`, `pnorm`, `qnorm` and `rnorm` functions in R and the differences between them. In consequence, you will learn how to __create and plot the Normal distribution__ in R, __calculate probabilities__ under the curves, the quantiles, __Normal random sampling__ and even how to shade a specific area under a Normal curve.
+
+Among continuous random variables, the most important is the Normal or Gaussian distribution. This variable was introduced by Carl Fredrich in the XIX century for studying error measures.
+
+Let $X \sim N(\mu, \sigma)$, namely a random variable following a normal distribution with mean $\mu$ and standard deviation $\sigma$:
+
+- The __probability density function__ (PDF), also known as Bell curve, of $x$ is $f(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{\frac{1}{2}\left(\frac{x - \mu}{\sigma} \right)^2}$.
+- The __cumulative distribution function__ (CDF) is $F(x) = P(X \le x)$.
+- The __quantile function__ is $Q(p) = F^{-1}(p)$.
+- The __expected mean and variance__ are $E(X) = \mu$ and $\mathrm{Var}(X) = \sigma^2$, respectively.
+
+In R there exist the `dnorm`, `pnorm` and `qnorm` functions, which allows calculating the normal density, distribution and quantile function for a set of values. In addition, the `rnorm` function allows obtaining random observations that follow a normal distribution. The following table summarizes the functions related to the normal distribution:
+
+The four normal functions
+
+1. `dnorm(x, mean = 0, sd = 1, log = FALSE)` - Normal density (Probability Denstity Function)
+2. `pnorm(q, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)` - Normal distribution (Cumulative Distribution Function)
+3. `qnorm(p, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)` - Quantile function of the Normal distribution
+4. `rnorm(n, mean = 0, sd = 1)` - Normal random number generation
+
+> By default, these functions consider the standard ormal distribution, which has a mean of zero and a standard deviation of one.
+
+Although we will review each function in detail on the corresponding section, in the following illustration you can appreciate the relationship between the `dnorm`, `pnorm` and `qnorm` function.
+
+```{r fig.height=4}
+x = seq(-4, 4, 0.1)
+y = dnorm(x, 0, 1)
+plot(x,y, type="l")
+points(0,dnorm(0), pch=16)
+points(0,qnorm(0.5), pch=16)
+lines(0,pnorm(0), type="l")
+```
+
+### The `dnorm` function
+
+In R, you can make use of the `dnorm` function to calculate the density function with mean $\mu$ and standard deviation $\sigma$ for any value of $x$, $\mu$ and $\sigma$.
+
+```
+dnorm(x,
+      mean = 0,
+      sd = 1,
+      log = FALSE)
+```
+
+Consider, for instance, that you want to obtain the PDF for $x \in (-4,4)$, with mean 1 ad stadard deviation of 3. In order to calculate it, you could type:
+
+```{r}
+x <- -4:4
+# x <- seq(-4, 4, length = 100) # More data points
+dnorm(x, mean = 1, sd = 3)
+```
+
+You can also specify vectors to the `mean` and `sd` arguments of the functio. In the following example, the value of even elements are from $\mu = 1$, $\sigma = 3$ and odds are from $\mu = 2$, $\sigma = 4$.
+
+```{r}
+dnorm(x, mean = c(1, 2), sd = c(3, 4))
+```
+
+### Plot Normal distribution in R
+
+__Creating a normal distribution plot in R__ is easy. You just need to create a grid for X-axis for the first argument of the `plot` function and pass as input of the second the `dnorm` function for the corresponding grid. In the following example we show how to plot normal distributions for different means and variances.
+
+```{r}
+par(mfrow = c(1, 2))
+
+# Grid of X-axis values
+x <- seq(-4, 8, 0.1)
+
+#-----------------------------------------
+# Same standard deviation, different mean
+#-----------------------------------------
+# Mean 0, sd 1
+plot(x, dnorm(x, mean = 0, sd = 1), type = "l",
+     ylim = c(0, 0.6), ylab = "", lwd = 2, col = "red")
+# Mean 3, sd 1
+lines(x, dnorm(x, mean = 3, sd = 1), col = "blue", lty = 1, lwd = 2)
+
+# Adding a legend
+legend("topright", legend = c("0 1", "3 1"), col = c("red", "blue"),
+       title = expression(paste(mu, " ", sigma)),
+       title.adj = 0.9, lty = 1, lwd = 2, box.lty = 0)
+
+#-----------------------------------------
+# Same mean, different standard deviation
+#-----------------------------------------
+# Mean 1, sd 1
+plot(x, dnorm(x, mean = 1, sd = 1), type = "l",
+     ylim = c(0, 1), ylab = "", lwd = 2, col = "red")
+# Mean 1, sd 0.5
+lines(x, dnorm(x, mean = 1, sd = 0.5), col = "blue", lty = 1, lwd = 2)
+
+# Adding a legend
+legend("topright", legend = c("1 1", "1 0.5"), col = c("red", "blue"),
+       title = expression(paste(mu, " ", sigma)),
+       title.adj = 0.75, lty = 1, lwd = 2, box.lty = 0)
+
+par(mfrow = c(1, 1))
+```
+
+## The `pnorm` function
+
+The `pnorm` function gives the __Cumulative Distribution Function__ (CDF) of the Normal distribution in R, which is the probability that the variable $X$ takes a value lower or equal to $x$.
+
+The syntax of the function is the following:
+
+```
+pnorm(q,
+      mean = 0,
+      sd = 1,
+      lower.tail = TRUE,
+      log.p = FALSE)
+```
+
+As an example, taking into account that the Normal distribution is symmetric, the probability that the variable will take a value lower than the mean is $0.5$:
+
+```{r}
+pnorm(0, mean = 0, sd = 1)
+```
+
+### `pnorm` function example
+
+Now, suppose that you have a machine that packages rice inside boxes. The process follows a Normal distribution and it is known that the mean of the weight of each box is 1000 grams and the standard deviation is 10 grams. You can plot the density function typing:
+
+```{r}
+Mean <- 1000
+Sd <- 10
+
+# X grid for non-standard normal distribution
+x <- seq(-3, 3, length = 100) * Sd + Mean 
+
+# Density function
+f <- dnorm(x, Mean, Sd)
+
+plot(x, f, type = "l", lwd = 2, col = "blue", ylab = "", xlab = "Weight")
+abline(v = Mean) # Vertical line on the mean
+```
+
+First, if you want to calculate the __probability of a box weighing less than 1010 grams__ ($P(X < 1010) = P(X \le 1010)$), you can type the following:
+
+```{r}
+pnorm(1010, Mean, Sd)
+1 - pnorm(1010, Mean, Sd, lower.tail = FALSE)
+```
+
+So the probability of a box weighting less than 1010 grams is $0.8413$ or $84.13\%$, which corresponds to the following area:
+
+```{r}
+lb <- min(x) # Lower bound
+ub <- 1010   # Upper bound
+
+x2 <- seq(min(x), ub, length = 100) # New Grid
+y <- dnorm(x2, Mean, Sd) # Density
+
+plot(x, f, type = "l", lwd = 2, col = "blue", ylab = "", xlab = "Weight")
+abline(v = ub) 
+
+polygon(c(lb, x2, ub), c(0, y, 0), col = rgb(0, 0, 1, alpha = 0.5))
+text(995, 0.01, "84.13%")
+```
+
+As shading the area under the Normal curve can be tricky and requires several lines of code, we have created a simple function to achieve it in a single line:
+
+```{r}
+# mean: mean of the Normal variable
+# sd: standard deviation of the Normal variable
+# lb: lower bound of the area
+# ub: upper bound of the area
+# acolor: color of the area
+# ...: additional arguments to be passed to lines function
+
+normal_area <- function(mean = 0, sd = 1, lb, ub, acolor = "lightgray", ...) {
+    x <- seq(mean - 3 * sd, mean + 3 * sd, length = 100) 
+    
+    if (missing(lb)) {
+       lb <- min(x)
+    }
+    if (missing(ub)) {
+        ub <- max(x)
+    }
+
+    x2 <- seq(lb, ub, length = 100)    
+    plot(x, dnorm(x, mean, sd), type = "n", ylab = "")
+   
+    y <- dnorm(x2, mean, sd)
+    polygon(c(lb, x2, ub), c(0, y, 0), col = acolor)
+    lines(x, dnorm(x, mean, sd), type = "l", ...)
+}
+```
+
+As an example, if you want to shade the area between $-1$ and $2$ of a standard normal distribution you can type:
+
+```{r}
+normal_area(mean = 0, sd = 1, lb = -1, ub = 2, lwd = 2)
+```
+
+Second, in case that you want to calculate the __probability of a box weighing more than 980 grams__ ($P(X > 980) = P(X \ge 980)$) you can use the `lower.tail` argument.
+
+```{r}
+pnorm(980, Mean, Sd, lower.tail = FALSE)
+1 - pnorm(980, Mean, Sd)
+pnorm(1020, Mean, Sd)
+```
+
+The calculated probability corresponds to the following area:
+
+```{r}
+normal_area(mean = Mean, sd = Sd, lb = 980, acolor = rgb(0, 0, 1, alpha = 0.5))
+text(1000, 0.01, "97.72%")
+```
+
+Finally, if you want to calculate the __probability of a box weighing more than 990 grams and less than 1000__ you have to calculate $P(X \le 1000) - P(x \le 990) = P(X < 1000) - P(x < 990)$ and hence you can type:
+
+```{r}
+pnorm(1000, Mean, Sd) - pnorm(990, Mean, Sd)
+```
+
+You can plot the area with the following code:
+
+```{r}
+normal_area(mean = Mean, sd = Sd, lb = 990, ub = 1000,
+            acolor = rgb(0, 0, 1, alpha = 0.5))
+text(995, 0.01, "34.13%", srt = 90)
+```
+
+### Plot normal cumulative distribution function in R
+
+With the `pnorm` function you can also plot the cumulative density function of the Gaussian or Normal distribution in R:
+
+```{r}
+par(mfrow = c(1, 2))
+
+# Grid of X-axis values
+x <- seq(-4, 8, 0.1)
+
+#-----------------------------------------
+# Same standard deviation, different mean
+#-----------------------------------------
+# Mean 0, sd 1
+plot(x, pnorm(x, mean = 0, sd = 1), type = "l",
+     ylim = c(0, 1), ylab = "", lwd = 2, col = "red")
+# Mean 3, sd 1
+lines(x, pnorm(x, mean = 3, sd = 1), col = "blue", lty = 1, lwd = 2)
+
+# Legend
+legend("topleft", legend = c("0 1", "3 1"), col = c("red", "blue"),
+       title = expression(paste(mu, " ", sigma)),
+       title.adj = 0.9, lty = 1, lwd = 2, box.lty = 0)
+
+#-----------------------------------------
+# Same mean, different standard deviation
+#-----------------------------------------
+# Mean 1, sd 1
+plot(x, pnorm(x, mean = 1, sd = 1), type = "l",
+     ylim = c(0, 1), ylab = "", lwd = 2, col = "red")
+# Mean 1, sd 0.5
+lines(x, pnorm(x, mean = 1, sd = 0.5), col = "blue", lty = 1, lwd = 2)
+
+# Legend
+legend("topleft", legend = c("1 1", "1 0.5"), col = c("red", "blue"),
+       title = expression(paste(mu, " ", sigma)),
+       title.adj = 0.75, lty = 1, lwd = 2, box.lty = 0)
+
+par(mfrow = c(1, 1))
+```
+
+Recall that $P(X < 0) = 0.5$ for a standard Normal distribution:
+
+```{r}
+x <- seq(-4, 4, 0.1)
+plot(x, pnorm(x, mean = 0, sd = 1), type = "l",
+     ylim = c(0, 1), ylab = "P(X < x)", lwd = 2, col = "red")
+segments(0, 0, 0, 0.5, lwd = 2, lty = 2)
+segments(-4, 0.5, 0, 0.5, lwd = 2, lty = 2)
+```
+
+### The `qnorm` function
+
+The `qnorm` function allows you to find the quantile (percentile) $Q$ for any probability $p$. Hence, the `qnorm` function is the inverse of the `pnorm` function. The syntax of `qnorm` is as follows:
+
+```
+qnorm(p,
+      mean = 0,
+      sd = 1,
+      lower.tail = TRUE,
+      log.p = FALSE)
+```
+
+As a first example, the quantile for probability $0.5$ ($Q(0.5)$) on a symmetric distribution is equal to the mean:
+
+```{r}
+qnorm(0.5, mean = 0, sd = 1)
+```
+
+In addition, you can obtain the quantile for any given probability. Note the relation between `pnorm` and `qnorm` functions:
+
+```{r}
+x <- pnorm(-1.5, mean = 0, sd = 1) # 0.0668072
+qnorm(x, mean = 0, sd = 1) # -1.5
+
+normal_area(mean = 0, sd = 1, ub = -1.5,
+            lwd = 2, acolor = rgb(0, 0, 1, alpha = 0.5))
+arrows(-0.5, 0.1, -1.45, 0, lwd = 2, length = 0.2)
+text(-0.25, 0.13, "-1.5", cex = 1.5)
+```
+
+If you want to calculate, for instance the quantile $Q(P(X > 1.5)) = Q(1 - P(X \le 1.5)) = Q(0.067)$ you can set the `lower.tail` argument to `TRUE`.
+
+```{r}
+x <- pnorm(1.5, mean = 0, sd = 1, lower.tail = FALSE) # 0.0668072
+qnorm(x, mean = 0, sd = 1, lower.tail = FALSE) # 1.5
+
+# Equivalent to:
+# x <- 1- pnorm(1.5, mean = 0, sd = 1) 
+# qnorm(1 - x, mean = 0, sd = 1)
+
+normal_area(mean = 0, sd = 1, lb = 1.5, lwd = 2,
+            acolor = rgb(0, 0, 1, alpha = 0.5))
+arrows(0, 0.1, 1.45, 0, lwd = 2, length = 0.2)
+text(0, 0.13, "1.5", cex = 1.5)
+```
+
+### Plotting the Normal quantile function
+
+You can plot the quantile function of a standard Normal distribution typing the following:
+
+```{r}
+plot(qnorm, pnorm(-4), pnorm(4), lwd = 2, xlab = "p", ylab = "Q(p)")
+
+# Equivalent to:
+# x <- seq(pnorm(-4), pnorm(4), length = 100)
+# plot(x, qnorm(x, mean = 0, sd = 1), type = "l",
+#      lwd = 2, xlab = "p", ylab = "Q(p)")
+```
+
+The previous plot represents the possible outocomes of the `qnorm` function for the standard Normal distribution. Recall that $Q(0.5) = 0$:
+
+```{r}
+plot(qnorm, pnorm(-4), pnorm(4), lwd = 2,
+     xlab = "p", ylab = "Q(p)")
+segments(0.5, -4, 0.5, 0, lty = 2, lwd = 2)
+segments(0, 0, 0.5, 0, lty = 2, lwd = 2)
+```
+
+### The `rnorm` function
+
+The `rnorm` function generates $n$ observations from the Normal distribution with mean $\mu$ and standard deviation $\sigma$. THe syntax of the `rnorm` function in R is the following:
+
+```
+rnorm(n,
+      mean = 0,
+      sd = 1)
+```
+
+Hence, you can generate 10 observations of a standard Normal distribution in R with the following code:
+
+```{r}
+rnorm(10)
+```
+
+However, it should be noted that if you don't specify a `seed` the output won't be reproducible. You can make use of the `set.seed` function to make your code reproducible:
+
+```{r}
+# Seed for reproducibility
+set.seed(1)
+
+rnorm(1) # -0.6264538
+```
+
+In addition, in the following plot you can observe how increasing the number of observations, the histogram of the data approaches to the true Normal density function:
+
+```{r}
+par(mfrow = c(1, 3))
+
+x <- seq(-10, 10, length = 200)
+
+set.seed(3)
+# n = 10
+hist(rnorm(10, mean = 0, sd = 1), main = "n = 10",
+     xlab = "", prob = TRUE)
+lines(x, dnorm(x), col = "red", lwd = 2)
+
+# n = 100
+hist(rnorm(100, mean = 0, sd = 1), main = "n = 100",
+     xlab = "", prob = TRUE)
+lines(x, dnorm(x), col = "red", lwd = 2)
+
+# n = 1000
+hist(rnorm(1000, mean = 0, sd = 1), main = "n = 1000",
+     xlab = "", prob = TRUE)
+lines(x, dnorm(x), col = "red", lwd = 2)
+
+par(mfrow = c(1, 1))
+```
+
+# Relation Between the Binomial and Normal Distributions
+
+If $N$ is large and if neither $p$ nor $q$ is too close to zero, the binomial distribution can be closely approximated by a normal distribution with standardized variable given by
+
+$$
+z = \frac{X - Np}{\sqrt{Npq}}
+$$
+
+The approximation becomes better with increasing $N$, and in the limiting case it is exact; this is shown in Tables 7.1 and 7.2, where it is clear that as $N$ increases, the skewness and kurtosis for the binomial distribution approach that of the normal distribution. In proactice the approximation is very good if both $Np$ and $Nq$ are greater than $5$.
+
+__EXAMPLE 5.__ Figure 7-2 shows the binomial distribution with $N = 16$ and $p = 0.5$, reflecting the probabilities of getting $X$ heads in 16 flips of a coin and the normal distribution with mean equal to 8 and standard deviation 2. Notice how similar and close the two are. $X$ is binomial with mean $= Np = 16(0.5) = 8$ and standard deviation $\sqrt{Npq} = \sqrt{16(0.5)(0.5)} = 2$. $Y$ is a normal curve with mean $= 8$ and standard deviation $2$.
+
+```{r echo=F, fig.width=12}
+par(mfrow=c(1,2), mar=c(2,2,2,2))
+N <- 16
+p <- q <- 0.5
+m <- N * p
+sd <- sqrt(N*p*q)
+x <- seq(0, N, 1)
+y <- dnorm(x, m, sd)
+plot(dbinom(1:N, N, .5), main="Binomial")
+plot(x, y, main="Normal")
+rm(m,N,p, q,sd,x,y)
+```
+
+__Fig. 7-2__ Plot of binomial for $N = 16$ and $p = 0.5$ and normal curve with mean $= 8$ and standard deviation $= 2$.
+
+# The Poisson Distribution
+
+The discrete probability distribution
+
+\begin{equation}
+p(X) = \frac{ \lambda^X e^{-\lambda}}{X!} \ \ \ X = 0,1,2,\ldots
+\end{equation}
+
+where $e = 2.71828 \cdots$ and $\lambda$ is a given constant, is called the _Poisson distribution_ after Simeon-Denis Poisson, who discovered it in the early part of the nineteenth century. The values of $p(X)$ can be computed by using the table in Apeendix VIII (which gives values of $x^{-\lambda}$ for various values of $\lambda$) or by using logarithms.
+
+__EXAMPLE 6.__ The number of admissions per day at an emergency room has a Poisson distribution and the mean is 5. Find the probability of at most 3 admissions per day and the probability of at least 8 admissions per day. The probability of at most 3 is $\mathrm{Pr}\{X \le 3\} = e^{-5}\{5^0/0! + 5^1/1! + 5^2/2! + 5^3/3!\}$. From Appendix VIII, $e^{-5} = 0.006738$, and $\mathrm{Pr}\{X \le 3\}=0.006738\{1 + 5 + 12.5 + 20.8333\} = 0.265$.
+
+## Poisson Distribution in R
+
+The Poisson distribution is a discrete distribution that counts the number of events in a Poisson process. In this tutorial we will review the `dpois`, `ppois`, `qpois` and `rpois` functions to work with the Poisson distribution in R.
+
+Denote a __Poisson process__ as a random experiment that consist on observe the occurrence of specific events over a continuous support (generally the space or the time), such that the process is stable (the number of occurrences, $\lambda$ is constant in the long run) and the events occur randomly and independently.
+
+THe __Poisson distribution__ is used to model the number of events that occur in a Poisson process. Let $X \sim P(\lambda)$, this is, a random variable with Poisson distribution where the mean number of events that occur at a given interval is $\lambda$:
+
+- The __probability mass function__ (PMF) is $P(X = x) = \frac{e^{-\lambda} \lambda^x}P{x!}$ for $x = 0, 1, 2, \ldots$.
+- The __cumulative distribution function__ (CDF) is $F(x) = \sum^x_{i=0} \frac{e^{-\lambda} \lambda^i}{i!}$.
+- The __quantile function__ is $Q(p) = F^{-1}(p)$.
+- The __expected mean and variance__ of $X$ are $E(X) = \mathrm{Var}(X) = \lambda$.
+
+The functions described in the list before can be computed in R for a set of values with the `dpois` (probability mass), `ppois` (distribution) and `qpois` (quantile) functions. Moreover, the `rpois` function allows obtaining $n$ random observations that follow a poisson distribution. The table below describes briefly each of these functions.
+
+The four poisson functions
+
+1. `dpois(x, mean = 0, sd = 1, log = FALSE)` - The density function
+2. `ppois(q, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)` - The distribution function
+3. `qpois(p, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)` - The quantile function
+4. `rpois(n, mean = 0, sd = 1)` - The random generator function
+
+### The `dpois` function
+
+The Poisson probability function with mean $\lambda$ can be calculated with the R `dpois` function for any value of $x$. The following block of code summarizes the arguments of the function:
+
+```
+dpois(x,
+      lambda,
+      log = FALSE)
+```
+
+As an example, if you want to calculate the Poisson mass probability function for $x \in \{0, 1, \ldots, 10\}$ with mean 5, you can type:
+
+```{r}
+dpois(0:10, lambda = 5)
+```
+
+You can also specify a vector of means instead of a single value, as in the follwoing block:
+
+```{r}
+dpois(5, lambda = c(5, 10))
+```
+
+In the previous example, the first element of the output is from a distribution with mean $\lambda = 5$ and the second from a distribution with mean $\lambda = 10$ events per interval.
+
+### Plot of the Poisson probability function in R
+
+The Poisson probability mass function can be plotted in R making use of the `plot` function, as in the following example:
+
+```{r}
+# Grid of X-axis values
+x <- 0:50
+
+#-----------
+# lambda: 5
+#-----------
+lambda <- 5
+plot(dpois(x, lambda), type = "h", lwd = 2,
+     main = "Poisson probability function",
+     ylab = "P(X = x)", xlab = "Number of events")
+
+#-----------
+# lambda: 10
+#-----------
+lambda <- 10
+lines(dpois(x, lambda), type = "h", lwd = 2, col = rgb(1,0,0, 0.7))
+
+#-----------
+# lambda: 20
+#-----------
+lambda <- 20
+lines(dpois(x, lambda), type = "h", lwd = 2, col = rgb(0, 1, 0, 0.7))
+
+# Legend
+legend("topright", legend = c("5", "10", "20"),
+       title = expression(lambda), title.adj = 0.75,
+       lty = 1, col = 1:3, lwd = 2, box.lty = 0)
+```
+
+### The `ppois` function
+
+The probability of a variable $X$ following a Poisson distribution taking values equal or lower than $x$ can be calculated with the `ppois` function, which arguments are described below:
+
+```
+ppois(q,
+      lambda,
+      lower.tail = TRUE,
+      log.p = FALSE)
+```
+
+If you want to calculate, for instance, the probability of observing 5 or less events ($P(X \le 5)$) if the mean of  events occurring on a specific interval is 10 you can type:
+
+```{r}
+ppois(5, lambda = 10)
+```
+
+In this example, the previous result is equivalent to the sum of the probabilities of each value up to 5:
+
+```{r}
+sum(dpois(0:5, lambda = 10))
+```
+
+### `ppois` example
+
+In this section we are going to present a more detailed example using the `ppois` function. Consider that the number of visits on a web page is known to follow a Poisson distribution with mean 15 visits per hour. Hence, $\lambda = 15$.
+
+- The probability of __getting 10 or less visits per hour__, $P(X \le 10)$, is:
+
+```{r}
+ppois(10, lambda = 15)
+1 - ppois(10, lambda = 15, lower.tail = FALSE)
+sum(dpois(0:10, lambda = 15))
+```
+
+As the Poisson distribution is discrete, the cumulative probability is calculated adding the corresponding probabilities of the probability funciton. The following R function allows to visualize the probabilities that are added based on a lower bound and an upper bound.
+
+```{r}
+# lambda: mean
+# lb: lower bound of the sum
+# ub: upper bound of the sum
+# col: color
+# lwd: line width
+pois_sum <- function(lambda, lb, ub, col = 4, lwd = 1, ...) {
+    x <- 0:(lambda + lambda * 2)
+    
+    if (missing(lb)) {
+       lb <- min(x)
+    }
+    if (missing(ub)) {
+        ub <- max(x)
+    }
+      
+    plot(dpois(x, lambda = lambda), type = "h", lwd = lwd, ...)
+  
+    if(lb == min(x) & ub == max(x)) {
+        color <- col
+    } else {
+        color <- rep(1, length(x))
+        color[(lb + 1):ub ] <- col
+    }
+    
+    lines(dpois(x, lambda = lambda), type = "h",
+          col =  color, lwd = lwd, ...)
+}
+```
+
+By way of illustration, if you want to display the probabilities that have been added to calculate the probability of observing between 10 and 15 events, if 10 events occur on average on each interval, you can type:
+
+```{r}
+pois_sum(lambda = 10, lb = 10, ub = 15, lwd = 2,
+         col = 2, ylab = "P(X = x)", xlab = "Number of events")
+```
+
+The sum of the probabilities displayed in red is equal to
+
+```{r}
+ppois(15, lambda = 10) - ppois(10, lambda = 10)
+```
+
+The calculated probability ($11.8\%$) corresponds to the sum of the following probabilities:
+
+```{r}
+pois_sum(lambda = 15, ub = 10, lwd = 2,
+         ylab = "P(X = x)", xlab = "Visits per hour")
+```
+
+- The probability of __getting more than 20 visitis per hour__, $P(X > 20)$, is:
+
+```{r}
+ppois(20, lambda = 15, lower.tail = FALSE)
+1 - ppois(20, lambda = 15)
+1 - sum(dpois(0:20, lambda = 15))
+```
+
+This probability corresponds to:
+
+```{r}
+pois_sum(lambda = 15, lb = 20, lwd = 2,
+         ylab = "P(X = x)", xlab = "Visits per hour")
+```
+
+- The probability of __getting less than 15 visits per hour__, ($(P(X < 15)$) is:
+
+```{r}
+ppois(14, lambda = 15, lower.tail = FALSE)
+1 - sum(dpois(0:15, lambda = 15))
+```
+
+Note that we set 14 instead of 15, because the Poisson probability is discrete, so ($P(X < 15) = P(X \le 14)$). The corresponding plot is as follows:
+
+```{r}
+pois_sum(lambda = 15, ub = 14, lwd = 2,
+         ylab = "P(X = x)", xlab = "Visits per hour")
+```
+
+- The probability of __receiving between 10 and 20 visits per hour__ is:
+
+```{r}
+ppois(20, lambda = 15) - ppois(10, lambda = 15)
+sum(dpois(11:20, lambda = 15))
+```
+
+The probability can be represented making use of the function we defined before:
+
+```{r}
+pois_sum(lambda = 15, lb = 10, ub = 20, lwd = 2,
+         ylab = "P(X = x)", xlab = "Visits per hour")
+```
+
+As the Poisson distribution is a discrete distribution $P(X = x) \ne 0$, so $P(X \ge x) \ne P(X > x)$ and $P(X \le x) \ne P(X < x)$.
+
+### Plot of the Poisson distribution function in R
+
+The cumulative distribution of the Poisson distribution can be represented for different values of $\lambda$ with the following block of code:
+
+```{r}
+# Grid of X-axis values
+x <- 0:50
+
+#-----------
+# lambda: 5
+#-----------
+lambda <- 5
+plot(ppois(x, lambda), type = "s", lwd = 2,
+     main = "Poisson distribution function",
+     xlab = "Number of events", ylab = "F(x)")
+
+#-----------
+# lambda: 10
+#-----------
+lambda <- 10
+lines(ppois(x, lambda), type = "s", lwd = 2, col = 2)
+
+#-----------
+# lambda: 20
+#-----------
+lambda <- 20
+lines(ppois(x, lambda), type = "s", lwd = 2, col = 3)
+
+# Legend
+legend("bottomright", legend = c("5", "10", "20"),
+       title = expression(lambda), title.adj = 0.75,
+       lty = 1, col = 1:3, lwd = 2, box.lty = 0)
+```
+
+### The `qpois` function
+
+The R `qpois` function allows obtaining the corresponding Poisson quantiles for a set of probabilities.
+
+```
+qpois(p,
+      lambda,
+      lower.tail = TRUE,
+      log.p = FALSE)
+```
+
+For instance, the quantile $0.5$ of a Poisson distribution is equal to the mean:
+
+```{r}
+qpois(0.5, lambda = 10)
+```
+
+### Plot of the Poisson quantile function
+
+The Poisson quantile function can be plotted in R for a set of probabilities. The following graph shows the outcomes of the `qpois` function for different means.
+
+```{r}
+#-----------
+# lambda: 20
+#-----------
+plot(qpois(seq(0, 1, 0.001), lambda = 20),
+     main = "Poisson quantile functions",
+     ylab = "Q(p)", xlab = "p",
+     type = "s", col = 3, xaxt = "n")
+
+axis(1, labels = seq(0, 1, 0.1), at = 0:10 * 100)
+
+#-----------
+# lambda: 10
+#-----------
+lines(qpois(seq(0, 1, 0.001), lambda = 10), type = "s", col = 2)
+
+#-----------
+# lambda: 5
+#-----------
+lines(qpois(seq(0, 1, 0.001), lambda = 5), type = "s")
+
+# Legend
+legend("topleft", legend = c("5", "10", "20"),
+       title = expression(lambda), title.adj = 0.75,
+       lty = 1, col = 1:3, lwd = 2, box.lty = 0)
+```
+
+### The `rpois` function
+
+If you want to draw $n$ observations from a Poisson distribution you can make use of the `rpois` function. The following block of code summarizes the arguments of the function.
+
+```
+rpois(n,
+      lambda)
+```
+
+If you want to obtain 10 random observations from a Poisson distribution with mean 4 in R you can type:
+
+```{r}
+rpois(10, lambda = 4)
+```
+
+However, the previous output won't be reproducible. In case you need to generate a reproducible sequence of numbers you can `set a seed` with any integer number as follows:
+
+```{r}
+set.seed(10)
+rpois(10, lambda = 4)
+```
+
+# Relation between the Binomial and Poisson distributions
+
+In the binomial distribution (1), if $N$ is large while the probability $p$ of occurrence of an event is close to $0$, so that $q = 1 - p$ is close to 1, the event is called a _rare event_. In practice we shall consider an event to be rare if the number of trials is at least $50$ $(N \ge 50)$ while $N_p$ is less than 5. In such case the binomial distribution (1) is very closely approximated by the Poisson distribution (5) with $\lambda = N_p$. This is indicated by comparing Tables 7.1 and 7.3&mdash;for by placing $\lambda = N_p$, $q \approx 1$, and $p \approx 0$ in Table 7.1, we get the results in Table 7.3.
+
+Since there is a relation between the binomial and normal distributions, it follows that there also is a relation between the Poisson and normal distributions. It can in fact be shown that the Poisson distribution approaches a normal distribution with standardized variable $(X - \lambda)/\sqrt{\lambda}$ as $\lambda$ increases indefinitely.
+
+# The Multinomial Distribution
+
+If events $E_1, E_2, \ldots, E_K$ can occur with probabilities $p_1, p_2, \ldots, p_K$, respectively, then the probability that $E_1, E_2, \ldots, E_K$ will occur $X_1, X_2, \ldots, X_K$ times, repsectively is
+
+\begin{equation}
+\frac{N!}{X_1! X_2! \cdots X_K!}
+p^{X_1}_1 p^{X_2}_2 \cdots p^{X_K}_K
+\end{equation}
+
+where $X_1 + X_2 + \cdots + X_K = N$. This distribution, which is a generalization of the binomial distribution, is called the _multinomial distribution_ since equaiton (6) is the general term in the _multinomial expansion_ $(p_1 + p_2 + \cdots + p_K)^N$.
+
+#### EXAMPLE 7.
+
+If a fair die is tossed 12 times, the probability of getting 1, 2, 3, 4, 5, and 6 points exactly twice is
+
+$$
+\frac{12!}{2!2!2!2!2!2!} 
+\left(\frac{1}{6}\right)^2
+\left(\frac{1}{6}\right)^2 
+\left(\frac{1}{6}\right)^2
+\left(\frac{1}{6}\right)^2
+\left(\frac{1}{6}\right)^2
+\left(\frac{1}{6}\right)^2 = \frac{1925}{559872} = 0.00344
+$$
+
+The _expected_ numbers of times that $E_1, E_2, \ldots, E_K$ will occur in $N$ trials are $N_{p_1}, N_{p_2}, \ldots, N_{p_K}$, respectively.
+
+```{r}
+dmultinom(x=rep(2, 6), prob=rep((1/6), 6))
+```
+
+# Fitting Theoretical Distributions to sample Frequency Distributions
+
+When on ehas some indication of the distribution of a population by probabilistic reasoning or otherwise, it is often possible to fit such theoretical distributions (also called _model_ or _expected_ distributions) to frequency distributions obtained from a sample of the population. The method used consists in general of employing the mean and standard deviation of the smaple to estimate the mean and sample of the population (see Problems 7.31, 7.33, and 7.34).
+
+In order to test the _goodness of fit_ of the theoretical distributions, we use the _chi-square test_ (which is given in Chapter 12). In attempting to determine whether a normal distribution represents a good fit for given data, it is convenient to use _normal-curve graph paper_, or _probability graph paper_ as it is sometimes called (see Problem 7.32).
+
+# References
+
+1. Larry J. Stephens, and Murray R. Spiegel. _Schaum’s outline of Statistics, sixth edition._ The McGraw-Hill Companies, Inc, 2018.
+3. Gonzalez, J. C. S. _Binomial Distribution in R._ R Coder. Retrieved June 22, 2024, from https://r-coder.com/binomial-distribution-r/
+4. Gonzalez, J. C. S. _Normal Distribution in R._ R Coder. Retrieved June 22, 2024, from https://r-coder.com/normal-distribution-r/
+5. Gonzalez, J. C. S. _Poisson Distribution in R._ R Coder. Retrieved June 22, 2024, from https://r-coder.com/poisson-distribution-r/

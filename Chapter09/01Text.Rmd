@@ -1,0 +1,165 @@
+---
+title: 'Chapter 9: Statistical Estimation Theory'
+subtitle: 'Text'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Estimation of parameters
+
+In the Chapter 8 we saw how sampling theory can be employed to obtain information about samples drawn at random from a known population. From a practical viewpoint, however, it is often more important to be able to infer information about a population from samples drawn from it. Such problems are dealt with in _statistical inference_, which uses principles of sampling theory.
+
+One important problem of statistical inference is the estimation of _population parameters_, or briefly _parameters_ (such as population mean and variance), from the corresponding _sample statistics_, or briefly _statistics_ (such as sample mean and variance). We consider this problem in this chapter.
+
+# Unbiased estmates
+
+If the mean of the sampling distribution of a statistic equals the corresponding population parameter, the statistic is called an _unbiased estimator_ of the parameter: otherwise, it is called a _biased estimator_. The corresponding values of such statistics are called _unbiased_ or _biased_ estimates, repsectively.
+
+##### EXAMPLE 1.
+
+The mean of the sampling distribution of means $\mu_{\bar{X}}$ is $\mu$, the population mean. Hence the sample mean $\bar{X}$ is an unbiased estimate of the population mean $\mu$.
+
+##### EXAMPLE 2.
+
+The mean of the sampling distribution of varinces is
+
+$$
+\mu_{s^2} = \frac{N - 1}{N} \sigma^2
+$$
+
+where $\sigma^2$ is the population variance and $N$ is the sample size (see Table 8.1). Thus the sample variance $s^2$ is a biased estimate of the population variance $\sigma^2$. By using the modified variance
+
+$$
+\hat{s}^2 = \frac{N}{N - 1} s^2
+$$
+
+we find $\mu_{\hat{s}^2} = \sigma^2$, so that $\hat{s}^2$ is an unbiased estimate of $\sigma^2$. However, $\hat{s}$ is a biased estimate of $\sigma$.
+
+In the language of expectation (see Chapter 6) we could say that a statistic is unbiased if its expectation equals the corresponding population parameter. Thus $\bar{X}$ and $\hat{s}^2$ are unbiased since $E\{\bar{X}\} = \mu$ and $E\{\hat{s}^2\} = \sigma^2$.
+
+# Efficient estimates
+
+If the sampling distributions of two statistics have the same mean (or expectation), then the statistic with the smaller variance is called an _efficient estimator_ of the mean, while the other statistic is called an _inefficient estimator_. The corresponding values of the statistics are called _efficient and unefficient estimates_.
+
+If we consider all possible statistics whose sampling distributions have the same mean, the one with the smallest variance is sometimes called the _most efficient_, or _best_, _estimator_ of this mean.
+
+##### EXAMPLE 3.
+
+The sampling distibutions of the mean and median both have the same mean, namely, the population mean. However, the variance of the sampling distribution of means is smaller than the variance of the sampling distribution of medians (see Table 8.1). Here the sample mean gives an efficient estimate of the population mean, while the sample median gives an inefficient estimate of it.
+
+Of all statistics estimating the population mean, the sample mean provides th ebest (or most efficient) estimate.
+
+In practice, inefficient estimates are often used because of the relative ease with which some to fhem can be obtained.
+
+# Point estimates and interval estimates; their reliability
+
+An estimate of a population parameter given by a single number is called a _point estimate_ of the parameter. An estimate of a population parameter given by two numbers between which the parameter may be considered to lie is called an _interval estimate_ of the parameter.
+
+Interval estimates indicate the precision, or accuracy, of an estimate and are therefore preferable to point estimates.
+
+##### EXAMPLE 4.
+
+If we say that a distance is measured as $5.28$ meters (m), we are giving a point estimate. If, on the other hand, we say that the distance is $5.28 \pm 0.03$ m (i.e., the distance lies between $5.25$ and $5.31$ m), we are giving an interval estimate.
+
+A statement of the error (or precision) of an estimate is often called its _reliability_.
+
+# Confidence-interval estimates of population paramters
+
+Let $\mu_S$ and $\sigma_S$ be the mean and standard deviation (standard error), respectively, of the sampling distribution of a statistic $S$. Then if the sampling distribution $S$ is approximately normal (which as we have seen is true for many statistics if the sample size $N \ge 30$), we can expect to find an actual sample statistic $S$ lying in the intervals $\mu_S - \sigma_S$ to $\mu_S + \sigma_S$, $\mu_S - 2 \sigma_S$ to $\mu_S + 2 \sigma_S$, or $\mu_S - 3 \sigma_S$ to $\mu_S + 3 \sigma_S$ about $68.27\%$, $95.45\%$, and $99.73\%$ of the time, respectively.
+
+Equivalently, we can expect to find (or we can be _confident_ of finding) $\mu_S$ in the intervals $S - \sigma_S$ to $S + \sigma_S$, $S - 2 \sigma_S$ to $S + 2 \sigma_S$, or $S - 3 \sigma_S$ to $S + 3 \sigma_S$ about $68.27\%$, $95.45\%$, and $99.73\%$ of the time respectively. Because of this, we call this respective intervals the $68.27\%$, $95.45\%$, and $99.73\%$ _confidence intervals_ for estimating $\mu_S$. The end numbers of these intervals ($S \pm \sigma_S, S \pm 2 \sigma_S, and S \pm 3 \sigma_S$) are then called the $68.27\%$, $95.45\%$, and $99.73\%$ _confidence limits_, or _fiducial limits_.
+
+Similarly, $S \pm 1.96 \sigma_S$ and $S \pm 2.58 \sigma_S$ are the $95\%$ and $99\%$ (or 0.95 and 0.99) confidence limits for $S$. The percentage confidence is often called the _confidence level_. The numbers 1.96, 2.58, etc,. in the confidence limits are called _confidence coefficients_, or _critical values_, and are denoted by $z_c$. From confidence levels we can find confidence coefficients, and vice versa.
+
+Table 9.1 shows the values of $z_c$ corresponding to various confidence levels used in practice. For confidence levels not presented in the table you can use the normal-curve area.
+
+|Confidence level|$99.73\%$|$99\%$|$96\%$|$95.45\%$|$95\%$|$90\%$|$80\%$|$68.27\%$|$50\%$|
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|$z_c$|3.00|2.58|2.33|2.05|2.00|1.96|1.645|1.28|1.00|0.6745|
+
+## Confidence intervals for means
+
+If the statistic $S$ is the sample mean $\bar{X}$, then the 95% and 99% confidence limits for estimating the population mean $\mu$, are given by $\bar{X} \pm 1.96 \sigma_{\bar{X}}$ and $\bar{X} \pm 2.58 \sigma_{\bar{X}}$, respectively. More generally, the confidence limits are given by $\bar{X} \pm z_c \sigma_{\bar{X}}$, where $z_c$ (which depends on the particular level of confidence desired) can be read from Table 9.1. Using the values of $\sigma_{\bar{X}}$ obtained in Chapter 8, we see that the confidence limits for the population mean are given by
+
+\begin{equation}
+\bar{X} \pm z_c \frac{\sigma}{\sqrt{N}}
+\end{equation}
+
+if the sampling is either from an infinite population or with replacement from a finite population, and are given by
+
+\begin{equation}
+\bar{X} \pm z_c \frac{\sigma}{\sqrt{N}} \sqrt{\frac{N_p - N}{N_p - 1}}
+\end{equation}
+
+if the sampling is without replacement from a population of finite size $N_p$.
+
+Generally, the population standard deviation $\sigma$ is unknown; thus, to obtain the above confidence limits, we use the sample estimate $\hat{s}$ or $s$. This will prove satisfactory when $N \ge 30$. For $N < 30$, the approximation is poor and small sampling theory must be employed (see Chapter 11).
+
+## Confidence intervals for proportions
+
+If the statistic $S$ is the proportion of "successes" in a sample of size $N$ drawn from a binomial population in which $p$ is the proportion of successes (i.e., the probability of success), then the confidence limits for $p$ are given by $P \pm z_c \sigma_P$, where $P$ is the proportion of successes in the sample of size $N$. Using the values of $\sigma_P$ obtained in Chapter 8, we see that the confidence limits for the population proportion are given by
+
+\begin{equation}
+P \pm z_c \sqrt{\frac{pq}{N}} = P \pm z_c \sqrt{\frac{p(1 - p)}{N}}
+\end{equation}
+
+if the sampling is either from an infinite population or with replacement from a finite population and are given by
+
+\begin{equation}
+P \pm z_c \sqrt{\frac{pq}{N}} \sqrt{\frac{N_p - N}{N_p - 1}}
+\end{equation}
+
+if the sampling is without replacement from a population of finite size $N_p$.
+
+To compute these confidence limits, we can use the sample estimate $P$ for $p$, which will generally prove satisfactory if $N \ge 30$. A more exact method for obtaining these confidence limits is given in Problem 9.12.
+
+## Confidence intervals for differnces and sums
+
+If $S_1$ and $S_2$ are two sample statistics with approximately normal sampling distributions, confidence limits for the difference of the population parameters corresponding to $S_1$ and $S_2$ are given by
+
+\begin{equation}
+S_1 - S_2 \pm z_c \sigma_{S_1 - S_2} = S_1 - S_2 \pm z_c \sqrt{\sigma_{S_1}^2 + \sigma_{S_2}^2}
+\end{equation}
+
+while confidence limits for the sum of the population parameters are given by
+
+\begin{equation}
+S_1 + S_2 \pm z_c \sigma_{S_1 + S_2} = S_1 + S_2 \pm z_c \sqrt{\sigma_{S_1}^2 + \sigma_{S_2}^2}
+\end{equation}
+
+provided that the samples are independent (see Chapter 8).
+
+For example, confidence limits for the difference of two population means, in the case where the populations are infinite, are given by
+
+\begin{equation}
+\bar{X}_1 - \bar{X}_2 \pm z_c \sigma_{\bar{X}_1 - \bar{X}_2} = \bar{X}_1 -
+\bar{X}_2 \pm z_c \sqrt{\frac{\sigma_1^2}{N_1} + \frac{\sigma_2^2}{N_2}}
+\end{equation}
+
+where $\bar{X}_1$, $\sigma_1$, $N_1$ and $\bar{X}_2$,  $\sigma_2$, $N_2$ are the respective means, standard deviations, and sizes of the two samples drawn from the populations.
+
+Similarly, confidence limits for the difference of two population proportions,w here the populations are infinite, are given by
+
+\begin{equation}
+P_1 - P_2 \pm z_c \sigma_{P_1 - P_2} = P_1 - P_2 \pm z_c
+\sqrt{\frac{p_1 (1 - p_1)}{N_1} + \frac{p_2 (1 - p_2)}{N_2}}
+\end{equation}
+
+where $P_1$ and $P_2$ are two sample proportions, $N_1$ and $N_2$ are the sizes of the two samples drawn from the populations, and $p_1$ and $p_2$ are the proportions in the two poulations (estimated by $P_1$ and $P_2$).
+
+## Confidence intervals for standard deviations
+
+The confidence limits for the standard deviation $\sigma$ of a normally distributed population, as estimated from a sample with standard deviation $s$, are given by
+
+\begin{equation}
+s \pm z_c \sigma_s = s \pm z_c \frac{\sigma}{\sqrt{2N}}
+\end{equation}
+
+using Table 8.1. In computing these confidence limits, we use $s$ or $\hat{s}$ to estimate $\sigma$.
+
+# Probable error
+
+The 50% confidence limits of the population corresponding to a statistic $S$ are given by $S \pm 0.6745 \sigma_S$. The quantity $0.6745 \sigma_S$ is known as the _probable error_ of the estimate.

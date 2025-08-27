@@ -1,0 +1,790 @@
+---
+title: 'Chapter 7: The Binomial, Normal, and Poisson Distributions'
+subtitle: 'Solved Problems'
+author: "Murray R. Spiegel, PhD and Larry J. Stephens, PhD"
+header-includes: 
+  - \usepackage{amsmath}
+  - \usepackage{array}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+```{r echo=F, message=F}
+load("../../data/binom_sum.Rdata")
+load("../../data/normal_area.Rdata")
+```
+
+# The binomial distribution
+
+## Using the factorial and binomial functions
+
+#### 7.1
+
+Evaluate the following:
+
+(a) $5! = `r factorial(5)`$
+
+(b) $\frac{6!}{2!4!} = `r factorial(6)/(factorial(2)*factorial(4))`$
+
+(c) $\binom{8}{3} = `r choose(8, 3)`$
+
+(d) $\binom{7}{5} = `r choose(7, 5)`$
+
+(e) $\binom{4}{4} = `r choose(4, 4)`$
+
+(f) $\binom{4}{0} = `r choose(4, 0)`$
+
+__Solution__
+
+(a) $5! = 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 = 120$
+
+(b) $\frac{6!}{2!4!} = \frac{6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1}{(2 \cdot 1)(4 \cdot 3 \cdot 2 \cdot 1)} = \frac{6 \cdot 5}{2 \cdot 1} = 15$
+
+(c) $\binom{8}{3} = \frac{8!}{3!(8 - 3)!} = \frac{8!}{3!5!} = 56$
+
+(d) $\binom{7}{5} = \frac{7!}{5!(7 - 5)!} = \frac{7!}{5!2!} = 21$
+
+(e) $\binom{4}{4} = \frac{4!}{4!0!} = 1$ since $0! = 1$ by definition
+
+(f) $\binom{4}{0} = \frac{4!}{0!4!} = 1$
+
+__Solution in R__
+
+In R we can use the `factorial` and `choose` functions to calculate the values.
+
+```{r}
+cat(" (a) ", factorial(5), "\n",
+    "(b) ", factorial(6)/(factorial(2)*factorial(4)), "\n",
+    "(c) ", choose(8, 3), "\n",
+    "(d) ", choose(7, 5), "\n",
+    "(e) ", choose(4, 4), "\n",
+    "(f) ", choose(4, 0), "\n")
+```
+
+## Finding the binomial probability based on criteria
+
+#### 7.2
+
+Suppose that $15\%$ of the population is left-handed. Find the probability that in group of 50 individuals there will be (a) at most 10 left-handers, (b) at least 5 left-handers, (c) between 3 and 6 left-handers inclusive, and (d) exactly 5 left-handers.
+
+__Solution in R__
+
+In R you would usually use the cumulative distribution function, `pbinom` to calculate the cumulative probabilities, such as less than, at least, more than, or x and more. However, you can sum up all the values using the probability function `dbinom` as well, as shown in (a). By default, the `pbinom` function calculates the cumulative probability from the left side of the value, or `lower.tail`. This works when calculating cumulative probabilities lower than or equal to. However, you can set `lower.tail = FALSE` to calculate from the right side of the value. This equates to calculating the cumulative probabilities of greater than or equal to. You can also calculate grater than or equal to as `1 - pbionom(...)` as well. This is all shown below:
+
+```{r fig.height=8, fig.width=8}
+cat(" (a) at most 10 left handers: using the cummulative distribution function",
+            pbinom(10, 50, .15), "\n",
+    "    an equivalent using the probability function: ",
+            sum(dbinom(0:10, 50, .15)), ".\n\n",
+    "(b) at least 5 left-handers: cumulative distributuion function",
+            1 - pbinom(4, 50, .15), "\n",
+    "    an equivalent using the lower.tail option ",
+            pbinom(4, 50, .15, lower.tail=FALSE), "\n\n",
+    "(c) between 3 and 6 left-handers inclusive: ",
+            pbinom(6, 50, .15) - pbinom(3, 50, .15), "\n",
+    "    using the probability function: ",
+            sum(dbinom(4:6, 50, .15)), "\n\n",
+    "(d) exactly 5 left-handers: ",
+            dbinom(5, 50, .15), "\n\n")
+```
+
+The text defines the `binom_sum` function in _The `pbinom` function_ section of the text.
+
+```{r}
+par(mfrow=c(2,2), mar=c(4,4,1,1), cex.main=1.5)
+binom_sum(size = 50, prob = .15, ub = 10, lwd = 2,
+          ylab = "P(X = x)", xlab = "10 or less left-handers")
+binom_sum(size = 50, prob = .15, lb = 4, lwd = 2,
+          ylab = "P(X = x)", xlab = "5 or more left-handers")
+binom_sum(size = 50, prob = .15, ub = 6, lb = 2, lwd = 2,
+          ylab = "P(X = x)", xlab = "3 to 6 left-handers")
+binom_sum(size = 50, prob = .15, ub = 5, lb = 4, lwd = 2,
+          ylab = "P(X = x)", xlab = "exactly 5 left-handers")
+```
+
+## Finding the probability of specific events
+
+#### 7.3
+
+Find the probability that in five tosses of a fair die a 3 appears (a) at no time, (b) once, (c) twice, (d) three times, (e) four times, (f) five times.
+
+__Solution__
+
+The probability of 3 in a single toss $= p = \frac{1}{6}$, and the probability of no 3 in a single toss $= q = 1 - p = \frac{5}{6}$, thus:
+
+(a) $\mathrm{Pr}\{3\ \text{occurs zero times}\} = \binom{5}{0} \left(\frac{1}{6}\right)^0 \left(\frac{5}{6}\right)^5 = (1)(1) \left(\frac{5}{6}\right)^5 = \frac{3125}{7776}$
+
+(b) $\mathrm{Pr}\{3\ \text{occurs one time}\} = \binom{5}{1} \left(\frac{1}{6}\right)^1 \left(\frac{5}{6}\right)^4 = (5) \left(\frac{1}{6}\right) \left(\frac{5}{6}\right)^4 = \frac{3125}{7776}$
+
+(c) $\mathrm{Pr}\{3\ \text{occurs two times}\} = \binom{5}{2} \left(\frac{1}{6}\right)^2 \left(\frac{5}{6}\right)^3 = (10) \left(\frac{1}{36}\right) \left(\frac{125}{216}\right) = \frac{625}{3888}$
+
+(d) $\mathrm{Pr}\{3\ \text{occurs three times}\} = \binom{5}{3} \left(\frac{1}{6}\right)^3 \left(\frac{5}{6}\right)^2 = (10) \left(\frac{1}{216}\right) \left(\frac{25}{36}\right) = \frac{125}{3888}$
+
+(e) $\mathrm{Pr}\{3\ \text{occurs four times}\} = \binom{5}{4} \left(\frac{1}{6}\right)^4 \left(\frac{5}{6}\right)^1 = (5) \left(\frac{1}{1296}\right) \left(\frac{5}{6}\right) = \frac{25}{7776}$
+
+(f) $\mathrm{Pr}\{3\ \text{occurs five times}\} = \binom{5}{5} \left(\frac{1}{6}\right)^5 \left(\frac{5}{6}\right)^0 = (1) \left(\frac{1}{7776}\right)(1) = \frac{1}{7776}$
+
+Note that these probabilities represent the terms in the binomial expansion
+
+$$
+\left(\frac{5}{6} + \frac{1}{6}\right)^5 = \left(\frac{5}{6}\right)^5 +
+\binom{5}{1} \left(\frac{5}{6}\right)^4 \left(\frac{1}{6}\right) +
+\binom{5}{2} \left(\frac{5}{6}\right)^3 \left(\frac{1}{6}\right)^2 +
+\binom{5}{3} \left(\frac{5}{6}\right)^2 \left(\frac{1}{6}\right)^3 +
+\binom{5}{4} \left(\frac{5}{6}\right)   \left(\frac{1}{6}\right)^4 +
+\left(\frac{1}{6}\right)^5 = 1
+$$
+
+__Solution in R__
+
+In R you would use the binomial probability function `dbinom`.
+
+```{r}
+cat(" (a) occurs zero times: ", dbinom(0, 5, 1/6), "\n",
+    "(b) once: ", dbinom(1, 5, 1/6), "\n",
+    "(c) twice: ", dbinom(2, 5, 1/6), "\n",
+    "(d) three times: ", dbinom(3, 5, 1/6), "\n",
+    "(e) four times: ", dbinom(4, 5, 1/6), "\n",
+    "(f) five times: ", dbinom(5, 5, 1/6), "\n")
+```
+
+## The binomial expansion and Pascal's triangle
+
+#### 7.4
+
+Write the binomial expansion for (a) (q + p)^4 and (b) (q + p)^6
+
+__Solution__
+
+$$
+\begin{aligned}
+\text{(a)}\ \ (q + p)^4 & = q^4 + \binom{4}{1}q^3p + \binom{4}{2}q^2p^2 + \binom{4}{3}qp^3 + p^4 \\ \\
+                        & = q^4 + 4q^3p + 6q^2p^2 + 4qp^3 + p^4 \\
+\\ \\
+\text{(b)}\ \ (q + p)^6 & = q^6 + \binom{6}{1}q^5p + \binom{6}{2}q^4p^2 + \binom{6}{3}q^3p^3 + 
+\binom{6}{4}q^2p^4 + \binom{6}{5}qp^5 + p^6 \\ \\
+                        & = q^6 + 6q^5p + 15q^4p^2 + 20q^3p^3 + 15q^2p^4 + 6qp^5 + p^6
+\end{aligned}
+$$
+
+The coefficients 1, 4, 6, 4, 1 and 1, 6, 15, 20, 15, 6, 1 are called the _binomial coefficients_ corresponding to $N=4$ and $N=6$, respectively. By writing these coefficients for $N=0,1,2,3,\ldots$, as shown in the following array, we obtain an arrangement called _Pascal's triangle_. Note that the first and last numbers in each row are $1$ and that any other number can be obtained by adding the two numbers to the right and left of it in the preceding row.
+
+$$
+\begin{aligned}
+\begin{tabular}{>{$n=}l<{$\hspace{12pt}}*{13}{c}}
+0 &&&&&&&1&&&&&&\\
+1 &&&&&&1&&1&&&&&\\
+2 &&&&&1&&2&&1&&&&\\
+3 &&&&1&&3&&3&&1&&&\\
+4 &&&1&&4&&6&&4&&1&&\\
+5 &&1&&5&&10&&10&&5&&1&\\
+6 &1&&6&&15&&20&&15&&6&&1
+\end{tabular}
+\end{aligned}
+$$
+
+## Finding the probability based on criteria
+
+#### 7.5
+
+Find the probability that in a family of 4 children there will be (a) at least 1 boy and (b) at least 1 boy and 1 girl. Assume that the probability of a male birth is $\frac{1}{2}$.
+
+__Solution__
+
+(a)
+
+$$
+\begin{aligned}
+\mathrm{Pr}\{1\ \text{boy}\} = \binom{4}{1} \left(\frac{1}{2}\right)^1 \left(\frac{1}{2}\right)^3 = \frac{1}{4} & \ \ \ & \ \ \ &
+\mathrm{Pr}\{3\ \text{boys}\} = \binom{4}{3} \left(\frac{1}{2}\right)^3 \left(\frac{1}{2}\right) = \frac{1}{4} \\ \\
+\mathrm{Pr}\{2\ \text{boys}\} = \binom{4}{2} \left(\frac{1}{2}\right)^2 \left(\frac{1}{2}\right)^2 = \frac{3}{8} & \ \ \ & \ \ \ &
+\mathrm{Pr}\{4\ \text{boys}\} = \binom{4}{4} \left(\frac{1}{2}\right)^4 \left(\frac{1}{2}\right)^0 = \frac{1}{4}
+\end{aligned}
+$$
+
+Thus
+
+$$
+\mathrm{Pr}\{\text{at least 1 boy}\} = \mathrm{Pr}\{\text{1 boy}\} + \mathrm{Pr}\{\text{2 boys}\} +
+\mathrm{Pr}\{\text{3 boys}\} + \mathrm{Pr}\{\text{4 boys}\} \\
+= \frac{1}{4} + \frac{3}{8} + \frac{1}{4} + \frac{1}{16} = \frac{15}{16}
+$$
+
+__Another method__
+
+$$
+\mathrm{Pr}\{\text{at least 1 boy}\} = 1 - \mathrm{Pr}\{\text{no boy}\} = 1 - \left(\frac{1}{2}\right)^4
+= 1 - \frac{1}{16} = \frac{15}{16}
+$$
+
+(b)
+
+$$
+\mathrm{Pr}\{\text{at least 1 boy and 1 girl}\} = 1 - \mathrm{Pr}\{\text{no boy}\} -
+\mathrm{Pr}\{\text{no girl}\} = 1 - \frac{1}{16} - \frac{1}{16} = \frac{7}{8}
+$$
+
+__Solution in R__
+
+```{r}
+cat(" (a) At least 1 boy: ",
+        pbinom(0, 4, .5, lower.tail = FALSE), "\n",
+    "(b) at least 1 boy and 1 girl: ",
+        1 - pbinom(0, 4, .5) - pbinom(0, 4, .5), "\n")
+```
+
+## Finding the probability based on criteria
+
+#### 7.6
+
+Out of 2000 families with 4 children each, how many would you expect to have (a) at least 1 boy, (b) 2 boys, (c) 1 or 2 girls, and (d) no girls? Refer to Problem 7.5(a).
+
+```{r}
+cat(" (a) Expected number of families with at least 1 boy: ",
+        2000*(1 - pbinom(0, 4, .5)), "\n",
+    "(b) Expected number of families with 2 boys: ",
+        2000*(dbinom(2, 4, .5)), "\n",
+    "(c) Expected number of families with 1 or 2 girls: ",
+        2000*sum(dbinom(1:2, 4, .5)), "\n",
+    "(d) Expected number of families with no girls: ",
+        2000*(dbinom(0, 4, .5)))
+```
+
+## Finding the probability based on criteria
+
+#### 7.7
+
+If $20\%$ of the bolts produced by a machine are defective, determine the probability that, out of 4 bolts chosen at random, (a) 1, (b) 0, and (c) at most 2 bolts will be defective.
+
+```{r}
+cat(" (a) Out of 4 bolts chosen at random 1 is defective: ",
+        dbinom(1, 4, .2), "\n",
+    "(b) 0 are defective: ",
+        dbinom(0, 4, .2), "\n",
+    "(c) at most 2 bolts are defective: ",
+        dbinom(2, 4, .2))
+```
+
+#### 7.8
+
+The probability that an entering student will graduate is $0.4$. Determine the probability that out of 5 students, (a) none will graduate, (b) 1 will graduate, (c) at least 1 will graduate, (d) all will graduate.
+
+```{r}
+cat(" (a) Out of 5 students none will gradulate: ", dbinom(0, 5, .4), "\n",
+    "(b) 1 will graduate: ", dbinom(1, 5, .4), "\n",
+    "(c) at least 1 will graduate: ", 1 - pbinom(0, 5, .4), "\n",
+    "(d) all will graduate: ", dbinom(5, 5, .4))
+```
+
+#### 7.9
+
+What is the probability of getting a total of 9 (a) twice and (b) at least twice in 6 tosses of a pair of dice?
+
+To answer this question it is a good idea to list out the ways a 9 can be the outcome of the tossing of a pair of dice.
+
+| D1/D2  | 1 | 2 | 3 | 4 | 5 | 6 |
+|---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | 1-1 | 1-2 | 1-3 | 1-4 | 1-5 | 1-6 |
+| 2 | 2-1 | 2-2 | 2-3 | 2-4 | 2-5 | 2-6 |
+| 3 | 3-1 | 3-2 | 3-3 | 3-4 | 3-5 | __3-6__ |
+| 4 | 4-1 | 4-2 | 4-3 | 4-4 | __4-5__ | 4-6 |
+| 5 | 5-1 | 5-2 | 5-3 | __5-4__ | 5-5 | 5-6 |
+| 6 | 6-1 | 6-2 | __6-3__ | 6-4 | 6-5 | 6-6 |
+
+According to the table above there are 4 out of 36 ways for 9 to be the outcome. The probability of 9 then is $\frac{4}{36} = \frac{1}{9} = `r 4/36`$. The probability of 9 not being the outcome is $\frac{36-4}{36} = \frac{8}{9}$.
+
+```{r}
+cat(" (a) 9 twice: ", dbinom(2, 6, 1/9), "\n",
+    "(b) at least twice: ", pbinom(4, 6, 8/9))
+```
+
+#### 7.10
+
+Evaluate (a) $\sum^N_{X=0} Xp(X)$ and (b) $\sum^N_{X=0}X^2p(X)$, where $p(X) = \binom{N}{X}p^Xq^{N-X}$.
+
+(a) Since $q + p = 1$,
+
+$$
+\begin{aligned}
+\sum^N_{X=0}Xp(X) & =
+\sum^N_{X=1}X\frac{N!}{X!(N-X)!}p^Xq^{N-X} =
+Np \sum^N_{X=1}\frac{(N-1)!}{(X-1)!(N-X)!}p^{X-1}q^{N-X} \\
+                  & = Np(q+p)^{N-1} = Np
+\end{aligned}
+$$
+
+Equation (2) is the _binomial expansion_. Using that equation it is not hard to see
+
+$$
+(q + p)^{N-1} = \sum^N_{X=1}{\frac{(N-1)!}{(X-1)!(N-X)!}p^{X-1}q^{N-X}}
+$$
+
+(b)
+
+$$
+\begin{aligned}
+\sum^N_{X=0}X^2p(X) & =
+\sum^N_{X=1}X^2 \frac{N!}{X!(N-X)!}p^Xq^{N-X} =
+\sum^N_{X=1}[X(X-1) + X]\frac{N!}{X!(N-X)!}p^Xq^{N-X} \\
+  & = \sum^N_{X=2}X(X-1)\frac{N!}{X!(N-X)!}p^Xq^{N-X} +
+  \sum^N_{X=1}X\frac{N!}{X!(N-X)!}p^Xq^{N-X} \\
+  & = N(N-1)p^2 \sum ^N_{X=2}\frac{(N-2)!}{(X-2)!(N-X)!}
+  p^{X-2}q^{N-X} + Np = N(N-1)p^2(q+p)^{N-2} + Np \\
+  & = N(N-1)p^2 + Np
+\end{aligned}
+$$
+
+_Note:_ The results in parts (a) and (b) are the _expectations_ of $X$ and $X^2$, denoted by $E(X)$ and $E(X^2)$, respectively (see Chapter 6).
+
+#### 7.11
+
+If a variable is binomially distributed, determine its (a) mean $\mu$ and (b) variance $\sigma^2$.
+
+(a) By Problem 7.10(a),
+
+$$
+\mu = \text{expectation of variable} = \sum^N_{X=0}{Xp(X)} = Np
+$$
+
+(b) Using $\mu = Np$ and the results of Prolem 7.10,
+
+$$
+\begin{aligned}
+\sigma^2 & = \sum^N_{X = 0}{(X - \mu)^2p(X)} = 
+\sum^N_{X = 0}{(X^2 - 2 \mu X + \mu^2)p(X)} = 
+\sum^N_{X = 0}{X^2p(X)} - 2\mu\sum^N_{X = 0}{Xp(X)} +
+\mu^2 \sum^N_{X = 0}{p(X)} \\
+ & = N(N-1)p^2 + Np - 2(Np)(Np) + (Np)^2(1) = Np - Np^2 = Np(1-p) = Npq
+\end{aligned}
+$$
+
+If follows that the standard deviation of a binomially distributed variable is $\sigma = \sqrt{Npq}$.
+
+By Problem 6.62(b) we can derive the variance,
+
+$$
+E[(X-\bar{X})]^2 = E(X^2) - [E(X)]^2 = N(N-1)p^2 + Np - N^2p^2 = Np - Np^2 = Npq
+$$
+
+#### 7.12
+
+If the probability of a defective bolt is $0.1$, find (a) the mean and (b) the standard deviaiton for the distribution of defective bolts in a total of 400.
+
+(a) The mean is $Np = 400(0.1) = `r (m=400*0.1)`$; that is, we can _expect_ `r m` bolts to be defective.
+(b) The variance is $Npq = 400(0.1)(0.9) = `r (v=400*0.1*0.9)`$. Hence the standard deviation is $\sqrt{36} = 6$.
+
+#### 7.13
+
+Find the momen coefficients of (a) skewness and (b) kurtosis of the distribution in Problem 7.12.
+
+(a)
+$$
+\text{Moment coefficient of skewness} = \frac{q-p}{\sqrt{Npq}} = \frac{0.9 - 0.1}{6} = `r (0.9 - 0.1)/6`
+$$
+
+Since this is positive, the distribution is skewed to the right.
+
+(b)
+
+$$
+\text{Moment coefficient of kurtosis} = 3 + \frac{1 - 6pq}{Npq} =
+3 + \frac{1 - 6(0.1)(0.9)}{36} = `r (1-6*0.1*0.9)/36`
+$$
+
+The distribution is slightly _leptokurtic_ with respect to the normal distribution (i.e., slightly more peaked; see Chapter 5).
+
+# The Normal Distribution
+
+## Calculating standard units
+
+#### 7.14
+
+On a final examination in mathematics, the mean was 72 and the standard deviation was 15. Determine the standard scores (i.e., grades in standard-deviation units) of students receiving the grades (a) 60, (b) 93, and (c) 72.
+
+__Solution__
+
+Standard units:
+$$
+z = \frac{(X - \bar{X})}{s}
+$$
+
+(a)
+$$
+z = \frac{X - \bar{X}}{s} = \frac{60 - 72}{15} = -0.8
+$$
+(b)
+$$
+z = \frac{X - \bar{X}}{s} = \frac{93 - 72}{15} = 1.4
+$$
+
+(c)
+$$
+z = \frac{X - \bar{X}}{s} = \frac{72 - 72}{15} = 0
+$$
+
+__Solution in R__
+
+```{r}
+standard.units <- function(X, mean, sd) { (X - mean)/sd }
+
+cat( "Standard Units:\n(a) 60: ", standard.units(60, 72, 15),
+     "\n(b) 93: ", standard.units(93, 72, 15),
+     "\n(c) 72: ", standard.units(72, 72, 15))
+```
+
+## Using standard units
+
+#### 7.15
+
+Referring to Problem 7.14, find the grades corresponding to the standard scores (a) -1 and (b) 1.6.
+
+__Solution__
+
+$$
+X = z \sigma + \mu
+$$
+
+(a)
+$$
+X = \bar{X} + zs = 72 + (-1)(15) = 57
+$$
+
+(b)
+$$
+X = \bar{X} + zs = 72 + (1.6)(15) = 96
+$$
+
+__Solution in R__
+
+```{r}
+score <- function(z, mean, sd) { (z * sd + mean) }
+cat("Scores:\n(a) -1:", score(-1, 72, 15),
+    "\n(b) 1.6:", score(1.6, 72, 15))
+```
+
+## Using the cumulative normal distribution function
+
+#### 7.16
+
+Suppose the number of games in which major league baseball players play during their careers is normally distributed with mean equal to 1500 games and standard deviation equal to 350 games. (a) What percentage play in fewer than 750 games? (b) What percentage play in more than 2000 games? (c) Find the 90th percentile for the number of games played during a career.
+
+__Solution in R__
+
+```{r}
+mean <- 1500
+sd <- 350
+cat("(a) Play in fewer than 750 games: ", pnorm(750, mean, sd),
+    "\n(b) More than 2000 games: ", pnorm(2000, mean, sd, lower.tail = FALSE),
+    "\n(c) 90th percentile: ", qnorm(.9, mean, sd))
+```
+
+## Finding the area under the standard normal curve
+
+#### 7.17
+
+Find the area under the standard normal curve in the following case:
+
+(a) Between $z = 0.81$ and $z = 1.94$.
+(b) To the right of $z = -1.28$.
+(c) To the right of $z = 2.05$ or to the left of $z = -1.44$.
+
+__Solution in R__
+
+```{r fig.height=12}
+cat("(a) 0.81 <= z <= 1.94:", pnorm(1.94, 0, 1) - pnorm(0.81, 0, 1),
+    "\n(b) z >= -1.28:", pnorm(-1.28, 0, 1, lower.tail = FALSE),
+    "\n(c) z >= 2.05 and z <= -1.44:", pnorm(2.05, 0, 1, lower.tail = FALSE) + pnorm(-1.44, 0, 1),"\n")
+
+par(mfrow=c(3,1))
+normal_area(0, 1, lb=0.81, ub=1.94)
+normal_area(0, 1, ub=-1.28)
+x <- seq(-3, 3, length = 100)
+x1 <- seq(2.05, 3, length = 100)
+y1 <- dnorm(x1, 0, 1)
+x2 <- seq(-3, -1.44, length = 100)
+y2 <- dnorm(x2, 0, 1)
+plot(x, dnorm(x, 0, 1), type = "n", ylab = "")
+polygon(c(2.05, x1, 3), c(0, y1, 0), col = "lightgray")
+polygon(c(-3, x2, -1.44), c(0, y2, 0), col = "lightgray")
+lines(x, dnorm(x, 0, 1), type = "l")
+```
+
+## Percentages of normal distributions
+
+#### 7.18
+
+The time spent watching TV per week by middle-school students has a normal distribution with mean 20.5 hours and standard deviation 5.5 hours. What is the percentage who watch less than 25 hours per week and over 30 hours per week?
+
+__Solution in R__
+
+```{r}
+mean <- 20.5
+sd <- 5.5
+
+cat("Less than 25 hours:", pnorm(25, mean, sd) * 100,
+    "\nMore than 30 hours:", pnorm(30, mean, sd, lower.tail = FALSE) * 100)
+lb <- mean-3*sd
+ub <- mean+3*sd
+
+x <- seq(lb, ub, length = 100)
+x1 <- seq(lb, 25, length = 100)
+y1 <- dnorm(x1, mean, sd)
+x2 <- seq(30, ub, length = 100)
+y2 <- dnorm(x2, mean, sd)
+plot(x, dnorm(x, mean, sd), type = "n", ylab = "")
+polygon(c(lb, x1, 25), c(0, y1, 0), col = "lightgray")
+polygon(c(30, x2, ub), c(0, y2, 0), col = "lightgray")
+lines(x, dnorm(x, mean, sd), type = "l")
+lines(x, rep(0, length=100), type = "l")
+```
+
+## Using standard units of the normal distribution curve
+
+#### 7.19
+
+Find the ordinates of the normal curve at (a) $z = 0.84$, (b) $z = -1.27$, and (c) $z = -0.05$.
+
+__Solution in R__
+
+```{r}
+cat("(a) z = 0.84:", dnorm(.84),
+    "\n(b) z = -1.27:", dnorm(-1.27),
+    "\n(c) z = -0.05:", dnorm(-0.05))
+```
+
+## Plotting the normal distribution curve
+
+#### 7.20
+
+__Solution in R__
+
+Plot a normal curve with mean equal $13.5$ and standard deviation of $2.5$
+
+```{r}
+mean <- 13.5
+sd <- 2.5
+lb <- 6
+ub <- 21
+x <- seq(lb, ub, by=.5)
+y <- dnorm(x, mean, sd)
+data.frame(x,y)
+plot(x, y, pch=20)
+lines((xl <- seq(lb, ub, length=100)), dnorm(xl, mean ,sd), lty=3)
+```
+
+## Using the quantile function
+
+#### 7.21
+
+Determine the second quartile ($Q_2$), the third quartile ($Q_3$), and the 90th percentile ($P_{90}$) for the times that college students spend on the internet. Use the normal distribution given Problem 7.20.
+
+__Solution in R__
+
+```{r fig.height=14}
+mean <- 13.5
+sd <- 2.5
+lb <- 6
+ub <- 21
+cat("Q2", (p7_21.q2 <- qnorm(0.5, mean, sd)),
+    "\nQ3", (p7_21.q3 <- qnorm(0.75, mean, sd)),
+    "\nP90", (p7_21.p90 <- qnorm(.90, mean, sd)))
+
+par(mfrow=c(3,1), mar=c(3,1,5,1))
+normal_area(mean, sd, ub = p7_21.q2)
+title("50% of the area")
+normal_area(mean, sd, ub = p7_21.q3)
+title("75% of the area")
+normal_area(mean, sd, ub = p7_21.p90)
+title("90% of the area")
+```
+
+#### 7.22
+
+Using Appendix II, find $Q_3$ in Problem 7.21.
+
+## Plotting the normal distribution
+
+#### 7.23
+
+Washers are produced so that their inside diameter is normally distributed with mean $0.500$ inches (in) and standard deviation equal t- $0.005$ in. The washers are considered defective if their inside diameter is less than $0.490$ in or greater than $0.510$ in. Find the percent defective.
+
+__Solution__
+
+$$
+\begin{aligned}
+0.490\ \text{in standard units is} \frac{0.490 - 0.500}{0.005} = -2.00 \\ \\
+0.510\ \text{in standard units is} \frac{0.510 - 0.500}{0.005} = 2.00
+\end{aligned}
+$$
+
+__Solution in R__
+
+```{r fig.height=12}
+mean <- 0.5
+sd <- 0.005
+ub <- .51
+lb <- .49
+cat("percent defective:", 100*(pnorm(.49, mean, sd)+pnorm(.51, mean, sd, lower.tail=FALSE)),
+    "%\n")
+
+lb <- mean-3*sd
+ub <- mean+3*sd
+
+x <- seq(lb, ub, length = 100)
+x1 <- seq(lb, .49, length = 100)
+y1 <- dnorm(x1, mean, sd)
+x2 <- seq(.51, ub, length = 100)
+y2 <- dnorm(x2, mean, sd)
+par(mfrow=c(2,1))
+plot(x, dnorm(x, mean, sd), type = "n", ylab = "")
+polygon(c(lb, x1, .49), c(0, y1, 0), col = "lightgray")
+polygon(c(.51, x2, ub), c(0, y2, 0), col = "lightgray")
+lines(x, dnorm(x, mean, sd), type = "l")
+lines(x, rep(0, length=100), type = "l")
+title("0.4900 <= X <= 0.510")
+
+lb <- -3
+ub <- 3
+z <- seq(-3, 3, length = 100)
+z1.std <- standard.units(.49, mean, sd)
+z1 <- seq(lb, z1.std, length = 100)
+y1 <- dnorm(z1, 0, 1)
+z2.std <- standard.units(.51, mean, sd)
+z2 <- seq(z2.std, ub, length = 100)
+y2 <- dnorm(z2, 0, 1)
+plot(z, dnorm(z, 0, 1), type = "n", ylab = "")
+polygon(c(lb, z1, z1.std), c(0, y1, 0), col = "lightgray")
+polygon(c(z2.std, z2, ub), c(0, y2, 0), col = "lightgray")
+lines(z, dnorm(z, 0, 1), type = "l")
+lines(z, rep(0, length=100), type = "l")
+title("-2.00 <= Z <= 2.00")
+```
+
+# Normal approximation to the binomial distribution
+
+## Approximating the binomial distribution
+
+#### 7.24
+
+Find the probability of getting between 3 and 6 heads inclusive in 10 tosses of a fair coin by using (a) the binomial distribution and (b) the normal approximation to the binomial distribution.
+
+__Solution__
+
+(a)
+
+$$
+\begin{aligned}
+\mathrm{Pr}\{3\ \text{heads}\} = \binom{10}{3} \left( \frac{1}{2} \right)^3 \left( \frac{1}{2} \right)^7 =
+\frac{15}{128} \ \ \ & \ \ \ &
+\mathrm{Pr}\{5\ \text{heads}\} = \binom{10}{5} \left( \frac{1}{2} \right)^5 \left( \frac{1}{2} \right)^5 =
+\frac{63}{256} \\ \\
+\mathrm{Pr}\{4\ \text{heads}\} = \binom{10}{4} \left( \frac{1}{2} \right)^4 \left( \frac{1}{2} \right)^6 =
+\frac{105}{512} \ \ \ & \ \ \ &
+\mathrm{Pr}\{6\ \text{heads}\} = \binom{10}{6} \left( \frac{1}{2} \right)^6 \left( \frac{1}{2} \right)^4 =
+\frac{105}{512}
+\end{aligned}
+$$
+
+Thus
+
+$$
+\mathrm{Pr}\{\text{between 3 and 6 heads inclusive}\} =
+\frac{15}{128} + \frac{105}{512} + \frac{63}{256} + \frac{105}{512} = \frac{99}{128} = 0.7734
+$$
+
+__Solution in R__
+
+```{r}
+cat("(a):", sum(dbinom(3:6, 10, .5)))
+```
+
+(b)
+Plotting the binomial distribution for $N=10$ tosses of a fair coin
+
+```{r}
+mean <- 10*.5
+sd <- sqrt(10*.5*.5)
+normal_area(mean, sd, lb=2.5, ub=6.5)
+```
+
+Note that even though the binomial distribution is discrete, it has the shape of the continuous normal distribution. When approximating the binomial probability at 3, 4, 5, and 6 heads by the area under the normal curve, find the normal curve area for $X = 2.5$ to $X = 6.5$. The $0.5$ that you go on either side of $X = 3$ and $X = 6$ is called the _continuity correction_. The following are the steps to follow when approximating the binomial with the normal. Choose the normal curve with mean when approximating the binomial with the normal. Choose the normal curve with mean $Np = 10(0.5) = 5$ and standard deviation = $\sqrt{Npq} = \sqrt{10(0.5)(0.5)} = 1.58$. You are choosing the normal curve with the same center and variation as the binomial distribution. Then find the area under the curve from 2.5 to 6.5. This is the normal approximation to the binomial distribution.
+
+__Solution in R__
+
+```{r}
+cat("(b):", pnorm(6.5, mean, sd) - pnorm(2.5, mean, sd))
+```
+
+## Approximating the mean and standard deviation
+
+#### 7.25
+
+A fair coin is tossed 500 times. Find the probability that the number of heads will not differ from 250 by (a) more than 10 and (b) more than 30.
+
+__Solution__
+
+$$
+\begin{aligned}
+\mu = Np = (500)\left(\frac{1}{2}\right) = 250 \ \ \ & \ \ \ &
+\sigma = \sqrt{Npq} = \sqrt{(500)\left(\frac{1}{2}\right)\left(\frac{1}{2}\right)} = 11.18
+\end{aligned}
+$$
+
+(a) We require the probability that the number of heads will lie between 240 and 260 or, considering the data to be continuous, between 239.5 and 260.5. Since 239.5 in standard units is $(239.5 - 250)/11.18 = -0.94$, and $260.5$ in standard units is $0.94$, we have
+
+$$
+\begin{aligned}
+\text{Required probability} & = (\text{area under normal curve between}\ z = -0.94\ \text{and}\ z = 0.94) \\
+ & = (\text{twice area between}\ z = 0\ \text{and}\ z = 0.94) = 2(0.3264) = 0.6528
+ \end{aligned}
+$$
+
+(b) We require the probability that the number of heads will lie between 220 and 280 or, considering the data to be continuous, between 219.5 and 280.5. Since 219.5 in standard units is $(219.5 - 250)/11.18 = -2.73$, and 280.5 in standard units is 2.73, we have
+
+$$
+\begin{aligned}
+\text{Required probability} & = (\text{twice area under normal curve between}\ z = 0\ \text{and}\ z = -2.73) \\
+ & = 2(0.4968) = 0.9936
+\end{aligned}
+$$
+
+> It follows that we can be very confident that the number of heads will not differ from the expected (250) by more than 30. Thus if it turned out that the _actual_ number of heads was 280, we would strongly believe that the coin was not fair (i.e., was loaded).
+
+__Solution in R__
+
+```{r}
+mean <- 500*.5
+sd <- sqrt(500*.5*.5)
+cat("(a) the binomial distribution:", pbinom(260, 500, .5) - pbinom(240, 500, .5),
+    "\n(a) the normal distribution:", pnorm(260.5, mean, sd) - pnorm(239.5, mean, sd),
+    "\n(b) the binomial distribution:", pbinom(280, 500, .5) - pbinom(220, 500, .5),
+    "\n(b) the normal distribution:", pnorm(280.5, mean, sd) - pnorm(219.5, mean, sd))
+```
+
+## Using the cumulative normal distribution to approximate a binomial distribution
+
+#### 7.26
+
+Suppose $75\%$ of the age group 1 through 4 years regularly utilize seat belts. Find the probability that in a random stop of 100 automobiles containing 1 through 4 year olds, 70 or fewer are found to be wearing a seat belt. Find the solution using the binomial distribution as well as the normal approximation to the binomial distribution.
+
+__Solution__
+
+```{r}
+cat( "The probability that 70 or fewer will be found to be wearing a seat belt is",
+     pbinom(70, 100, .75))
+```
+
+The solution using the normal approximation to the binomial distribution is found as follows: The mean of the binomial distribution is $\mu = Np = 100(0.75) = 75$ and the standard deviation is $\sigma = \sqrt{Npq} = \sqrt{100(0.75)(0.25)} = 4.33$
+
+__Solution in R__
+
+```{r}
+mean <- 100*.75
+sd <- sqrt(100*.75*.25)
+cat( "The normal approximation of the probability that 70 or fewer will be\n",
+     "found to be wearing a seat belt is", pnorm(70.5, mean, sd))
+```
+ 
+ 

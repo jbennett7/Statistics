@@ -1,0 +1,470 @@
+---
+title: 'Chapter 3: The Mean, Median, Mode and Other Measures of Central Tendency'
+subtitle: 'Solved Problems'
+author: 'Murray R. Spiegel, PhD and Larry J. Stephens, PhD'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Preliminary
+
+## Load required libraries
+
+```{r message=FALSE}
+require(data.table)
+```
+
+# Summation notation
+
+## Expressing the terms of a summation
+
+#### 3.1
+
+Write out the terms in each of the following indicated sums:
+
+(a) $\sum^6_{j=1}{X_j}$
+
+(b) $\sum^4_{j=1}{(Y_j - 3)^2}$
+
+(c) $\sum^N_{j=1}{a}$
+
+(d) $\sum^5_{k=1}{f_k X_k}$
+
+(e) $\sum^3_{j=1}{(X_j - a)}$
+
+__Solution__
+
+(a) $X_1 + X_2 + X_3 + X_4 + X_5 + X_6$
+
+(b) $(Y_1 - 3)^2 + (Y_2 - 3)^2 + (Y_3 - 3)^2 + (Y_4 - 3)^2$
+
+(c) $a + a + a + \cdots + a = Na$
+
+(d) $f_1 X_1 + f_2 X_2 + f_3 X_3 + f_4 X_4 + f_5 X_5$
+
+(e) $(X_1 - a) + (X_2 - a) + (X_3 - a) = X_1 + X_2 + X_3 - 3a$
+
+## Creating a summation based on the terms
+
+#### 3.2
+
+Express each of the following by using the summation notation:
+
+(a) $X_1^2 + X_2^2 + X_3^2 + \ldots + X_{10}^2$
+
+(b) $(X_1 + Y_1) + (X_2 + Y_2) + \cdots + (X_8 + Y_8)$
+
+(c) $f_1 X_1^3 + f_2 X_2^3 + \cdots + f_{20} X_{20}^3$
+
+(d) $a_1 b_1 + a_2 b_2 + a_3 b_3 + \cdots + a_N b_N$
+
+(e) $f_1 X_1 Y_1 + f_2 X_2 Y_2 + f_3 X_3 Y_3 + f_4 X_4 Y_4$
+
+__Solution__
+
+(a) $\sum^10_{j=1}{X^2_j}$
+
+(b) $\sum^8_{j=1}{(X_j + Y_j)}$
+
+(c) $\sum^20_{j=1}{f_j X_j}$
+
+(d) $\sum^N_{j=1}{a_N b_N}$
+
+(e) $\sum^4_{j=1}{f_j X_j Y_j}$
+
+## Mathematical analysis of summations
+
+#### 3.3
+
+Prove that $\sum^N_{j=1}{(a X_j + b Y_j - c Z_j)} = b \sum^N_{j=1}{Y_j} - c \sum^N_{j=1}{Z_j}$, where $a, b,$ and $c$ are any constants.
+
+__Solution__
+
+$$
+\begin{aligned}
+\sum^N_{j=1}{(a X_j + b Y_j - c Z_j)} & = (a X_1 + b Y_1 - c Z_1) +
+(a X_2 + b Y_2 - c Z_2) + \cdots + (a X_N + b Y_N - c Z_N) \\
+  & = a ( X_1 + X_2 + \cdots + X_N) + b ( Y_1 + Y_2 + \cdots + Y_N) -
+      c ( Z_1 + Z_2 + \cdots + Z_N) \\
+  & = a \sum^N_{j=1}{X_j} + b \sum^N_{j=1}{Y_j} - c \sum^N_{j=1}{Z_j}
+\end{aligned}
+$$
+
+## Calculating summations
+
+#### 3.4
+
+Two variables, $X$ and $Y$, assume the values $X_1 = 2$, $X_2 = -5$, $X_3 = 4$, $X_4 = -8$ and $Y_1 = -3$, $Y_2 = -8$, $Y_3 = 10$, $Y_4 = 6$, respectively. Calculate (a) $\sum{X}$, (b) $\sum{Y}$, (c) $\sum{X Y}$, (d) $\sum{X^2}$, (e) $\sum{Y^2}$, (f) $(\sum{X})(\sum{Y})$, (g) $\sum{X  Y^2}$, and (h) $\sum{(X + Y)(X - Y)}$.
+
+__Solution__
+
+```{r}
+X <- c(2, -5, 4, -8)
+Y <- c(-3, -8, 10, 6)
+```
+
+```{r}
+cat(  "(a)", sum(X),
+    "\n(b)", sum(Y),
+    "\n(c)", sum(X * Y),
+    "\n(d)", sum(X^2),
+    "\n(e)", sum(Y^2),
+    "\n(f)", sum(X) * sum(Y),
+    "\n(g)", sum( X * Y^2),
+    "\n(g)", sum((X+Y)*(X-Y)))
+```
+
+#### 3.5
+
+# The Arithmetic Mean
+
+## Calculating the arithmetic mean
+
+#### 3.6
+
+The grades of a student on six examinations were `r (p3.6 <- c(84, 91, 72, 68, 87, 78))`. Find the arithmetic mean of the grades.
+
+__Solution__
+
+In R, the `mean` function can calculate the mean of a data set of numerical values.
+
+```{r}
+p3.6 <- c(84, 91, 72, 68, 87, 78)
+mean(p3.6)
+```
+
+#### 3.7
+
+Ten measurements of the diameter of a cylinder were recorded by a scientist as `r (p3.7 <- c(3.88, 4.09, 3.92, 3.97, 4.02, 3.95, 4.03, 3.92, 3.98, 4.06))` centimeters (cm). Find the arithmetic mean of the measurements.
+
+__Solution__
+
+Results can be corrected to significant figures using the `round` function. Remember the rules for rounding.
+
+```{r}
+p3.7 <- c(3.88, 4.09, 3.92, 3.97, 4.02, 3.95, 4.03, 3.92, 3.98, 4.06)
+round(mean(p3.7),2)
+```
+
+## Affects of outliers on the arithmetic mean of a data set
+
+#### 3.8
+
+The following is a list of values. Would you say this average is typical of the 30 times?
+
+__Solution__
+
+```{r}
+p3.8 <- c(3, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 9, 10, 10,
+          10, 10, 10, 10, 12, 55, 60)
+mean(p3.8)
+```
+
+The problem with the mean is that it is strongly affected by extreme values.
+
+## Calculating the mean with repeated numbers, and using frequency
+
+#### 3.9
+
+Find the arithmetic mean of the numbers 
+
+__Solution__
+
+You can still find the arithmetic mean using the `mean` R function.
+
+```{r}
+p3.9 <- c(5, 3, 6, 5, 4, 5, 2, 8, 6, 5, 4, 8, 3, 4, 5, 4, 8, 2, 5, 4)
+mean(p3.9)
+```
+
+### Using R to find frequencies and construct frequency tables
+
+However, in R, you can use the `table` function to find the frequencies of values in a data set.
+
+```{r}
+(t3.9 <- table(p3.9))
+sum(as.numeric(names(t3.9))*t3.9)/length(p3.9)
+```
+
+## Construct frequency tables from frequencies of values
+
+#### 3.10
+
+Out of 100 numbers, 20 were 4's, 40 were 5's, 30 were 6's and the remainder were 7's. Find the arithmetic mean of the numbers.
+
+__Solution__
+
+In R, construct a frequency table using the data described above using the `matirx` function.
+
+```{r}
+N <- 100
+p3.10 <- matrix(c(4, 5, 6, 7), nrow=1)
+names(p3.10) <- c("20", "40", "30", "10")
+sum(as.numeric(names(p3.10))*p3.10)/N
+```
+
+## Using weighted arithmetic mean.
+
+Similar to frequencies, weights can be used to give some values more significance.
+
+#### 3.11
+
+A student's final grades in mathematics, physics, English and hygiene are, respectively, $82, 86, 90,$ and  $70$. If the respective credits received for these courses are $3, 5, 3,$ and $1$, determine an appropriate average grade.
+
+In R you use the `weighted.mean` function to calculate weighted means.
+
+```{r}
+grades <- c(82, 86, 90, 70)
+weights <- c(3, 5, 3, 1)
+round(weighted.mean(grades,weights))
+```
+
+## Understanding the properties of the arithmetic mean
+
+#### 3.12
+
+In a company having 80 employees, 60 earn \$10.00 per hour and 20 earn \$13.00 per hour.
+
+(a) Determine the mean earnings per hour.
+(b) Would the answer in part (a) be the same if the 60 employees earn a mean hourly wage of \$10.00 per hour? Prove your answer.
+(c) Do you believe the mean hourly wage to be typical?
+
+(a)
+
+```{r}
+freq <- c(60, 20)
+wage <- c(10.00, 13.00)
+round(weighted.mean(wage,freq),2)
+```
+
+(b) Yes the answer would be the same. To prove this, suppose that $f_1$ numbers have mean $m_1$ and that $f_2$ numbers have mean $m_2$. We must show that the mean of all the numbers is
+
+$$
+\bar{X} = \frac{ f_1 m_1 + f_2 m_2}{f_1 + f_2}
+$$
+
+Let the $f_1$ numbers add up to $M_1$ and the $f_2$ numbers add up to $M_2$. THen by definition of the arithmetic mean,
+
+$$
+m1 \frac{M_1}{f_1}\ \ \ \ \ \ \ \mathrm{and}\ \ \ \ \ \ \ m_2 = \frac{M_2}{f_2}
+$$
+
+or $M_1 = f_1 m_1$ and $M_2 = f_2 m_2$. Since all $(f_1 + f_2)$ numbers add up to $(M_1 + M_2)$, the arithmetic mean of all numbers is
+
+$$
+\bar{X} = \frac{M_1 + M_2}{f_1 + f_2} = \frac{ f_1 m_1 + f_2 m_2 }{f_1 + f_2 }
+$$
+
+as required. The result is easily extended.
+
+(c) We can say that \$10.75 is a "typical" hourly wage in the sense that most of the employees earn \$10.00 which is not too far from \$10.75 per hour. It must be remembered that, whenever we summarize numerical data into a single number (as is true in an average), we are likely to make some error. Certainly, however, the result is not as misleading as that in Problem 3.8.
+
+Actually, to be on safe ground, some estimate of the "spread", or "variation," of the data about the mean (or other average) should be given. This is called the _dispersion_ of the data. Various measures of dispersion are given in Chapter 4.
+
+## Using frequency data sets
+
+#### 3.13
+
+Four groups of students, consisting of `r (p3.13.freq <- c(15, 20, 10, 18))` individuals, reported mean weights of `r (p3.13.values <- c(162, 148, 153, 140))` pounds (lb), respectively. Find the mean weight of all the students.
+
+__Solution__
+
+```{r}
+p3.13.freq <- c(15, 20, 10, 18)
+p3.13.values <- c(162, 148, 153, 140)
+weighted.mean(p3.13.values, p3.13.freq)
+```
+
+#### 3.14
+
+If the mean annual incomes of agricultural and nonagricultural workes are \$25,000 and \$35,000, respectively, would the mean annual income of both groups together be \$30,000?
+
+__Solution__
+
+It would be \$30,000 only if the numbers of agricultural and nonagricultural workers were the same. To determine the true mean annual income, we would have to know the relative numbers of workers in each group. Suppose that 10% of all workers are agricultural workers. Then the  mean would be $(0.10)(25,000)+(0.90)(35000) = \$34,000$.  If there were equal numbers of agricultural and nonagricultural workers than the mean would be \$30,000.
+
+#### 3.15
+
+Use the frequency distribution of heights in Table 2.1 to find the mean height of the 100 maile students at XYZ university.
+
+__Solution__
+
+The work is outlined in [Table 3.1](#table_3_1). Note that all students having heights 60 to 62 inches (in), 63 to 65 in, etc., are considered as having heights 61 in, 64 in, etc. The problem then reduces to finding the mean height of 100 students if 5 students have height 61 in. 18 have height 64i in, etc.
+
+The computations involved can become tedious, especially for cases in which the numbers are large and many classes are present. Short techniques are available for lessening the labor in such cases; for example, see Problems 3.20 and 3.22.
+
+```{r}
+heights <- c("60-62", "63-65", "66-68", "69-71", "72-74")
+X <- c(61, 64, 67, 70, 73)
+f <- c(5, 18, 42, 27, 8)
+table_3_1 <- matrix(c(X,f,X*f), ncol=3)
+rownames(table_3_1) <- heights
+colnames(table_3_1) <- c("Class Mark (X)", "Frequency (f)", "fX")
+table_3_1
+weighted.mean(X,f)
+```
+
+# Properties of the arithmetic mean
+
+## Sum of deviations from the mean
+
+#### 3.16
+
+Prove that the sum of the deviations of $X_1, X_2, \ldots, X_N$ from their mean $\bar{X}$ is equal to zero.
+
+__Solution__
+
+Let $d_1 = X_1 - \bar{X}, d_2 = X_2 - \bar{X}, \ldots, d_N = X_N - \bar{X}$ be the deviations of $X_1, X_2, \ldots, X_N$ from their mean $\bar{X}$. Then
+
+$$
+\begin{aligned}
+\text{Sum of deviations} & = \sum{d_j} = \sum{(X_j - \bar{X})} = \sum{X_j} - N \bar{X} \\ \\
+                           & = \sum{X_j - N\left(\frac{\sum{X_j}}{N}\right)} = \sum{X_j} - \sum{X_j} = 0
+\end{aligned}
+$$
+
+where we have used $\sum$ in place of $\sum^N_{j=1}$. We could, if desired, have omitted the subscript $j$ in $X_j$, provided that it is _understood_.
+
+## Commutative and Associative properties
+
+#### 3.17
+
+If $Z_1 = X_1 + Y_1, Z_2 = X_2 + Y_2, \ldots, Z_N = X_N + Y_N$, prove that $\bar{Z} = \bar{X} + \bar{Y}$.
+
+__Solution__
+
+By definition,
+
+$$
+\bar{X} = \frac{\sum{X}}{N}\ \ \ \ \bar{Y} = \frac{\sum{Y}}{N}\ \ \ \ 
+\bar{Z} = \frac{\sum{Z}}{N}
+$$
+Thus
+
+$$
+\bar{Z} = \frac{\sum{Z}}{N} = \frac{\sum{(X + Y)}}{N} =
+\frac{\sum{X} + \sum{Y}}{N} = \frac{\sum{X}}{N} + \frac{\sum{Y}}{N} =
+\bar{X} + \bar{Y}
+$$
+
+where the subscripts $j$ on $X, Y,$ and $Z$ have been omitted and where $\sum$ means $\sum^N_{j=1}$.
+
+##
+
+#### 3.18
+
+(a) If $N$ numbers $X_1, X_2, \ldots, X_N$ have deviations from any number $A$ given by $d_1 = X_1 - A, d_2 = X_2 - A, d_2 = X_2 - A, \ldots, d_N = X_N - A$, respectively, prove that
+
+$$
+\bar{X} = A + \frac{\sum^N_{j=1}{d_j}}{N} = A + \frac{\sum{d}}{N}
+$$
+
+(b) In case $X_1, X_2, \ldots, X_K$ have respective frequencies $f_1, f_2, \ldots, f_K$ and $d_1 = X_1 - A, \ldots, d_K = X_K - A$, show that the result in part (a) is replaced with
+
+$$
+\bar{X} = A + \frac{\sum^K_{j=1}{f_j d_j}}{\sum^K_{j=1}{f_j}} =
+A + \frac{\sum{fd}}{N}\ \ \ \ \text{where}\ \ \ \ 
+\sum^K_{j=1}{f_j} = \sum{f} = N
+$$
+
+__Solution__
+
+(a) __First method__
+
+Since $d_j = X_j - A$ and $X_j = A + d_j$, we have
+
+$$
+\bar{X} = \frac{\sum{X_j}}{N} = \frac{\sum{(A + d_j)}}{N} = \frac{\sum{A} + \sum{d_j}}{N} =
+\frac{NA + \sum{d_j}}{N} = A + \frac{\sum{d_j}}{N}
+$$
+
+where we have used $\sum$ in place of $\sum^N_{j=1}$ for brevity.
+
+__Second method__
+
+We have $d = X - A$, or $X = A + d$, omitting the subscripts on $d$ and $X$. Thus, by Problems 3.17,
+
+$$
+\bar{X} = \bar{A} + \bar{d} = A + \frac{\sum{d}}{N}
+$$
+
+since the mean of a number of constants all equal to $A$  is $A$.
+
+(b)
+
+$$
+\begin{aligned}
+\bar{X} & = \frac{\sum^K_{j=1}{f_j X_j}}{\sum^K_{j=1}{f_j}} = \frac{\sum{f_j X_j}}{N} =
+\frac{\sum{f_j(A + d_j)}}{N} = \frac{A f_j + \sum{f_j d_j}}{N} =
+\frac{A \sum{f_j} + \sum{f_j d_j}}{N} \\ \\
+ & = \frac{AN + \sum{f_j d_j}}{N} = A + \frac{\sum{f_j d_j}}{N} = A + \frac{\sum{fd}}{N}
+\end{aligned}
+$$
+
+Note that _formally_ the result is obtained from part (a) by replacing $d_j$ with $f_j d_j$ and summing from $j=1$ to $K$ instead of from $j=1$ to $N$. The result is equivalent to $\bar{X} = A + \bar{d}$, where $\bar{d} = (\sum{fd})/N$.
+
+# The arithmetic mean computed from grouped data
+
+#### 3.19
+
+Use the method of Problem 3.18(a) to find the arithmetic mean of the numbers `r (p3.19 <- c(5, 8, 11, 9, 12, 6, 14, 10))` choosing as the "guessed mean" $A$ the values (a) `r p3.19.A.a <- 9` and (b) `r p3.19.A.b <- 20`.
+
+__Solution__
+
+(a) The deviations of the given numbers from 9 are $-4, -1, 2, 0, 3, -3, 5,$ and $1$, and the sum of the deviations is $\sum{d} = -4-1+2+0+3-3+5+1=3$. Thus
+
+$$
+\bar{X} = A + \frac{\sum{d}}{N} = 9 + \frac{3}{8} = 9.375
+$$
+
+(b) The deviations fo the given numbers from 20 are $-15, -12, -9, -11, -8, -14, -6,$ and $-10$, and $\sum{d} = -85$. Thus
+
+$$
+\bar{X} = A + \frac{\sum{d}}{N} = 20 + \frac{(-85)}{8} = 9.375
+$$
+
+#### 3.20
+
+Use the method of Problem 3.18(b) to find the arithmetic mean of the heights of the 100 male students at XYZ University (see Problems 3.15).
+
+__Solution__
+
+The work may be arranged as in Table 3.2. We take the guessed mean $A$ to be the class mark 67 (which has the largest frequency), although any class mark can be used for $A$. Note that the computations are simpler than those in Problem 3.15. TO shorten the labor even more, we can proceed as in Problem 3.22, where use is made of the fact that the deviations (column 2 of Table 3.2) are all integer multiples of the class-interval size.
+
+```{r}
+A <- 67
+X <- c(61, 64, 67, 70, 73)
+d <- X-A
+f <- c(5, 18, 42, 27, 8)
+fd <- f*d
+table_3_2 <- data.table(class.mark=X, deviation=d, frequency=f, fd=fd)
+table_3_2
+A + sum(table_3_2$fd)/sum(table_3_2$frequency)
+```
+
+## R function for finding the mean of grouped data
+
+```{r}
+grouped.mean <- function(mark, frequency) {
+  sum(frequency*(mark-mark[1]))/sum(frequency)+mark[1]
+}
+```
+
+#### 3.21
+
+
+
+
+
+
+
+
+
+
+
+
+
+

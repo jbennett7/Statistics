@@ -1,0 +1,533 @@
+---
+title: 'Chapter 4: The Standard Deviation and Other Measures of Dispersion'
+subtitle: 'Text'
+author: 'Murray R. Spiegel, PhD and Larry J. Stephens, PhD'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+# Preliminary
+
+## The `normal_area` function
+
+```{r}
+normal_area <-function(mean = 0, sd = 1, lb, ub, acolor = "lightgray", ...) {
+  x <- seq(mean - 3 * sd, mean + 3 * sd, length = 100)
+  
+  if (missing(lb)) {
+    lb <- min(x)
+  }
+  
+  if (missing(ub)) {
+    ub <- max(x)
+  }
+  
+  x2 <- seq(lb, ub, length = 100)
+  plot(x, dnorm(x, mean, sd), type = "n", ylab = "")
+  
+  y <- dnorm(x2, mean, sd)
+  polygon(c(lb, x2, ub), c(0, y, 0), col = acolor)
+  lines(x, dnorm(x, mean, sd), type = "l", ...)
+}
+```
+
+> __TODO:__  
+> Fig. 4-1 Illustration of the empirical rule. p. 99
+
+# Dispersion, or Variation
+
+The degree to which numerical data tend to spread about an average value is called the _dispersion_, or _variation_, of the data. Various measures of this dispersion (or variation) are available, the most common being the range, mean deviation, semi-interquartile range, 10--90 percentile range, and standard deviation.
+
+# The Range
+
+The _range_ of a set of numbers is the difference between the largest and smallest numbers in the set.
+
+#### EXAMPLE 1.
+
+The range of the set `r (e1 <- c(2, 3, 3, 5, 5, 5, 8, 10, 12))` is `r diff(range(e1))`. Sometimes the range is given by simply quoting the smallest and largest numbers; in the above set, for instance, the range could be indicated as `r range(e1)`, or 2--12.
+
+## The Range in R
+
+In R, `range` is a vector of the smallest and largest numbers in the set. You can get the equivalent by `diff(range(ARRAY))`.
+
+#### R Example.
+
+Using the previous range `r e1`
+
+```{r}
+e1 <- c(2, 3, 3, 5, 5, 5, 8, 10, 12)
+cat(" The range function: ", range(e1), "\n",
+    "The equivalent above: ", diff(range(e1)))
+```
+
+# The Mean Deviation
+
+The _mean deviation_, or _average deviation_, of a set of $N$ numbers $X_1, X_2, \ldots, X_N$ is abbreviated MD and is defined by
+
+\begin{equation}
+\text{Mean deviaion (MD)} = \frac{\sum^N_{j=1}{|X_j - \bar{X}|}}{N} =
+\frac{\sum{|X - \bar{X}|}}{N} = 
+\overline{|X - \bar{X}|}
+\end{equation}
+
+where $\bar{X}$ is the arithmetic mean of the numbers and $|X_j - \bar{X}|$ is the absolute value of the deviation of $X_j$ from $\bar{X}$. (The _absolute value_ of a number is the number without the associated sign and is indicated by two vertical lines placed around the number; thus $|-4|=4$, $|+3|=3$, $|6|=6$ and $|-0.84| = 0.84$.)
+
+#### EXAMPLE 2.
+
+Find the mean deviation of the set `r (e2 <- c(2, 3, 6, 8, 11))`
+$$
+\text{Arithmetic mean} (\bar{X}) = \frac{2 + 3 + 6 + 8 + 11}{5} = `r mean(e2)`
+$$
+
+$$
+\mathrm{MD} = \frac{|2 - 6| + |3 - 6| + |6 - 6| + |8 - 6| + |11 - 6|}{5} = `r mean(abs(e2 - mean(e2)))`
+$$
+
+If $X_1, X_2, \ldots, X_K$ occur with frequencies $f_1, f_2, \cdots, f_K$, respectively, the mean deviation can be written as
+
+\begin{equation}
+\mathrm{MD} = \frac{\sum^K_{j=1}{f_j |X_j - \bar{X}|}}{N} =
+\frac{\sum{f |X - \bar{X}|}}{N} = \overline{|X - \bar{X}|}
+\end{equation}
+
+where $N = \sum^K_{j=1}{f_j} = \sum{f}$. This form is useful for grouped data, where the $X_j$'s represent class marks and the $f_j$'s are the corresponding class frequencies.
+
+Occasionally the mean deviation is defined in terms of absolute deviations from the median or other average instead of from the mean. An interesting property of the sum $\sum^N_{j=1}{|X_j - a|}$ is that it is a minimum when $a$ is the median (i.e., the mean deviation about the median is a minimum).
+
+Note that it would be more appropriate to use the terminology _mean absolute deviation_ than _mean deviation_.
+
+## The Mean Deviation in R
+
+You can define the mean deviation in R using the following
+
+```{r}
+mean.deviation <- function(x) { mean(abs(x - mean(x))) }
+```
+
+#### R Example
+
+Using _Example 1_ we can calculate the mean and mean deviation
+
+```{r}
+cat("Mean:", mean(e1), "\nMean Deviation:", mean.deviation(e1))
+```
+
+# The Semi-Interquartile Range
+
+The _semi-interquartile range_, or _quartile deviation_, of a set of data is denoted by $Q$ and is defined by
+
+\begin{equation}
+Q = \frac{Q_3 - Q_1}{2}
+\end{equation}
+
+where $Q_1$ and $Q_3$ are the first and third quartiles for the data (see Problems 4.6 and 4.7). The interquartile range $Q_3 - Q_1$ is sometimes used, but the semi-interquartile range is more common as a measure of dispersion.
+
+## The Interquartile range in R
+
+The interquartile range is a measure of statistical dispersion, specifically the difference between the third quartile ($Q_3$) and the first quartile ($Q_1$):
+
+$$
+\mathrm{IQR} = Q_3 - Q_1
+$$
+
+This measure can be computed in R with the `IQR` function.
+
+### Syntax
+
+The interquartile range can be computed in R with the `IQR` function, which has the following syntax:
+
+```
+IQR(x,
+    na.rm = FALSE,
+    type = 7)
+```
+
+### Examples in R
+
+### Interquartile range of a vector
+
+Given a sample vector $x$ you can input it to the `IQR` function to __calculate its interquartile range__:
+
+```{r}
+x <- c(19, 21, 16, 1, 4, 2, 17, 24)
+
+IQR(x)
+```
+
+The function return 16. Let's compute it manually using the `quantile` function for a better understanding:
+
+```{r}
+Q <- quantile(x)
+```
+
+The interquartile range is calculated as the third quartile (19.5) minus the first quartile (3.5), this is:
+
+```{r}
+# Interquartile range of 'x'
+Q[4] - Q[2]
+```
+
+Note that you can also specify other algorithm to compute quantiles making use of `type`, which takes an integer from 1 to 9 as input. The example below computes the interquartile range of `x` with the type 8 algorithm.
+
+```{r}
+IQR(x, type = 8)
+```
+
+### Interquartile range with missing values
+
+If your data contains missing values you can set `na.rm = TRUE` in order to remove them from the computation.
+
+```{r}
+x.na <- c(19, 21, NA, 1, 4, 2, NA, 24)
+
+IQR(x.na, na.rm=TRUE)
+```
+
+### Interquartile range of the columns of a data frame
+
+It is possible to calculate the __interquartile range of the columns of a data frame__ using the `apply` function by columns as follows:
+
+```{r}
+df <- data.frame(x = rnorm(10), y = rexp(10), z = runif(10))
+
+apply(df, 2, IQR)
+```
+
+### Semi interquartile range
+
+The semi interquartile rage (SIQR) is the __interquartile range divided by two__:
+
+```{r}
+IQR(x) / 2
+```
+
+# The 10--90 Percentile Range
+
+The _10--90 percentile range_ of a set of data is defined by
+
+\begin{equation}
+\text{10--90 percentile range} = P_{90} - P_{10}
+\end{equation}
+
+where $P_{10}$ and $P_{90}$ are the 10th and 90th percentiles for the data (see Problem 4.8). The semi 10--90 percentile range, $\frac{1}{2}(P_{90} - P_{10})$, can also be used but is not commonly employed.
+
+## Quantiles in R
+
+Considering a value $p$, being $0 < p < 1$ the quantile of order $p$ is the value that leaves a proportion of the data below ($p$) and the rest ($1 - p$) above the value. Notice that quantiles are the generalization of the median which is the quantile for $p = 0.5$. In R, you can make use of the `quantile` function to calculate any quantile for any numeric vector.
+
+## Syntax
+
+The `quantile` function calculates the sample quantiles of a numberic vector (`x`). By default, this function calculates the quartiles specified inside `probs`, but you can also input any other probabilities to compute any percentile.
+
+```
+quantile(x,
+         probs = seq(0, 1, 0.25),
+         na.rm = FALSE,
+         names = TRUE,
+         type = 7,
+         digits = 7,
+         ...)
+```
+
+## Quartiles
+
+Quartiles are quantiles of order $0.25, 0.5$ and $0.75$ and they __divide the sample into four parts with the same frequency__. Usually, quartiles are denoted by $Q_1, Q_2$ and $Q_3$.
+
+```{r}
+set.seed(1)
+x <- rnorm(100)
+quantile(x)
+```
+
+Recall that the __quartile $0.5$ is equal to the median__:
+
+```{r}
+median(x)
+```
+
+Note that you can __remove the name attributes__ from the output setting `names = FALSE`.
+
+```{r}
+quantile(x, names = FALSE)
+```
+
+## Quantile algorithms
+
+The calculation of the quantiles are based on __one of the nine algorithms discussed in Hyndman and Fan (1996)__. By default, the seventh algorithm is used, but you can select other passing an integer between 1 and 9 to `type`. Read the previous reference for further information about each algorithm.
+
+```{r}
+quantile(x, type = 8)
+```
+
+## Visual representation
+
+It is important to note that a box plot can be used to visualize quartiles, but the method used inside the `boxplot` function is not the same as the one used inside `quartile`, so the output may vary slightly.
+
+```{r}
+quartile <- quantile(x)
+
+boxplot(x, col = 4, horizontal = TRUE)
+text(quartile[2], 1.25, expression(Q[1]))
+text(quartile[3], 1.25, expression(Q[2]))
+text(quartile[4], 1.25, expression(Q[3]))
+```
+
+## Deciles
+
+Deciles are quantiles of order $0.1, 0.2, \ldots, 0.9$ and __divide the sample into 10 equal frequency parts__. In order to calculate them you can intput a sequence from 0 to 1 by $0.1$ to `probs`, as shown in the example below.
+
+```{r}
+quantile(x, probs = seq(0, 1, by = 0.1))
+```
+
+## Percentiles
+
+Percentiles are quantiles of the order $0.01, 0.02, \ldots, 0.99$ and __divide the sample into 100 equal-frequency parts__. If you want to calculate the percentiles of a numeric vector you will need to specify a sequence from 0 to 1 by $0.01$ inside `probs`.
+
+```{r}
+quantile(x, probs = seq(0, 1, by = 0.01))
+```
+
+### 10--90 Percentile in R
+
+```{r}
+(p10_90 <- diff(quantile(x, prob=c(.1, .9), names = FALSE)))
+
+# The semi-10--90 percentile range
+p10_90/2
+```
+
+# The Standard Deviation
+
+The _standard deviation_ of a set of $N$ numbers $X_1, X_2, \ldots, X_N$ is denoted by $s$ and is defined by
+
+\begin{equation}
+s = \sqrt{\frac{\sum^N_{j=1}{(X_j - \bar{X})^2}}{N}} = 
+\sqrt{\frac{\sum{(X - \bar{X})^2}}{N}} = \sqrt{\frac{\sum{x^2}}{N}} =
+\sqrt{\overline{(X - \bar{X})^2}}
+\end{equation}
+
+where $x$ represents the deviations of each of the numbers $X_j$ from the mean $\bar{X}$. Thus $s$ is the root mean square (RMS) of the deviations from the mean, or, as it is sometimes called, the _root-mean-square deviation_.
+
+If $X_1, X_2, \ldots, X_K$ occur with frequencies $f_1, f_2, \cdots, f_K$, respectively, the standard deviation can be written
+
+\begin{equation}
+s = \sqrt{\frac{\sum^K_{j=1}{f_j (X_j - \bar{X})^2}}{N}} =
+\sqrt{\frac{\sum{f (X - \bar{X})^2}}{N}} = \sqrt{\frac{\sum{fx^2}}{N}} =
+\sqrt{\overline{(X - \bar{X})^2}}
+\end{equation}
+
+where $N = \sum^K_{j=1}{f_j} = \sum{f}$. In this form it is useful for grouped data.
+
+Sometimes the standard deviation of a sample's data is defined with $(N - 1)$ replacing $N$ in the denominators of the expressions in equations (5) and (6) because the resulting value represents a better estimate of the standard deviation of a population from which the sample is taken. For large values of $N$ certainly $N > 30$), there is practically no difference between the two definitions. Also, when the better estimate is needed we can always obtain it by multiplying the standard deviation computed according to the first definition by $\sqrt{N/(N-1)}$. Hence we shall adhere to the form (5) and (6).
+
+## Standard deviation in R with the `sd` function
+
+The standard deviation is the __positive square root of the variance__, this is, $S_n = \sqrt{S_n^2}$. The standard deviation is more used in Statistics than the variance, as it is expressed in the same units as the variable, while the variance is expressed in square units.
+
+In R, the standard deviation can be calculated making use of the `sd` function, as shown below:
+
+```{r sd+}
+sd(x)
+```
+
+Note that this calculates the slightly larger $\mathrm{SD}^{+}$ value and not the $\mathrm{SD}$ value. The resaon for this can be found in Freedman chapter 26 section 6.
+
+```{r sd}
+sqrt(mean((x - mean(x))^2))
+```
+
+We can use the following formula to correct the R `sd` function.
+
+```{r sd.corrected}
+sd(x)*sqrt((length(x) - 1)/length(x))
+```
+
+Also note that the equivalent can be found by square rooting the variance, and the variance can be found by squaring the standard deviation.
+
+```{r sqrt.var}
+# Equivalent
+sqrt(var(x))
+
+# Variance
+sd(x) ^ 2
+```
+
+The `sd` function also provides the `na.rm` argument, that can be set to `TRUE` if the input vector contains any `NA` value. Otherwise, the output of the function will be an `NA`.
+
+# The Variance
+
+The _variance_ of a set of data is defined as the square of the standard deviation and is thus given by $s^2$ in equations (5) and (6).
+
+When it is necessary to distinguish the standard deviation of a population from the standard deviation of a sample drawn from this population, we often use the symbol $s$ for the latter and $\sigma$ (lowercase Greek _sigma_) for the former. Thus $s^2$ and $\sigma^2$ would represent the _sample variance_ and _population variance_, respectively.
+
+## Variance in R with the `var` function
+
+The variance is always positive and greater values will indicate higher dispersion.
+
+When using R, we can make use of the `var` function to calculate the variance of a variable. Considering the following sample vector you can calculate its variance with the function:
+
+```{r}
+x <- c(10, 25, 12, 18, 5, 16, 14, 20)
+
+var(x)
+```
+
+Note that the function provides an argument named `na.rm` that can be set to `TRUE` to remove missing values.
+
+# Short Methods for Computing the Standard Deviation
+
+Equations (5) and (6) can be written, respectively, in equivalent forms
+
+\begin{equation}
+s = \sqrt{\frac{\sum^N_{j=1}{X^2_j}}{N} - 
+\left(\frac{\sum^N_{j=1}{X_j}}{N}\right)^2} =
+\sqrt{\frac{\sum{X^2}}{N} - \left(\frac{\sum{X}}{N}\right)^2} = 
+\sqrt{\overline{X^2} - \bar{X}^2}
+\end{equation}
+
+\begin{equation}
+s = \sqrt{\frac{\sum^N_{j=1}{f_j X^2_j}}{N} - 
+\left(\frac{\sum^N_{j=1}{f_j X_j}}{N}\right)^2} =
+\sqrt{\frac{\sum{f X^2}}{N} - \left(\frac{\sum{f X}}{N}\right)^2} = 
+\sqrt{\overline{X^2} - \bar{X}^2}
+\end{equation}
+
+where $\overline{X^2}$ denotes the mean of the squares of the various values of $X$, while $\bar{X}^2$ denotes the square of the mean of the various values of $X$ (see Problems 4.12 to 4.14).
+
+If $d_j = X_j - A$ are the deviations of $X_j$ from some arbitrary constant $A$, results (7) and (8) become, respectively,
+
+\begin{equation}
+s = \sqrt{\frac{\sum^N_{j=1}{d^2_j}}{N} - 
+\left(\frac{\sum^N_{j=1}{d_j}}{N}\right)^2} =
+\sqrt{\frac{\sum{d^2}}{N} - \left(\frac{\sum{d}}{N}\right)^2} = 
+\sqrt{\overline{d^2} - \bar{d}^2}
+\end{equation}
+
+\begin{equation}
+s = \sqrt{\frac{\sum^N_{j=1}{f_j d^2_j}}{N} - 
+\left(\frac{\sum^N_{j=1}{f_j d_j}}{N}\right)^2} =
+\sqrt{\frac{\sum{f d^2}}{N} - \left(\frac{\sum{f d}}{N}\right)^2} = 
+\sqrt{\overline{d^2} - \bar{d}^2}
+\end{equation}
+
+(See Problems 4.15 and 4.17.)
+
+When data are groupd into a frequency distribution whose class intervals have equal size $c$, we have $d_j = cu_j$ or $X_j = A + cu_j$ and result (10) becomes
+
+\begin{equation}
+s = \sqrt{\frac{\sum^N_{j=1}{f_j u^2_j}}{N} - 
+\left(\frac{\sum^N_{j=1}{f_j u_j}}{N}\right)^2} =
+c \sqrt{\frac{\sum{f u^2}}{N} - \left(\frac{\sum{f u}}{N}\right)^2} = 
+c \sqrt{\overline{u^2} - \bar{u}^2}
+\end{equation}
+
+This last formula provides a very short method for computing the standard deviation and should always be used for grouped data when the class-interval sizes are equal. It is called the _coding method_ and is exactly analogous to that used in Chapter 3 for computing the arithmetic mean of grouped data. (See Problems 4.16 to 4.19.)
+
+
+# Properties of the Standard Deviation
+
+1. The standard deviation can be defined as
+
+$$
+s = \sqrt{\frac{\sum^N_{j=1}{(X_j - a)^2}}{N}}
+$$
+
+whare $a$ is an average besides the arithmetic mean. Of all such standard deviations, th eminimum is that for which $a = \bar{X}$, because of Property 2 in Chapter 3. This property provides an important reason for defining the standard deviation as above. For a proof of this property see Problem 4.27.
+
+2. For normal distributions (see Chapter 7), it turns out that (as shown in Fig. 4-1):
+  (a) $68.27\%$ of the cases are included between $\bar{X} - s$ and $\bar{X} + s$ (i.e., one standard deviation on either side of the mean).
+  (b) $95.45\%$ of the cases are included between $\bar{X} - 2s$ and $\bar{X} + 2s$ (i.e., two standard deviations on either side of the mean).
+  (c) $99.72\%$ of the cases are included between $\bar{X} - 3s$ and $\bar{X} + 3s$ (i.e., three standard deviations on either side of the mean).
+  
+> For moderately skewed distributions, the above percentages may hold approximately (see Problem 4.24).
+
+3. Suppose that two sets consisting of $N_1$ and $N_2$ numbers (or two frequency distributions with total frequencies $N_1$ and $N_2$) have variances given by $s_1^2$ and $s_2^2$, respectively, and have the _same_ mean $\bar{X}$. Then the _combined_, or _pooled_, _variance_ of both sets (or both frequency distributions) is given by
+
+\begin{equation}
+s^2 = \frac{N_1 s_1^2 + N_2 s_2^2}{N_1 + N_2}
+\end{equation}
+
+> Note that this is a weighted arithmetic mean of the variances. This result can be generalized to three or more sets.
+
+4. Chebyshev's theorem states that for $k > 1$, there is at least $(1 - (1/^k)) \times 100\%$ of the probability distribution for any variable within $k$ standard deviations of the mean. In particular, when $k = 2$, there is at least $(1 - (1/2^2)) \times 100\%$ or $75\%$ of the data in the interval $(\bar{x} - 2S, \bar{x} + 2S)$, when $k = 3$ there is at least $(1 - (1/2^3)) \times 100\%$ or $89\%$ of the data in the interval $(\bar{x} - 3S, \bar{x} + 3S)$, and when $k = 4$ there is at least $(1 - (1/4^2)) \times 100\%$ or $93.75\%$ of the data in the interval $(\bar{x} - 4S, \bar{x} + 4S)$.
+
+```{r fig.height=12}
+par(mfrow = c(3,1))
+normal_area(mean=0, sd=1, ub=1, lb=-1)
+normal_area(mean=0, sd=1, ub=2, lb=-2)
+normal_area(mean=0, sd=1, ub=3, lb=-3)
+```
+
+<<Fig 4-1 Illustration of the empirical rule.>>
+
+
+# Charlier's Check
+
+Charlier's check in computations of the mean and standard deviation by the coding method makes use of the identities
+
+$$
+\begin{aligned}
+\sum{f(u+1)} & = \sum{fu} + \sum{f} = \sum{fu} + N \\
+\sum{f(u+1)^2} = \sum{f(u^2 + 2u + 1)} & = \sum{f u^2} + 2 \sum{f u} + \sum{f} = \sum{f u^2} + 2 \sum{f u} + N
+\end{aligned}
+$$
+
+# Sheppard's Correction for Variance
+
+The computation of the standard deviation is somewhat in error as a result of grouping the data into classes (grouping error). To adjust for grouping error, we use the formula
+
+\begin{equation}
+\text{Corrected variance} = \text{variance from grouped data} - \frac{c^2}{12}
+\end{equation}
+
+where $c$ is the class-interval size. The correction $c^2/12$ (which is subtracted) is called _Sheppard's correction_. It is used for distributions of continuous variables where the "tails" go gradually to zero in both directions.
+
+Statisticians differ as to _when_ and _whether_ Sheppard's correction should be applied. It should certainly not be applied before one examines the situation thoroughly, for it often tends to _overcorrect_, thus replacing an old error with a new one. In this book, unless otherwise indicated, we shall not be using Sheppard's correction.
+
+# Empirical Relations between Measures of Dispersion
+
+For moderately skewed distributions, we have the empirical formulas
+
+$$
+\text{Mean deviation} = \frac{4}{5}(\text{standard deviation})
+$$
+
+$$
+\text{Semi-interquartile range} = \frac{2}{3}(\text{standard deviation})
+$$
+
+These are consequences of the fact that for the normal distribution we find that the mean deviation and semi-interquartile range are equal, respectively, to $0.7979$ and $0.6745$ times the standard deviation.
+
+# Absolute and Relative Dispersion; Coefficient of Variation
+
+The actual variation, or dispersion, as determined from the standard deviation or other measure of dispersion is called the _absolute dispersion_. However, a variation (or dispersion) of 10 inches (in) in measuring a distance of 1000 feet (ft) is quite different in effect from the same variation of 10 in in a distance of 20 ft. A measure of this effect is supplied by the _relative dispersion_, which is defined by
+
+\begin{equation}
+\text{Relative dispersion} = \frac{\text{absolute dispersion}}{\text{average}}
+\end{equation}
+
+If the absolute dispersion is the standard deviation $s$ and if the average is the mean $\bar{X}$, then the relative dispersion is called the _coefficient of variation_, or _coefficient of dispersion_; it is denoted by $V$ and is given by
+
+\begin{equation}
+\text{Coefficient of variation}(V) = \frac{s}{\bar{X}}
+\end{equation}
+
+and is generally expressed as a percentage. Other possibilities also occur (see Problem 4.30).
+
+Note that the coefficient of variation is independent of the units used. For this reason, it is useful in comparing distributions where the units may be different. A disadvantage of the coefficient of variation is that it fails to be useful when $\bar{X}$ is close to zero.
+
+# Standardized Variable; Standard Scores
+
+The variable that measures the deviation from the mean in units of the standard deviation is called a _standardized variable_, is a dimensionless quantity (i.e., is independent of the units used), and is given by
+
+\begin{equation}
+z = \frac{X - \bar{X}}{s}
+\end{equation}
+
+If the deviation from the mean are given in units of the standard deviation, they are said to be expressed in _standard units_, or _standard scores_. These are of great value in the comparison of distributions (see Problem 4.3).
+
+# Measures of Dispersion in R

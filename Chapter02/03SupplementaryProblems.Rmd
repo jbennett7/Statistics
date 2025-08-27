@@ -1,0 +1,340 @@
+---
+title: 'Chapter 2: Frequency Distributions'
+subtitle: 'Supplementary Problems'
+author: 'Murray R. Spiegel, PhD and Larry J. Stephens, PhD'
+date: '2024-06-15'
+header-includes: \usepackage{amsmath}
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+---
+
+## Arranging raw data into an array
+
+#### 2.19
+
+\ (a) Arrange the numbers `r (p2.19 <- c(12, 56, 42, 21, 5, 18, 10, 3, 61, 34, 65, 24))` in an array and (b) determine the range.
+
+
+```{r}
+cat("(a) Ascending:", sort(p2.19, decreasing = FALSE),
+    "\n    Descending:", sort(p2.19, decreasing = TRUE))
+
+cat("(b) Range:", range(p2.19),":", diff(range(p2.19)))
+```
+
+## Reading a frequency distribution
+
+#### 2.20 {#problem_2_20}
+
+[Table 2.15](#table_2_15) shows the frequency distribution for the number of minutes per week spent watching TV by 400 junior high students. With reference to this table determine:
+
+##### Table 2.15 {#table_2_15}
+
+|Viewing Time (minutes)|Number of Students|
+|:---:|:---:|
+|300--399|14|
+|400--499|46|
+|500--599|58|
+|600--699|76|
+|700--799|68|
+|800--899|62|
+|900--999|48|
+|1000--1099|22|
+|1100-1199|6|
+
+(a) The upper limit of the fifth class
+
+(b) The lower limit of the eighth class
+
+(c) The class mark of the seventh class
+
+(d) The class boundaries of the last class
+
+(e) The class-interval size
+
+(f) The frequency of the fourth class
+
+(g) The relative frequency of the sixth class
+
+(h) The percentage of students whose weekly viewing time does not exceed 600 minutes
+
+(i) The percentage of students with viewing times greater than or equal to 900 minutes
+
+(f) The percentage of students whose viewing times are at least 500 minutes but less than 1000 minutes
+
+### Creating a histogram from a frequency distribution in R 
+
+__Solution__
+
+```{r}
+h <- list(counts=c(14, 46, 58, 76, 68, 62, 48, 22, 6),
+          breaks=seq(300, 1200, by=100),
+          xname="Viewing Time",
+          mids=seq(350, 1150, by=100))
+class(h) <- "histogram"
+plot(h, xaxt='n')
+axis(side=1, at=h$mids)
+```
+
+(a) The upper limit of the fifth class. __799__
+
+(b) The lower limit of the eighth class __1000__
+
+(c) The class mark of the seventh class __949.5__
+
+(d) The class boundaries of the last class __1099.5--1199.5__
+
+(e) The class-interval size __100__
+
+(f) The frequency of the fourth class __76__
+
+(g) The relative frequency of the sixth class
+__`r h$counts[6]/sum(h$counts)*100`%__
+
+(h) The percentage of students whose weekly viewing time does not exceed 600 minutes
+__`r sum(h$counts[1:3])/sum(h$counts)*100`%__
+
+(i) The percentage of students with viewing times greater than or equal to 900 minutes
+__`r sum(tail(h$counts,3))/sum(h$counts)*100`%__
+
+(f) The percentage of students whose viewing times are at least 500 minutes but less than 1000 minutes
+__`r sum(h$counts[3:7])/sum(h$counts)*100`%__
+
+## Creating a histogram and a frequency polygon from raw data
+
+#### 2.21 {#problem_2_21}
+
+Construct (a) a histogram and (b) a frequency polygon corresponding to the frequency distribution of Table 2.15.
+
+__Solution__
+
+The histogram can be found in [Problem 2.20](#problem_2_20). Below is the frequency polygon on top of the histogram
+
+### Histogram and frequency polygon plotted together
+
+```{r}
+plot(h, xaxt='n', main="")
+axis(side=1, at=h$mids)
+lines(h$mids, h$counts, cex=0.4)
+points(h$mids, h$counts, pch=19)
+```
+
+## Constructing relative-frequency distributions, histograms, and polygons
+
+#### 2.22 {#problem_2_22}
+
+For the data in [Table 2.15](#table_2_15) of [Problem 2.20](#problem_2_20), construct (a) a relative-frequency distribution, (b) a relative-frequency histogram, and (c) a relative-frequency polygon.
+
+As stated in the Text section _[Relative-frequency distributions](./01Text.pdf)_, The relative frequency of a class is the frequency of the class divided by the total frequency of all classes. It is generally expressed as a percentage.
+
+```{r}
+rel.h <- list( counts=(h$counts/sum(h$counts)*100),
+               breaks=h$breaks,
+               mids=h$mids,
+               xname=h$xname)
+rel.d <- matrix(rel.h$counts, ncol=1)
+rownames(rel.d) <- head(h$breaks,-1)
+colnames(rel.d) <- "Number of Students"
+rel.d
+class(rel.h) <- "histogram"
+plot(rel.h, xaxt='n', yaxt='n')
+axis(side=1, at=h$mids)
+axis(side=2, at=seq(0, 20, by=4))
+points(rel.h$mids, rel.h$counts, pch=19)
+lines(rel.h$mids, rel.h$counts, cex=0.4)
+```
+
+## Constructing cumulative-frequency distribution, percentage cumulative distribution, ogive, and percentage ogive
+
+#### 2.23 {#problem_2_23}
+
+For the data in [Table 2.15](#table_2_15) of [Problem 2.20](#problem_2_20), construct (a) a cumulative-frequency distribution, (b) a relative-frequency histogram, (c) an ogive, and (d) a percentage ogive. (Note that unless otherwise specified, a cumulative distribution refers to one made on a "less than" basis.)
+
+__Solution__
+
+```{r fig.width=10, fig.height=4}
+cpf <- cumsum(h$counts/sum(h$counts)*100)
+cf <-cumsum(h$counts)
+p2.23 <- matrix(c(cf,cpf), ncol=2)
+colnames(p2.23) <- c("Cumulative Frequency", "Percentage Cumulative Distribution")
+rownames(p2.23) <- c("less than 400", "less than 500", "less than 600", "less than 700",
+                     "less than 800", "less than 900", "less than 1000", "less than 1200",
+                     "less than 1200")
+
+par(mfrow=c(1,2), mar=c(4,4,2,2))
+plot(tail(h$breaks,-1), p2.23[,1], type='l',
+     xlab = "Viewing Time (minutes)", ylab = "Frequency",
+     main = "Cumulative Frequency Polygon")
+
+plot(tail(h$breaks, -1), p2.23[,2], type='l',
+     xlab = "Viewing Time (minutes)", ylab = "Frequency",
+     main = "Percentage Cumulative Polygon")
+```
+
+## "or more" cumulative frequency/percentage distribution and ogives
+
+#### 2.24 {#problem_2_24}
+
+Work [Problem 2.23](#problem_2_23) for the case where the frequencies are cumulative on an "or more" basis.
+
+```{r fig.width=10, fig.height=4}
+cpf <- cumsum(rev(h$counts)/sum(h$counts)*100)
+cf <-cumsum(rev(h$counts))
+p2.24 <- matrix(c(cf,cpf), ncol=2)
+colnames(p2.24) <- c("Cumulative 'or more' Frequency", "Percentage Cumulative 'or more' Distribution")
+rownames(p2.24) <- c("400 or more", "500 or more", "600 or more", "700 or more",
+                     "800 or more", "900 or more", "1000 or more", "1100 or more",
+                     "1200 or more")
+
+par(mfrow=c(1,2), mar=c(4,4,2,2))
+plot(rev(tail(h$breaks,-1)), p2.24[,1], type='l',
+     xlab = "Viewing Time (minutes)", ylab = "Frequency",
+     main = "Cumulative 'or more' Frequency Polygon")
+
+plot(rev(tail(h$breaks, -1)), p2.24[,2], type='l',
+     xlab = "Viewing Time (minutes)", ylab = "Frequency",
+     main = "Percentage 'or more' Cumulative Polygon")
+```
+
+## More ogive applications
+
+#### 2.25 {#problem_2_25}
+
+Using the data in [Table 2.15](#table_2_15), estimate the percentage of students that have viewing times of (a) less than 560 minutes per week, (b) 970 or more minutes per week, and (c) between 620 and 890 minutes per week.
+
+```{r}
+table_2_15 <- matrix(c(head(h$breaks,-1),h$counts), ncol=2)
+round((sum(table_2_15[,2][table_2_15[,1] < 500]) + table_2_15[,2][table_2_15[,1] == 500]*.6)/sum(table_2_15[,2])*100)
+round((sum(table_2_15[,2][table_2_15[,1] > 900]) + table_2_15[,2][table_2_15[,1] == 900]*.3)/sum(table_2_15[,2])*100)
+round((sum(table_2_15[,2][table_2_15[,1] > 600 & table_2_15[,1] < 800]) +
+         table_2_15[,2][table_2_15[,1] == 600]*.8 + table_2_15[,2][table_2_15[,1] == 800]*.9)/sum(table_2_15[,2])*100)
+```
+
+## Class marks, interval size, boundaries, and limits
+
+#### 2.26
+
+The inner diameters of washers produced by a company can be measured to the nearest thousandth of an inch. If the class marks of a frequency distribution of these diameters are given in inches by 0.321, 0.324, 0.327, 0.330, 0.333, 0.336, find (a) the class-interval size, (b) the class boundaries, and (c) the class limits.
+
+```{r}
+(marks <- c(0.321, 0.324, 0.327, 0.330, 0.333, 0.336))
+(size <- unique(diff(marks)))
+(boundaries <- c(marks-size/2, tail(marks,1)+size/2))
+(lower.limits <- head(boundaries,-1)+.0005)
+(upper.limits <- tail(boundaries,-1)-.0005)
+```
+
+## Constructing a frequency distribution based on raw data
+
+#### 2.27 {#problem_2_27}
+
+The following table shows the diameters in centimeters (cm) of a sample of 60 ball bearings manufactured by a company. Construct a frequency distribution of the diameters, using appropriate class intervals.
+
+```{r}
+p2.27 <- c( 1.738, 1.729, 1.743, 1.740, 1.736, 1.741, 1.735, 1.731, 1.726, 1.737,
+            1.728, 1.737, 1.736, 1.735, 1.724, 1.733, 1.742, 1.736, 1.739, 1.735,
+            1.745, 1.736, 1.742, 1.740, 1.728, 1.738, 1.725, 1.733, 1.734, 1.732,
+            1.733, 1.730, 1.732, 1.730, 1.739, 1.734, 1.738, 1.739, 1.727, 1.735,
+            1.735, 1.732, 1.735, 1.727, 1.734, 1.732, 1.736, 1.741, 1.736, 1.744,
+            1.732, 1.737, 1.731, 1.746, 1.735, 1.735, 1.729, 1.734, 1.730, 1.740)
+h <- hist(p2.27, right = FALSE, plot = FALSE)
+table(cut(p2.27, breaks=h$breaks, right = FALSE))
+```
+
+## Constructing a histogram, frequency polygon, relative frequency distribution from raw data.
+
+#### 2.28 {#problem_2_28}
+
+For the data of [Problem 2.27](#problem_2_27) construct (a) a histogram, (b) a frequency polygon, (c) a relative-frequency distribution, (d) a relative-frequency histogram, (e) a relative-frequency polygon, (f) a cumulative-frequency distribution, (g) a percentage cumulative distribution, (h) an ogive, and (i) a percentage ogive.
+
+```{r fig.width=8, fig.height=8}
+par(mfrow=c(3,2))
+plot(h)
+lines(h$mids, h$counts, cex=.4)
+points(h$mids, h$counts, pch=19)
+rel.h <- list(mids=h$mids, counts=h$counts/sum(h$counts)*100,
+              breaks=h$breaks, xname="Relative")
+class(rel.h) <- "histogram"
+plot(rel.h)
+lines(rel.h$mids, rel.h$counts, cex=.4)
+points(rel.h$mids, rel.h$counts, pch=19)
+plot(h$mids, cumsum(h$counts), type='l')
+points(h$mids, cumsum(h$counts), pch=19)
+plot(rel.h$mids, cumsum(rel.h$counts), type='l')
+points(rel.h$mids, cumsum(rel.h$counts), pch=19)
+plot(h$mids, rev(cumsum(h$counts)), type='l')
+points(h$mids, rev(cumsum(h$counts)), pch=19)
+plot(rel.h$mids, rev(cumsum(rel.h$counts)), type='l')
+points(rel.h$mids, rev(cumsum(rel.h$counts)), pch=19)
+```
+
+#### 2.29 {#problem_2_29}
+
+From the results in [Problem 2.28](#problem_2_29), determine the percentage of ball bearings having diameters (a) exceeding 1.732 cm, (b) not more than 1.736 cm, and (c) between 1.730 and 1.738 cm. Compare your results with those obtained directly fromt he raw data of [Problem 2.27](#problem_2_27).
+
+```{r}
+N <- length(p2.27)
+length(p2.27[p2.27 > 1.732])
+length(p2.27[p2.27 <= 1.736])
+length(p2.27[p2.27 >= 1.730 & p2.27 <= 1.738])
+```
+
+#### 2.30
+
+Work [Problem 2.28](#problem_2_28) for the data of [Problem 2.20](#problem_2_20).
+
+```{r fig.width=8, fig.height=8}
+h <- list(mids=table_2_15[,1]+50,
+          breaks=c(table_2_15[,1], 1200),
+          xname="Viewing Time",
+          counts=table_2_15[,2])
+class(h) <- "histogram"
+par(mfrow=c(3,2))
+plot(h)
+lines(h$mids, h$counts, cex=.4)
+points(h$mids, h$counts, pch=19)
+rel.h <- list(mids=h$mids, counts=h$counts/sum(h$counts)*100,
+              breaks=h$breaks, xname="Relative")
+class(rel.h) <- "histogram"
+plot(rel.h)
+lines(rel.h$mids, rel.h$counts, cex=.4)
+points(rel.h$mids, rel.h$counts, pch=19)
+plot(h$mids, cumsum(h$counts), type='l')
+points(h$mids, cumsum(h$counts), pch=19)
+plot(rel.h$mids, cumsum(rel.h$counts), type='l')
+points(rel.h$mids, cumsum(rel.h$counts), pch=19)
+plot(h$mids, rev(cumsum(h$counts)), type='l')
+points(h$mids, rev(cumsum(h$counts)), pch=19)
+plot(rel.h$mids, rev(cumsum(rel.h$counts)), type='l')
+points(rel.h$mids, rev(cumsum(rel.h$counts)), pch=19)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

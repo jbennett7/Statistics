@@ -1,0 +1,9 @@
+---
+title: "References"
+output: pdf_document
+---
+
+1. Larry J. Stephens, and Murray R. Spiegel. _Schaum’s outline of Statistics, sixth edition._ The McGraw-Hill Companies, Inc, 2018.
+3. Gonzalez, J. C. S. _Binomial Distribution in R._ R Coder. Retrieved June 22, 2024, from https://r-coder.com/binomial-distribution-r/
+4. Gonzalez, J. C. S. _Normal Distribution in R._ R Coder. Retrieved June 22, 2024, from https://r-coder.com/normal-distribution-r/
+5. Gonzalez, J. C. S. _Poisson Distribution in R._ R Coder. Retrieved June 22, 2024, from https://r-coder.com/poisson-distribution-r/
